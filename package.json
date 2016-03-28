@@ -1,0 +1,20 @@
+{
+  "name": "notify_api",
+  "version": "1.0.0",
+  "description": "Notification API",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Colin Goss",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.0",
+    "elasticsearch": "^10.1.3",
+    "emailjs": "^1.0.4",
+    "express": "^4.13.4",
+    "lodash": "^4.6.1",
+    "method-override": "^2.3.5",
+    "resourcejs": "^1.0.6"
+  }
+}
