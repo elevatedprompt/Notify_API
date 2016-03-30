@@ -22,21 +22,26 @@ app.use(function(req, res, next) {
 
 var emailcontroller = require('./controllers/emailcontroller');
 var notificationController = require('./controllers/notificationcontroller');
-
 var elasticquery = require('./controllers/elasticquery');
+
 
 //var notifications = notificationController.GetAllNotifications();
 app.all('/testQuery',elasticquery.testQuery);
 app.all('/testSearchExists',elasticquery.testSearchExists);
 
-//elasticsearch items
-app.all("/ListSearches",elasticquery.ListSearches)
 
+//ElasticSearch Controller
+app.all("/ListSearches",elasticquery.ListSearches)
+app.all('/runSearch',elasticquery.runSearch);
+app.all('/getQuery',elasticquery.getQuery);
+app.all('/CallQuery',elasticquery.CallQuery);
+app.all('/CallQueryStep1',elasticquery.CallQueryStep1);
+
+//Email Controller
 app.all('/testEmail',emailcontroller.testEmail);
 //app.all('/sendMessage',emailcontroller.sendMessage);
 app.all('/SendMail',emailcontroller.SendMail);
 
-//app.all('/StopService',notificationController.StopService);
 
 console.log('Listening on port 3003...');
 app.listen(3003, '127.0.0.1');

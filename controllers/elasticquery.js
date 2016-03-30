@@ -4,7 +4,7 @@
 //Pull saved queries.
 //Gets a list of saved queries and displays them by name.
 
-
+var Q = require ('q');
 var elasticsearch = require('elasticsearch');
 
 
@@ -18,13 +18,239 @@ var elasticsearch = require('elasticsearch');
 //         }
 //     }
 // }
+var elastichost = '192.168.1.104:9200';//'127.0.0.1:9200';
+var tracelevel = 'debug';
+
 var elasticClient = new elasticsearch.Client({
-    host: '127.0.0.1:9200',
+    host: elastichost,
     sniffOnStart: true,
     apiVersion:'2.2',
-    log: 'trace'
+    log: tracelevel
 });
-elasticClient.Connection();
+//elasticClient.Connection();
+
+
+module.exports.pingCluster = function(){
+  client.ping({
+    requestTimeout: 30000,
+
+    // undocumented params are appended to the query string
+    hello: "elasticsearch"
+  }, function (error) {
+    if (error) {
+      console.error('elasticsearch cluster is down!');
+    } else {
+      console.log('All is well');
+    }
+  });
+}
+
+
+// $scope.searchList= [
+//   {ID:"1",Title:"Search Example",SearchString:"searchstring"},
+//   {ID:"2",Title:"Another Search",SearchString:"searchstring"},
+//   {ID:"3",Title:"Another Example",SearchString:"searchstring"},
+// ];
+module.exports.ListSearches= function(req,res,next){
+console.log('Get List Of searches');
+
+  //return a list of search types.
+  elasticClient.search({
+    type:'search'
+  }).then(function (body) {
+    var searches=[];
+    for(var result in hits)
+    {
+      searches.push(result);
+    }
+    res.send(searches);
+  }, function (error) {
+    console.trace(error.message);
+  });
+}
+///Alternate
+/*
+module.exports.ListSearches= function(req,res,next){
+  console.log('Get List Of searches');
+
+  //return a list of search types.
+  elasticClient.search({
+    type:'search'
+  }).then(function (body) {
+    var hits = body.hits.hits;
+    res.send(hits);
+  }, function (error) {
+    console.trace(error.message);
+  });
+}
+*/
+
+function getQuery(queryName){
+  elasticClient.search({
+    type:'search',
+    name:queryName
+  }).then(function (body) {
+    var hits = body.hits.hits;
+  //  res.send(hits[0]._source.kibanaSavedObjectMeta.searchSourceJSON);
+    return hits[0];
+
+  }, function (error) {
+    console.trace(error.message);
+  });
+}
+
+
+//Call search by name
+module.exports.CallQuery= function(req,res,next){
+  console.log("call query called");
+  var queryName = req.body.queryName;
+
+  console.log('Get Query');
+   var query = getQueryString(queryName).then(function(result){
+      console.log('return from query');
+      console.log(result);
+      runSearchInternal(result).then(function(innerresult){
+        console.log("return from inner query");
+        console.log(innerresult);
+        console.log(innerresult.total);
+        //console.log(innerresult);
+        res.sendStatus(innerresult);
+        next();
+      },function(err)
+    {
+      console.log(err.message);
+    });
+   });
+}
+
+
+function runSearchInternal(query)
+{
+  var deferred = Q.defer();
+  console.log("Run Search Internal");
+  console.log(query);
+  var search = JSON.parse(query);
+  console.log("post query" + search.query.query_string);
+  console.log("postedquery");
+
+  var x = {
+    index:search.index,
+    searchType:"count",
+    q:'@timestamp:(>now-24h) AND ' +search.query.query_string.query//,
+    //'@timestamp':"(>now-15m)"
+  };
+
+    //search.query
+  elasticClient.search(x).then(
+    function(result){
+      var ii = 0, hits_in, hits_out = [];
+      hits_in = (result.hits || {}).hits || [];
+      deferred.resolve(result.hits);
+      var result;
+      for(; ii < hits_in.length; ii++) {
+          result = JSON.stringify(hits_in[ii]._source.kibanaSavedObjectMeta.searchSourceJSON);
+      }
+      console.log("Search result");
+      console.log(result.hits);
+      return result.hits;
+
+      // console.log("inside result response");
+      // console.log(JSON.stringify(result));
+      // console.log(result);
+      // return JSON.stringify(result);
+    }, function (error) {
+      console.trace(error.message);
+      deferred.reject(error.message);
+      return deferred.promise;
+    }
+  );
+  return deferred.promise;
+}
+
+
+///Returns the query based on the query name
+//Params: queryName
+module.exports.getQuery = function (req,res,next){
+  console.log("get query called");
+  console.log(req.body);
+  var queryName= req.body.queryName;
+  console.log(queryName);
+  elasticClient.search({
+    type:'search',
+    title: queryName
+  }).then(function (result) {
+    var ii = 0, hits_in, hits_out = [];
+
+    hits_in = (result.hits || {}).hits || [];
+    for(; ii < hits_in.length; ii++) {
+     //hits_out.push(hits_in[ii]._source);
+     res.sendStatus(JSON.stringify(hits_in[ii]._source.kibanaSavedObjectMeta.searchSourceJSON));
+    }
+    if(hits_in.length<1)
+    {
+      res.sendStatus("No Restults");
+    }
+    next();
+  }, function (error) {
+    console.trace(error.message);
+  });
+}
+
+
+
+
+//Test function
+
+module.exports.runSearch = function (req,res,next){
+  var query_string = req.body.searchString;
+  console.log(query_string);
+  var search = JSON.parse(query_string);
+  console.log(" test query");
+  //search.query.query_string.query.timestamp = "(>now-15m)";
+
+  var x =   {
+      index:search.index,
+      query:search.query.query_string.query,
+    //  timestamp:"(>now-15m)",
+    searchType:"count"//,
+  //  '@timestamp':"(>now-15m)"
+    //  filter:JSON.stringify(search.filter)
+    };
+    console.log(JSON.stringify(x));
+  elasticClient.search(x
+    // {
+    //   index:search.index,
+    //   filter:search.filter,
+    //   query:search.query.query_string.query
+    // }
+    //query_string
+  //  {"index":"logstash-*","highlight":{"pre_tags":["@kibana-highlighted-field@"],"post_tags":["@/kibana-highlighted-field@"],"fields":{"*":{}},"fragment_size":2147483647},"filter":[],"query":{"query_string":{"query":"*","analyze_wildcard":true}}}
+  ).then(function (result) {
+    console.log("result");
+    console.log(result);
+    console.log("total result " + result.hits.total);
+    var ii = 0, hits_in, hits_out = [];
+
+    hits_in = (result.hits || {}).hits || [];
+    console.log(hits.length);
+    for(; ii < hits_in.length; ii++) {
+     hits_out.push(hits_in[ii]._source);
+     //res.sendStatus(JSON.stringify(hits_in[ii]));
+    }
+     res.sendStatus(JSON.stringify(hits_out));
+
+    if(hits_in.length<1)
+    {
+      res.sendStatus("No Restults");
+    }
+    next();
+  }, function (error) {
+    console.trace(error.message);
+  });
+}
+
+
+
 
 module.exports.testQuery= function(req,res,next){
 console.log('Test Query');
@@ -51,125 +277,5 @@ var query = hits[0]._source.kibanaSavedObjectMeta.searchSourceJSON;
   }, function (error) {
     console.trace(error.message);
   });
-
 //next();
-
-}
-
-// $scope.searchList= [
-//   {ID:"1",Title:"Search Example",SearchString:"searchstring"},
-//   {ID:"2",Title:"Another Search",SearchString:"searchstring"},
-//   {ID:"3",Title:"Another Example",SearchString:"searchstring"},
-// ];
-module.exports.ListSearches= function(req,res,next){
-console.log('Get List Of searches');
-
-  //return a list of search types.
-  elasticClient.search({
-    type:'search'
-  }).then(function (body) {
-    var searches=[];
-    for(var result in hits)
-    {
-      searches.push(result);
-    }
-    res.send(searches);
-  }, function (error) {
-    console.trace(error.message);
-  });
-}
-
-
-function getQuery(queryName){
-  elasticClient.search({
-    type:'search',
-    name:queryName
-  }).then(function (body) {
-    var hits = body.hits.hits;
-  //  res.send(hits[0]._source.kibanaSavedObjectMeta.searchSourceJSON);
-    return hits[0];
-
-  }, function (error) {
-    console.trace(error.message);
-  });
-}
-//Call search by name
-module.exports.CallQuery= function(req,res,next){
-  var queryName = req.body.queryName;
-  var query = getQuery(queryName)
-  .then(function(query){}
-    elasticClient.search(
-    query
-  ).then(function (body) {
-    var hits = body.hits.hits;
-    res.send(hits);
-  }, function (error) {
-    console.trace(error.message);
-  });
-}
-);
-
-}
-
-
-
-module.exports.pingCluster = function(){
-  client.ping({
-    requestTimeout: 30000,
-
-    // undocumented params are appended to the query string
-    hello: "elasticsearch"
-  }, function (error) {
-    if (error) {
-      console.error('elasticsearch cluster is down!');
-    } else {
-      console.log('All is well');
-    }
-  });
-}
-
-
-module.exports.testSearchExists = function(req,res,next){
-console.log('searchexists');
-   elasticClient.count(
-     {index:"temperature-*",
-     q:"apple"}
-
-).then(function (body) {
-  var hits = body.hits.hits;
-  res.send(hits);
-}, function (error) {
-  console.trace(error.message);
-});
-next();
-}
-
-
-module.exports.ListSearches= function(req,res,next){
-console.log('Get List Of searches');
-
-  //return a list of search types.
-  elasticClient.search({
-    type:'search'
-  }).then(function (body) {
-    var hits = body.hits.hits;
-    res.send(hits);
-  }, function (error) {
-    console.trace(error.message);
-  });
-}
-
-module.exports.ListSearches= function(req,res,next){
-console.log('Get Named Of Search');
-
-  //return a list of search types.
-  elasticClient.search({
-    type:'search'
-  }).then(function (body) {
-    var hits = body.hits.hits;
-    res.send(hits[0]);
-    //res.send(hits);
-  }, function (error) {
-    console.trace(error.message);
-  });
 }
