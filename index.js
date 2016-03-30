@@ -27,7 +27,7 @@ var elasticquery = require('./controllers/elasticquery');
 
 //var notifications = notificationController.GetAllNotifications();
 app.all('/testQuery',elasticquery.testQuery);
-app.all('/testSearchExists',elasticquery.testSearchExists);
+//app.all('/testSearchExists',elasticquery.testSearchExists);
 
 
 //ElasticSearch Controller
@@ -35,13 +35,12 @@ app.all("/ListSearches",elasticquery.ListSearches)
 app.all('/runSearch',elasticquery.runSearch);
 app.all('/getQuery',elasticquery.getQuery);
 app.all('/CallQuery',elasticquery.CallQuery);
-app.all('/CallQueryStep1',elasticquery.CallQueryStep1);
+//app.all('/CallQueryStep1',elasticquery.CallQueryStep1);
 
 //Email Controller
 app.all('/testEmail',emailcontroller.testEmail);
 //app.all('/sendMessage',emailcontroller.sendMessage);
 app.all('/SendMail',emailcontroller.SendMail);
-
 
 console.log('Listening on port 3003...');
 app.listen(3003, '127.0.0.1');

@@ -250,6 +250,38 @@ module.exports.runSearch = function (req,res,next){
 }
 
 
+function getQueryString(queryName, callback)
+{
+  var deferred = Q.defer();
+  console.log("get Query String called");
+  elasticClient.search({
+    type:'search',
+    q: queryName
+  }).then(function (result) {
+    console.log('Inside get Query string result');
+    var ii = 0, hits_in, hits_out = [];
+
+    hits_in = (result.hits || {}).hits || [];
+    console.log('Count of Results: ' + hits_in.length);
+
+    var result;
+    for(; ii < hits_in.length; ii++) {
+        result = hits_in[ii]._source.kibanaSavedObjectMeta.searchSourceJSON;
+    }
+    deferred.resolve(result);
+    console.log("Search result");
+    console.log(result);
+    return result;
+  //  console.log("returned query string " + result);
+  //  deferred.promise.nodeify(callback);
+  //  return deferred.promise;
+  }, function (error) {
+    console.trace(error.message);
+     deferred.reject(error.message);
+    return error.message;
+  });
+  return deferred.promise;
+}
 
 
 module.exports.testQuery= function(req,res,next){
