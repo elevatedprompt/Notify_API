@@ -99,6 +99,21 @@ function getQuery(queryName){
   });
 }
 
+module.exports.EvaluateSearch = function(req,res,next){
+var queryName = req.body.queryName;
+var timeFrame = req.body.timeFrame;
+var query = getQueryString(queryName).then(function(result){
+  runTimeFrameSearchInternal(result,timeFrame)
+  .then(function(queryResult){
+    res.sendStatus(queryResult);
+    next();
+  });
+},function(err){
+  console.log(err.message);
+  res.sendStatus(err.message);
+  next();
+});
+}
 
 //Call search by name
 module.exports.CallQuery= function(req,res,next){
@@ -124,7 +139,7 @@ module.exports.CallQuery= function(req,res,next){
 }
 
 
-function runSearchInternal(query)
+function runSearchInternal(query,timeFrame)
 {
   var deferred = Q.defer();
   console.log("Run Search Internal");
@@ -137,6 +152,49 @@ function runSearchInternal(query)
     index:search.index,
     searchType:"count",
     q:'@timestamp:(>now-24h) AND ' +search.query.query_string.query//,
+    //'@timestamp':"(>now-15m)"
+  };
+
+    //search.query
+  elasticClient.search(x).then(
+    function(result){
+      var ii = 0, hits_in, hits_out = [];
+      hits_in = (result.hits || {}).hits || [];
+      deferred.resolve(result.hits);
+      var result;
+      for(; ii < hits_in.length; ii++) {
+          result = JSON.stringify(hits_in[ii]._source.kibanaSavedObjectMeta.searchSourceJSON);
+      }
+      console.log("Search result");
+      console.log(result.hits);
+      return result.hits;
+
+      // console.log("inside result response");
+      // console.log(JSON.stringify(result));
+      // console.log(result);
+      // return JSON.stringify(result);
+    }, function (error) {
+      console.trace(error.message);
+      deferred.reject(error.message);
+      return deferred.promise;
+    }
+  );
+  return deferred.promise;
+}
+
+function runTimeFrameSearchInternal(query,timeFrame)
+{
+  var deferred = Q.defer();
+  console.log("Run Search Internal");
+  console.log(query);
+  var search = JSON.parse(query);
+  console.log("post query" + search.query.query_string);
+  console.log("postedquery");
+
+  var x = {
+    index:search.index,
+    searchType:"count",
+    q:'@timestamp:(>now-' + timeFrame + ') AND ' +search.query.query_string.query//,
     //'@timestamp':"(>now-15m)"
   };
 

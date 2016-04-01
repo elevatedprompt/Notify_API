@@ -35,6 +35,7 @@ app.all("/ListSearches",elasticquery.ListSearches)
 app.all('/runSearch',elasticquery.runSearch);
 app.all('/getQuery',elasticquery.getQuery);
 app.all('/CallQuery',elasticquery.CallQuery);
+app.all('/EvaluateSearch',elasticquery.EvaluateSearch);
 //app.all('/CallQueryStep1',elasticquery.CallQueryStep1);
 
 //Email Controller
