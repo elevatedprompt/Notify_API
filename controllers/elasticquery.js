@@ -68,7 +68,7 @@ console.log('Get List Of searches');
       searches.push(result);
     }
     res.sendStatus(searches);
-    next();
+  //  next();
   }, function (error) {
     console.trace(error.message);
   });
