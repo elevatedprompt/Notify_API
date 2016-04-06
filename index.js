@@ -36,6 +36,7 @@ app.all('/runSearch',elasticquery.runSearch);
 app.all('/getQuery',elasticquery.getQuery);
 app.all('/CallQuery',elasticquery.CallQuery);
 app.all('/EvaluateSearch',elasticquery.EvaluateSearch);
+app.all('/PingCluster',elasticquery.pingCluster)
 //app.all('/CallQueryStep1',elasticquery.CallQueryStep1);
 
 //Email Controller
@@ -46,5 +47,19 @@ app.all('/SendMail',emailcontroller.SendMail);
 console.log('Listening on port 3003...');
 app.listen(3003, '127.0.0.1');
 //get list of notifications.
+
+
+//https://nodejs.org/api/timers.html
+
+//TODO: Add test to register timer events.
+var immediateObject = setInterval(function(){
+  console.log('timmer tick');
+},20000);
+
+var immediateObject2 = setInterval(function(){
+  console.log('timmer 2 Tick');
+},6000);
+//immediateObject.ref();
+//immediateObject.unref();
 
 //for all notifications evaluate the notification.

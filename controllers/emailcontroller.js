@@ -20,6 +20,9 @@
 //EP.Alert.Test@gmail.com
 //pw: TestingEP
 
+//TOOD: Add method to send off the results along with the data
+//  
+
 var email   = require("emailjs");
 var configuration =   {
  user:    "ep.alert.test@gmail.com",
