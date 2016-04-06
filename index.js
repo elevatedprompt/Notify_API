@@ -52,13 +52,13 @@ app.listen(3003, '127.0.0.1');
 //https://nodejs.org/api/timers.html
 
 //TODO: Add test to register timer events.
-var immediateObject = setInterval(function(){
-  console.log('timmer tick');
-},20000);
-
-var immediateObject2 = setInterval(function(){
-  console.log('timmer 2 Tick');
-},6000);
+// var immediateObject = setInterval(function(){
+//   console.log('timmer tick');
+// },20000);
+//
+// var immediateObject2 = setInterval(function(){
+//  console.log('timmer 2 Tick');
+//},6000);
 //immediateObject.ref();
 //immediateObject.unref();
 
