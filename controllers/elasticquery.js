@@ -30,7 +30,7 @@ var elasticClient = new elasticsearch.Client({
 //elasticClient.Connection();
 
 
-module.exports.pingCluster = function(){
+module.exports.pingCluster = function(req,res,next){
   elasticClient.ping({
     requestTimeout: 30000,
 
@@ -39,8 +39,12 @@ module.exports.pingCluster = function(){
   }, function (error) {
     if (error) {
       console.error('elasticsearch cluster is down!');
+      res.sendStatus(false);
+      next();
     } else {
       console.log('All is well');
+      res.sendStatus(true);
+      next();
     }
   });
 }
