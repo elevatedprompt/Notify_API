@@ -45,7 +45,7 @@ app.all('/testEmail',emailcontroller.testEmail);
 app.all('/SendMail',emailcontroller.SendMail);
 
 console.log('Listening on port 3003...');
-app.listen(3003, '127.0.0.1');
+app.listen(3003);
 //get list of notifications.
 
 
