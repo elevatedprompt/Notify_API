@@ -63,7 +63,7 @@ console.log('Get List Of searches');
     type:'search'
   }).then(function (body) {
     var searches=[];
-    for(var result in hits)
+    for(var result in body.hits.hits)
     {
       searches.push(result);
     }
