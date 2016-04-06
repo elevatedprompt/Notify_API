@@ -31,7 +31,7 @@ var elasticClient = new elasticsearch.Client({
 
 
 module.exports.pingCluster = function(){
-  client.ping({
+  elasticClient.ping({
     requestTimeout: 30000,
 
     // undocumented params are appended to the query string
