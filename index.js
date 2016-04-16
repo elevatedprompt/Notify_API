@@ -23,7 +23,7 @@ app.use(function(req, res, next) {
 var emailcontroller = require('./controllers/emailcontroller');
 var notificationController = require('./controllers/notificationcontroller');
 var elasticquery = require('./controllers/elasticquery');
-
+var notificationEngine = require('./controllers/NotificationEngine');
 
 //var notifications = notificationController.GetAllNotifications();
 app.all('/testQuery',elasticquery.testQuery);
@@ -31,7 +31,7 @@ app.all('/testQuery',elasticquery.testQuery);
 
 
 //ElasticSearch Controller
-app.all("/ListSearches",elasticquery.ListSearches)
+app.all('/ListSearches',elasticquery.ListSearches)
 app.all('/runSearch',elasticquery.runSearch);
 app.all('/getQuery',elasticquery.getQuery);
 app.all('/CallQuery',elasticquery.CallQuery);
@@ -39,13 +39,17 @@ app.all('/EvaluateSearch',elasticquery.EvaluateSearch);
 app.all('/PingCluster',elasticquery.pingCluster)
 //app.all('/CallQueryStep1',elasticquery.CallQueryStep1);
 
+app.all('/RegisterNotification', notificationController.RegisterNotification);
+app.all('/UnregisterNotification', notificationController.UnregisterNotification);
+
 //Email Controller
 app.all('/testEmail',emailcontroller.testEmail);
 //app.all('/sendMessage',emailcontroller.sendMessage);
 app.all('/SendMail',emailcontroller.SendMail);
 
 console.log('Listening on port 3003...');
-app.listen(3003);
+//app.listen(3003);
+app.listen(3003,'127.0.0.1');
 //get list of notifications.
 
 

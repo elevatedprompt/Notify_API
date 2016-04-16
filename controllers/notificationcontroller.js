@@ -15,6 +15,7 @@ var fs = require ('fs');
 var elasticsearch = require("elasticsearch");
 //var notificationEngine = require("NotificationEngine");
 
+
 module.exports = function(app, route){
   // Setup the controller for REST;
   return function(req, res, next) {
@@ -66,4 +67,18 @@ module.exports.GetAllNotifications = function ()
    });
 
   return notifications;
+}
+
+
+module.exports.RegisterNotification= function(req,res,next)
+{
+  console.log(req.body);
+  var alertInfo = req.body.notificationName;
+  console.log(JSON.stringify(alertInfo));
+//  notificationEngine.RegisterNotification(alertInfo);
+}
+module.exports.UnregisterNotification= function(req,res,next)
+{
+  var notificationName = req.body.notificationName;
+  notificationEngine.UnregisterNotification(notificationName);
 }
