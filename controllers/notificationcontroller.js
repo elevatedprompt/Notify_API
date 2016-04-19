@@ -73,7 +73,9 @@ module.exports.GetAllNotifications = function ()
 module.exports.RegisterNotification= function(req,res,next)
 {
   console.log(req.body);
-  var alertInfo = req.body.notificationName;
+  var notificationName = req.body.notificationName;
+  //read the file
+  var alertInfo = req.body.notification;
   console.log(JSON.stringify(alertInfo));
 //  notificationEngine.RegisterNotification(alertInfo);
   res.sendStatus('true');
