@@ -99,8 +99,10 @@ function UnregisterEventMonitor(alertInfo){
 //Unregiser the event.
 module.exports.UnregisterNotification = function(notificationName)
 {
+  console.log(alertInfos);
   forEach(alertInfo in alertInfos)
   {
+    console.log(alertInfo);
     if(alertInfo.notificationName == notificationName)
         emitter.emit('Unregister',alertInfo);
   }
