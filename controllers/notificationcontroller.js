@@ -13,7 +13,7 @@ var Resource = require('resourcejs');
 var fs = require ('fs');
 //var moment = require('moment-timezone');
 var elasticsearch = require("elasticsearch");
-var notificationEngine = require("NotificationEngine");
+var notificationEngine = require("./NotificationEngine");
 
 
 module.exports = function(app, route){
