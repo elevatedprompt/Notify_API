@@ -76,13 +76,13 @@ module.exports.RegisterNotification= function(req,res,next)
   var alertInfo = req.body.notificationName;
   console.log(JSON.stringify(alertInfo));
 //  notificationEngine.RegisterNotification(alertInfo);
-  res.sendStatus(true);
+  res.sendStatus('true');
   next();
 }
 module.exports.UnregisterNotification= function(req,res,next)
 {
   var notificationName = req.body.notificationName;
   notificationEngine.UnregisterNotification(notificationName);
-  res.sendStatus(true);
+  res.sendStatus('true');
   next();
 }
