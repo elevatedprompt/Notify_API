@@ -91,10 +91,8 @@ module.exports.RegisterNotification = function(alertInfo){
 
 function UnregisterEventMonitor(alertInfo){
   clearInterval(alertInfo.intervalObject);
-
   emitter.emit('Unregister',alertInfo);
 }
-
 
 
 //Unregiser the event.
