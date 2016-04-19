@@ -85,6 +85,7 @@ emitter.on('ClearInterval',function(alertInfo){
 
 
 module.exports.RegisterNotification = function(alertInfo){
+  console.log('Register Notification');
   emitter.emit('Register',alertInfo);
 }
 
