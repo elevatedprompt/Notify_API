@@ -99,11 +99,11 @@ module.exports.GetAllNotifications = function ()
   return notifications;
 }
 
-module.exports.RegisterNotification= function(notification,next)
+module.exports.RegisterNotification= function(req,res,next)
 {
   console.log("Register Notification Called");
 
-  console.log(notification);
+  console.log(req.body);
   var notificationName = req.body.notificationName;
   console.log("Register Notification:" + notificationName);
   //read the file
@@ -117,10 +117,10 @@ module.exports.RegisterNotification= function(notification,next)
   next();
 }
 
-module.exports.UnregisterNotification= function(notification,next)
+module.exports.UnregisterNotification= function(req,res,next)
 {
   console.log("UnRegister Notification");
-  console.log(JSON.stringify(notification));
+  console.log(JSON.stringify(req.body));
   var notificationName = req.body.notificationName;
   console.log("Unregister Called: " + notificationName);
 
