@@ -37,7 +37,7 @@ EP_EventEmitter.prototype.emit = function(eventname) {
 var emitter = new EP_EventEmitter();
 emitter.on('ThresholdMet', function(queryName,eventTime,triggerTime,alertInfo) {
   //An threshold has been met
-  console.log("Threshold Met fired - Query:" + queryName + " Alert Name: " + alertInfo.AlertName);
+  console.log("Threshold Met fired - Query:" + queryName + " Alert Name: " + alertInfo.notificationName);
   console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
   //Collect the data
   //Send the email
@@ -45,7 +45,7 @@ emitter.on('ThresholdMet', function(queryName,eventTime,triggerTime,alertInfo) {
 });
 emitter.on('FloorEvent', function(queryName,eventTime,triggerTime,alertInfo) {
   //An Floor Event has been met
-  console.log("Floor Event fired - Query:" + queryName + " Alert Name: " + alertInfo.AlertName);
+  console.log("Floor Event fired - Query:" + queryName + " Alert Name: " + alertInfo.notificationName);
   console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
   //Collect the data
   //Send the email
@@ -53,18 +53,18 @@ emitter.on('FloorEvent', function(queryName,eventTime,triggerTime,alertInfo) {
 });
 emitter.on('CelingEvent', function(queryName,eventTime,triggerTime,alertInfo) {
   //A celing Event has been met.
-  console.log("Celing Event fired - Query:" + queryName + " Alert Name: " + alertInfo.AlertName);
+  console.log("Celing Event fired - Query:" + queryName + " Alert Name: " + alertInfo.notificationName);
   console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
   //Collect the data
   //Send the email
 });
 
 emitter.on('Register',function(alertInfo){
-  console.log("event Listener Registered: " + alertInfo.AlertName);
+  console.log("event Listener Registered: " + alertInfo.notificationName);
   var intervalObject = setInterval(function(alertInfo){
     console.log("inside interval");
     console.log(JSON.stringify(alertInfo));
-    console.log('checked ' + alertInfo.AlertName);
+    console.log('checked ' + alertInfo.notificationName);
 
   },alertInfo.interval,alertInfo);
   alertInfo.intervalObject = intervalObject;
@@ -72,7 +72,7 @@ emitter.on('Register',function(alertInfo){
 });
 
 emitter.on('UnRegister',function(alertInfo){
-  console.log("event Listener Unregistered: " + alertInfo.AlertName);
+  console.log("event Listener Unregistered: " + alertInfo.notificationName);
   //stop the event
    clearInterval(alertInfo.intervalObject);
    //Remove the alert from the collection

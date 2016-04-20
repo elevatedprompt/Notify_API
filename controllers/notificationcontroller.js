@@ -37,14 +37,16 @@ console.log(notificationDirectory);
 fs.readdirSync(notificationDirectory)
 //For each notification in the list
   .forEach(function(file) {
-    
+
      file = notificationDirectory+'/'+file;
      var data = fs.readFileSync(file,'utf8');
      var alertInfo = JSON.parse(data);
      console.log(alertInfo);
      if(alertInfo.enabled){
+       console.log('Notification Enabled');
        notificationEngine.RegisterNotification(alertInfo);
      }
+     console.log(alertInfo);
 
  });
 
