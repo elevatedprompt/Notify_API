@@ -92,7 +92,7 @@ emitter.on('ClearInterval',function(alertInfo){
 });
 
 function emailEvent(alertInfo){
-  emailManager.SendMail();
+  emailManager.SendEventMail(alertInfo);
 }
 
 module.exports.RegisterNotification = function(alertInfo){

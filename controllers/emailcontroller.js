@@ -68,10 +68,10 @@ module.exports.SendMail= function(req,res,next)
   next();
 }
 
-module.exports.SendMail= function(alertInfo)
+module.exports.SendEventMail= function(alertInfo)
 {
-  console.log('Send Email Fired');
-  console.log(req.body);
+  console.log('Send Event Email Fired');
+
   //Read the contents of the call.
 
   email =   {
