@@ -31,7 +31,7 @@ module.exports = function(app, route){
 module.exports.LoadNotifications = function(){
   console.log("Load Notifications");
 //Load Notifications
-
+console.log(notificationDirectory);
 //var notificationDirectory = '/opt/API/Notifications/';
 
 fs.readdirSync(notificationDirectory)
