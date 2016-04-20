@@ -103,7 +103,7 @@ module.exports.RegisterNotification= function(req,res,next)
 {
   console.log("Register Notification Called");
 
-  console.log(req.body);
+  console.log(req);
   var notificationName = req.body.notificationName;
   console.log("Register Notification:" + notificationName);
   //read the file
