@@ -75,11 +75,11 @@ module.exports.SendEventMail= function(alertInfo)
   //Read the contents of the call.
 
   email =   {
-     text:    "this is a test",
+
      from:    "No Tify <EP.Alert.Test@gtmail.com>",
      to:      "colin.goss@gmail.com",
      subject: "Alert: " + alertInfo.notificationName,
-     message: JSON.stringify(alertInfo)
+     text: JSON.stringify(alertInfo)
   };
   server.send(email,
    function(err, message) { console.log(err || message); });
