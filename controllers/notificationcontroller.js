@@ -15,6 +15,8 @@ var fs = require ('fs');
 var elasticsearch = require("elasticsearch");
 var notificationEngine = require("./NotificationEngine");
 
+var notificationDirectory = "/opt/API/Notifications/"
+
 
 module.exports = function(app, route){
   // Setup the controller for REST;
@@ -23,6 +25,30 @@ module.exports = function(app, route){
   };
 
 };
+
+
+//Load All Notifications
+module.exports.LoadNotifications = function(){
+  console.log("Load Notifications");
+//Load Notifications
+
+//var notificationDirectory = '/opt/API/Notifications/';
+
+fs.readdirSync(notificationDirectory)
+//For each notification in the list
+  .forEach(function(file) {
+     var data = fs.readFileSync(file,'utf8');
+     var alertInfo = JSON.parse(data);
+     console.log(alertInfo);
+     if(alertInfo.enabled){
+       notificationEngine.RegisterNotification(alertInfo);
+     }
+
+ });
+
+//Register the Notification with the Notification Engine
+
+}
 
 
 //return the list of notifications
