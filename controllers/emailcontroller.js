@@ -83,7 +83,7 @@ module.exports.SendEventMail= function(alertInfo)
   };
   server.send(email,
    function(err, message) { console.log(err || message); });
-  next();
+  return;
 }
 
 
