@@ -60,7 +60,7 @@ emitter.on('CelingEvent', function(queryName,eventTime,triggerTime,alertInfo) {
 });
 
 emitter.on('Register',function(alertInfo){
-  console.log("event Listener Registered: " + alertInfo.notificationName);
+  console.log("event Listiner Registered: " + alertInfo.notificationName);
   var intervalObject = setInterval(function(alertInfo){
     console.log("inside interval");
     console.log(JSON.stringify(alertInfo));
@@ -72,7 +72,7 @@ emitter.on('Register',function(alertInfo){
 });
 
 emitter.on('UnRegister',function(alertInfo){
-  console.log("event Listener Unregistered: " + alertInfo.notificationName);
+  console.log("event Listiner Unregistered: " + alertInfo.notificationName);
   //stop the event
    clearInterval(alertInfo.intervalObject);
    //Remove the alert from the collection

@@ -11,27 +11,20 @@ EvaluateNotification
 */
 var Resource = require('resourcejs');
 var fs = require ('fs');
-//var moment = require('moment-timezone');
 var elasticsearch = require("elasticsearch");
 var notificationEngine = require("./NotificationEngine");
-
 var notificationDirectory = "/opt/API/Notifications/";
-
 
 module.exports = function(app, route){
   // Setup the controller for REST;
   return function(req, res, next) {
     next();
   };
-
 };
-
 
 //Load All Notifications
 module.exports.LoadNotifications = function(){
   console.log("Load Notifications");
-
-  console.log(notificationDirectory);
 
 fs.readdirSync(notificationDirectory)
   //For each notification in the list
@@ -39,15 +32,13 @@ fs.readdirSync(notificationDirectory)
      file = notificationDirectory+'/'+file;
      var data = fs.readFileSync(file,'utf8');
      var alertInfo = JSON.parse(data);
-     console.log(alertInfo);
+//     console.log(alertInfo);
      if(alertInfo.enabled == 'true'){
-       console.log('Notification Enabled');
        notificationEngine.RegisterNotification(alertInfo);
+       //Register the Notification with the Notification Engine
      }
-     console.log(alertInfo);
+//     console.log(alertInfo);
  });
-
-//Register the Notification with the Notification Engine
 }
 
 
@@ -64,7 +55,6 @@ module.exports.GetNotifications = function(req,res,next)
        if (stat && stat.isDirectory()) {
            results = results.concat(_getAllFilesFromFolder(file))
        } else results.push(file);
-
    });
 
    console.log('Get Notifiation File List');
@@ -74,12 +64,7 @@ module.exports.GetNotifications = function(req,res,next)
 };
 
 
-// $scope.NotificationList = [
-//   {NotifyID:"1",SearchID:"1",Threshold:"2",Period:""}//Period in minutes.
-//   {NotifyID:"2",SearchID:"1",Threshold:"2",Period:""}
-//   {NotifyID:"3",SearchID:"2",Threshold:"2",Period:""}
-//   {NotifyID:"4",SearchID:"3",Threshold:"2",Period:""}
-// ];
+//Returns a list of all notifications
 module.exports.GetAllNotifications = function ()
 {
   var notifications = [];
@@ -96,16 +81,12 @@ module.exports.GetAllNotifications = function ()
 
 module.exports.RegisterNotification= function(req,res,next)
 {
-  console.log("Register Notification Called");
-
-  console.log(req.body);
-  //var notificationName = req.body.notificationName;
+  //console.log(req.body);
   console.log("Register Notification:" + req.body.notificationName);
 
   //read the file
   var alertInfo = req.body;
 
-  console.log(JSON.stringify(alertInfo));
   //unregister notification first to prevent duplicate events.
   notificationEngine.UnregisterNotification(alertInfo);
   notificationEngine.RegisterNotification(alertInfo);
@@ -115,12 +96,10 @@ module.exports.RegisterNotification= function(req,res,next)
 
 module.exports.UnregisterNotification= function(req,res,next)
 {
-  console.log("UnRegister Notification");
-  console.log(JSON.stringify(req.body));
-  var notificationName = req.body.notificationName;
-  console.log("Unregister Called: " + notificationName);
+  var alertInfo = req.body;
+  console.log("Unregister Called: " + req.body.notificationName);
 
-  notificationEngine.UnregisterNotification(notificationName);
+  notificationEngine.UnregisterNotification(alertInfo);
   res.sendStatus('true');
   next();
 }
