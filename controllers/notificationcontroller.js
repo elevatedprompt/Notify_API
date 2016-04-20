@@ -100,7 +100,7 @@ module.exports.RegisterNotification= function(req,res,next)
 
   console.log(req.body);
   //var notificationName = req.body.notificationName;
-  console.log("Register Notification:" + notificationName);
+  console.log("Register Notification:" + req.body.notificationName);
 
   //read the file
   var alertInfo = req.body;
