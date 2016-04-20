@@ -101,6 +101,7 @@ module.exports.GetAllNotifications = function ()
 
 module.exports.RegisterNotification= function(req,res,next)
 {
+  console.log("Register Notification Called");
   console.log(req.body);
   var notificationName = req.body.notificationName;
   console.log("Register Notification:" + notificationName);
@@ -114,6 +115,7 @@ module.exports.RegisterNotification= function(req,res,next)
 
 module.exports.UnregisterNotification= function(req,res,next)
 {
+  console.log("UnRegister Notification");
   console.log(req.body);
   var notificationName = req.body.notificationName;
   console.log("Unregister Called: " + notificationName);
