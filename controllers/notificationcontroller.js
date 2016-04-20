@@ -15,7 +15,7 @@ var fs = require ('fs');
 var elasticsearch = require("elasticsearch");
 var notificationEngine = require("./NotificationEngine");
 
-var notificationDirectory = "/opt/API/Notifications/";
+var notificationDirectory = "./opt/API/Notifications/";
 
 
 module.exports = function(app, route){
@@ -37,6 +37,7 @@ console.log(notificationDirectory);
 fs.readdirSync(notificationDirectory)
 //For each notification in the list
   .forEach(function(file) {
+      console.log(file);
      var data = fs.readFileSync(file,'utf8');
      var alertInfo = JSON.parse(data);
      console.log(alertInfo);
