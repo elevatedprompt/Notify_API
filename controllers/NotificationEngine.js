@@ -12,7 +12,7 @@ var alertInfos = []; //This is a list of all active notifications on this node.
 //     newNotification.enabled
 //     newNotification.notifyEmail
 
-var emailManager = require('emailcontroller');
+var emailManager = require('./emailcontroller');
 
 var EP_EventEmitter = function() {
   this.events = {};
