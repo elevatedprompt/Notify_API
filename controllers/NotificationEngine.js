@@ -33,30 +33,32 @@ EP_EventEmitter.prototype.emit = function(eventname) {
 };
 
 //Event Implementation
-//
+
 var emitter = new EP_EventEmitter();
-emitter.on('ThresholdMet', function(queryName,eventTime,triggerTime,alertInfo) {
+emitter.on('ThresholdMet', function(alertInfo) {
   //An threshold has been met
-  console.log("Threshold Met fired - Query:" + queryName + " Alert Name: " + alertInfo.notificationName);
-  console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
+  //queryName,eventTime,triggerTime,
+  console.log("Threshold Met fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
+  //console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
   emailEvent(alertInfo);
   //Collect the data
   //Send the email
 
 });
-emitter.on('FloorEvent', function(queryName,eventTime,triggerTime,alertInfo) {
+emitter.on('FloorEvent', function(alertInfo) {
   //An Floor Event has been met
-  console.log("Floor Event fired - Query:" + queryName + " Alert Name: " + alertInfo.notificationName);
-  console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
+  //queryName,eventTime,triggerTime,
+  console.log("Floor Event fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
+  //console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
   emailEvent(alertInfo);
   //Collect the data
   //Send the email
 
 });
-emitter.on('CelingEvent', function(queryName,eventTime,triggerTime,alertInfo) {
+emitter.on('CelingEvent', function(alertInfo) {
   //A celing Event has been met.
-  console.log("Celing Event fired - Query:" + queryName + " Alert Name: " + alertInfo.notificationName);
-  console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
+  console.log("Celing Event fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
+//  console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
   emailEvent(alertInfo);
   //Collect the data
   //Send the email
