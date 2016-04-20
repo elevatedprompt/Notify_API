@@ -15,7 +15,7 @@ var fs = require ('fs');
 var elasticsearch = require("elasticsearch");
 var notificationEngine = require("./NotificationEngine");
 
-var notificationDirectory = "/opt/API/Notifications/"
+var notificationDirectory = '/opt/API/Notifications/';
 
 
 module.exports = function(app, route){
