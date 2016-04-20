@@ -2,7 +2,6 @@
 var alertInfos = []; //This is a list of all active notifications on this node.
 
 
-
 //     newNotification.notificationName
 //     newNotification.selectedSearch
 //     newNotification.thresholdType
@@ -13,6 +12,7 @@ var alertInfos = []; //This is a list of all active notifications on this node.
 //     newNotification.enabled
 //     newNotification.notifyEmail
 
+var emailManager = require('emailcontroller');
 
 var EP_EventEmitter = function() {
   this.events = {};
@@ -39,6 +39,7 @@ emitter.on('ThresholdMet', function(queryName,eventTime,triggerTime,alertInfo) {
   //An threshold has been met
   console.log("Threshold Met fired - Query:" + queryName + " Alert Name: " + alertInfo.notificationName);
   console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
+  emailEvent(alertInfo);
   //Collect the data
   //Send the email
 
@@ -47,6 +48,7 @@ emitter.on('FloorEvent', function(queryName,eventTime,triggerTime,alertInfo) {
   //An Floor Event has been met
   console.log("Floor Event fired - Query:" + queryName + " Alert Name: " + alertInfo.notificationName);
   console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
+  emailEvent(alertInfo);
   //Collect the data
   //Send the email
 
@@ -55,6 +57,7 @@ emitter.on('CelingEvent', function(queryName,eventTime,triggerTime,alertInfo) {
   //A celing Event has been met.
   console.log("Celing Event fired - Query:" + queryName + " Alert Name: " + alertInfo.notificationName);
   console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
+  emailEvent(alertInfo);
   //Collect the data
   //Send the email
 });
@@ -62,6 +65,9 @@ emitter.on('CelingEvent', function(queryName,eventTime,triggerTime,alertInfo) {
 emitter.on('Register',function(alertInfo){
   console.log("event Listiner Registered: " + alertInfo.notificationName);
   var intervalObject = setInterval(function(alertInfo){
+    //This is where the magic happens
+    emitter.emit(alertInfo.thresholdType,alertInfo);
+
     console.log("inside interval");
     console.log(JSON.stringify(alertInfo));
     console.log('checked ' + alertInfo.notificationName);
@@ -83,6 +89,9 @@ emitter.on('ClearInterval',function(alertInfo){
   ClearInterval(alertInfo.intervalObject);//Stop the interval from happening
 });
 
+function emailEvent(alertInfo){
+  emailManager.SendMail();
+}
 
 module.exports.RegisterNotification = function(alertInfo){
   console.log('Register Notification');
