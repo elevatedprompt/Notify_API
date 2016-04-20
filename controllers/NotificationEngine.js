@@ -96,9 +96,9 @@ function UnregisterEventMonitor(alertInfo){
 
 
 //Unregiser the event.
-module.exports.UnregisterNotification = function(notificationName)
+module.exports.UnregisterNotification = function(notification)
 {
-  console.log('Unregister Notification: ' + notificationName);
+  console.log('Unregister Notification: ' + notification.notificationName);
 
   if(alertInfos.length>=0)
     return true;
@@ -106,7 +106,7 @@ module.exports.UnregisterNotification = function(notificationName)
   forEach(alertInfo in alertInfos)
   {
     console.log(alertInfo);
-    if(alertInfo.notificationName == notificationName)
+    if(alertInfo.notificationName == notification.notificationName)
         emitter.emit('Unregister',alertInfo);
   }
 

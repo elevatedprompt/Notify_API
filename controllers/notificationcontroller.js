@@ -30,14 +30,12 @@ module.exports = function(app, route){
 //Load All Notifications
 module.exports.LoadNotifications = function(){
   console.log("Load Notifications");
-//Load Notifications
-console.log(notificationDirectory);
-//var notificationDirectory = '/opt/API/Notifications/';
+
+  console.log(notificationDirectory);
 
 fs.readdirSync(notificationDirectory)
-//For each notification in the list
+  //For each notification in the list
   .forEach(function(file) {
-
      file = notificationDirectory+'/'+file;
      var data = fs.readFileSync(file,'utf8');
      var alertInfo = JSON.parse(data);
@@ -47,11 +45,9 @@ fs.readdirSync(notificationDirectory)
        notificationEngine.RegisterNotification(alertInfo);
      }
      console.log(alertInfo);
-
  });
 
 //Register the Notification with the Notification Engine
-
 }
 
 
@@ -74,7 +70,6 @@ module.exports.GetNotifications = function(req,res,next)
    console.log('Get Notifiation File List');
    console.log(results);
    res.send(results);
-
    next();
 };
 
@@ -104,15 +99,16 @@ module.exports.RegisterNotification= function(req,res,next)
   console.log("Register Notification Called");
 
   console.log(req.body);
-  var notificationName = req.body.notificationName;
+  //var notificationName = req.body.notificationName;
   console.log("Register Notification:" + notificationName);
+
   //read the file
-  var alertInfo = req.body.notification;
+  var alertInfo = req.body;
 
   console.log(JSON.stringify(alertInfo));
   //unregister notification first to prevent duplicate events.
-  notificationEngine.UnregisterNotification(notificationName);
-//  notificationEngine.RegisterNotification(alertInfo);
+  notificationEngine.UnregisterNotification(alertInfo);
+  notificationEngine.RegisterNotification(alertInfo);
   res.sendStatus('true');
   next();
 }
