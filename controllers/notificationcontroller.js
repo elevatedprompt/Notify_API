@@ -42,7 +42,7 @@ fs.readdirSync(notificationDirectory)
      var data = fs.readFileSync(file,'utf8');
      var alertInfo = JSON.parse(data);
      console.log(alertInfo);
-     if(alertInfo.enabled == true){
+     if(alertInfo.enabled == 'true'){
        console.log('Notification Enabled');
        notificationEngine.RegisterNotification(alertInfo);
      }
