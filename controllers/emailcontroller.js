@@ -77,7 +77,7 @@ module.exports.SendEventMail= function(alertInfo)
   email =   {
 
      from:    "No Tify <EP.Alert.Test@gtmail.com>",
-     to:      "colin.goss@gmail.com",
+     to:      alertInfo.notifyEmail,
      subject: "Alert: " + alertInfo.notificationName,
      text: JSON.stringify(alertInfo)
   };
