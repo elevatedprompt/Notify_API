@@ -102,12 +102,16 @@ module.exports.GetAllNotifications = function ()
 module.exports.RegisterNotification= function(req,res,next)
 {
   console.log("Register Notification Called");
+
   console.log(req.body);
   var notificationName = req.body.notificationName;
   console.log("Register Notification:" + notificationName);
   //read the file
   var alertInfo = req.body.notification;
+
   console.log(JSON.stringify(alertInfo));
+  //unregister notification first to prevent duplicate events.
+  notificationEngine.UnregisterNotification(notificationName);
 //  notificationEngine.RegisterNotification(alertInfo);
   res.sendStatus('true');
   next();
@@ -116,7 +120,7 @@ module.exports.RegisterNotification= function(req,res,next)
 module.exports.UnregisterNotification= function(req,res,next)
 {
   console.log("UnRegister Notification");
-  console.log(req.body);
+  console.log(req);
   var notificationName = req.body.notificationName;
   console.log("Unregister Called: " + notificationName);
 
