@@ -41,7 +41,7 @@ emitter.on('ThresholdMet', function(alertInfo) {
   //queryName,eventTime,triggerTime,
   console.log("Threshold Met fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
   //console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
-  var result = es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
+  es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
   .then(function(result){
     //result will have count information that will be evaluated
       //Send the email
@@ -52,6 +52,8 @@ emitter.on('ThresholdMet', function(alertInfo) {
 
       if(result.total >= parseInt(alertInfo.thresholdCount,10)){
         console.log("Threshold Met!")
+        //retrieve the result set.
+
       }
       else {
         console.log("Threshold not Met!")
