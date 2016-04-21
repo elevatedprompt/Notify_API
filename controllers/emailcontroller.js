@@ -68,7 +68,7 @@ module.exports.SendMail= function(req,res,next)
   next();
 }
 
-module.exports.SendEventMail= function(alertInfo,result)
+module.exports.SendEventMail = function(alertInfo,result)
 {
   console.log('Email Controller Send Event Email Fired');
   console.log('result: ');

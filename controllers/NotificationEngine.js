@@ -49,7 +49,14 @@ emitter.on('ThresholdMet', function(alertInfo) {
       console.log(result);
       console.log("alert Info");
       console.log(alertInfo);
-      emailEvent(alertInfo,result);
+
+      if(result.total >= parseInt(alertInfo.thresholdCount,10)){
+        console.log("Threshold Met!")
+      }
+      else {
+        console.log("Threshold not Met!")
+      }
+      emailEvent(alertInfo.notificationName,result);
   },function(error){
     console.log('Error in EvaluateSearchInternal');
     console.log(error.message);
