@@ -68,17 +68,19 @@ module.exports.SendMail= function(req,res,next)
   next();
 }
 
-module.exports.SendEventMail = function(notificationName,toEmail,result)
+module.exports.SendEventMail = function(notificationName,toEmail,notificationDescription,result)
 {
   console.log('Email Controller Send Event Email Fired');
   console.log('result: ');
-  console.log(JSON.stringify(result));
+  console.log(result);
   console.log("toEmail");
   console.log(toEmail);
-  console.log(JSON.stringify(notificationName));
+  console.log(notificationName);
+
+  console.log(notificationDescription);
 
 
-  var messagetext = JSON.stringify(notificationName) + "\nResults:\n" + JSON.stringify(result);
+  var messagetext = notificationName + "\nResults:\n" + result;
   //Read the contents of the call.
 
   console.log(messagetext);
