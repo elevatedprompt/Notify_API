@@ -13,6 +13,7 @@ var alertInfos = []; //This is a list of all active notifications on this node.
 //     newNotification.notifyEmail
 
 var emailManager = require('./emailcontroller');
+var es = require('./elasticquery');
 
 var EP_EventEmitter = function() {
   this.events = {};
@@ -40,7 +41,9 @@ emitter.on('ThresholdMet', function(alertInfo) {
   //queryName,eventTime,triggerTime,
   console.log("Threshold Met fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
   //console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
-  emailEvent(alertInfo);
+  var result = es.EvaluateSearchInternal(alertInfo.selectedSearch, newNotification.timeValue + newNotification.timeFrame);
+  //result will have count information that will be evaluated
+  emailEvent(alertInfo,result);
   //Collect the data
   //Send the email
 
@@ -50,7 +53,7 @@ emitter.on('FloorEvent', function(alertInfo) {
   //queryName,eventTime,triggerTime,
   console.log("Floor Event fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
   //console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
-  emailEvent(alertInfo);
+  emailEvent(alertInfo,'');
   //Collect the data
   //Send the email
 
@@ -59,7 +62,7 @@ emitter.on('CelingEvent', function(alertInfo) {
   //A celing Event has been met.
   console.log("Celing Event fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
 //  console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
-  emailEvent(alertInfo);
+  emailEvent(alertInfo,'');
   //Collect the data
   //Send the email
 });
@@ -91,8 +94,8 @@ emitter.on('ClearInterval',function(alertInfo){
   ClearInterval(alertInfo.intervalObject);//Stop the interval from happening
 });
 
-function emailEvent(alertInfo){
-  emailManager.SendEventMail(alertInfo);
+function emailEvent(alertInfo,result){
+  emailManager.SendEventMail(alertInfo,result);
 }
 
 module.exports.RegisterNotification = function(alertInfo){

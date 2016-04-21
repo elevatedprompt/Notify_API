@@ -50,11 +50,6 @@ module.exports.pingCluster = function(req,res,next){
 }
 
 
-// $scope.searchList= [
-//   {ID:"1",Title:"Search Example",SearchString:"searchstring"},
-//   {ID:"2",Title:"Another Search",SearchString:"searchstring"},
-//   {ID:"3",Title:"Another Example",SearchString:"searchstring"},
-// ];
 module.exports.ListSearches= function(req,res,next){
 console.log('Get List Of searches');
 
@@ -104,6 +99,22 @@ function getQuery(queryName){
     console.trace(error.message);
   });
 }
+
+//EvaluateSearchInternal
+//queryName - Query name
+//timeFrame - time frame Now till - (24h or 2m)
+module.exports.EvaluateSearchInternal = function(queryName,timeFrame){
+  console.log("Evaluate Search Internal");
+var query = getQueryString(queryName).then(function(result){
+  runTimeFrameSearchInternal(result,timeFrame)
+  .then(function(queryResult){
+    return queryResult;
+  });
+},function(err){
+  return err;
+});
+}
+
 
 module.exports.EvaluateSearch = function(req,res,next){
 var queryName = req.body.queryName;
@@ -191,7 +202,7 @@ function runSearchInternal(query,timeFrame)
 function runTimeFrameSearchInternal(query,timeFrame)
 {
   var deferred = Q.defer();
-  console.log("Run Search Internal");
+  console.log("Run Time Frame Search Internal");
   console.log(query);
   var search = JSON.parse(query);
   console.log("post query" + search.query.query_string);
