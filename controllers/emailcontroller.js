@@ -85,8 +85,8 @@ module.exports.SendEventMail= function(alertInfo,result)
   };
   console.log('send email');
   server.send(email,
-   function(err, message) { console.log(err || message); });
-  return;
+   function(err, message) { console.log(err || message);
+   return; });
 }
 
 
