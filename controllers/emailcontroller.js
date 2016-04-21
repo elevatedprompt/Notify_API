@@ -79,7 +79,7 @@ module.exports.SendEventMail= function(alertInfo,result)
      from:    "No Tify <EP.Alert.Test@gtmail.com>",
      to:      alertInfo.notifyEmail,
      subject: "Alert: " + alertInfo.notificationName,
-     text: JSON.stringify(alertInfo) + "\nResults:\n" + JSON.stringify(result); 
+     text: JSON.stringify(alertInfo) + "\nResults:\n" + JSON.stringify(result) 
   };
   server.send(email,
    function(err, message) { console.log(err || message); });
