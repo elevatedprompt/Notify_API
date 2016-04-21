@@ -68,7 +68,7 @@ module.exports.SendMail= function(req,res,next)
   next();
 }
 
-module.exports.SendEventMail = function(alertInfo,result)
+module.exports.SendEventMail = function(notificationName,toEmail,result)
 {
   console.log('Email Controller Send Event Email Fired');
   console.log('result: ');
@@ -83,8 +83,8 @@ module.exports.SendEventMail = function(alertInfo,result)
 
   email =   {
      from:    "No Tify <EP.Alert.Test@gtmail.com>",
-     to:      alertInfo.notifyEmail,
-     subject: "Alert: " + alertInfo.notificationName,
+     to:      toEmail,
+     subject: "Alert: " + notificationName,
      text: messagetext
   };
   console.log('send email');

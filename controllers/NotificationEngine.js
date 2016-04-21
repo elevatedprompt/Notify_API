@@ -56,7 +56,7 @@ emitter.on('ThresholdMet', function(alertInfo) {
       else {
         console.log("Threshold not Met!")
       }
-      emailEvent(alertInfo.notificationName,result);
+      emailEvent(alertInfo.notificationName,alertInfo.notifyEmail, result);
   },function(error){
     console.log('Error in EvaluateSearchInternal');
     console.log(error.message);
