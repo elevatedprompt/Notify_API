@@ -73,10 +73,10 @@ module.exports.SendEventMail = function(notificationName,toEmail,result)
   console.log('Email Controller Send Event Email Fired');
   console.log('result: ');
   console.log(JSON.stringify(result));
-  console.log(JSON.stringify(alertInfo));
+  console.log(JSON.stringify(notificationName));
 
 
-  var messagetext = JSON.stringify(alertInfo) + "\nResults:\n" + JSON.stringify(result);
+  var messagetext = JSON.stringify(notificationName) + "\nResults:\n" + JSON.stringify(result);
   //Read the contents of the call.
 
   console.log(messagetext);
