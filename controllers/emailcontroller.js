@@ -70,7 +70,7 @@ module.exports.SendMail= function(req,res,next)
 
 module.exports.SendEventMail= function(alertInfo,result)
 {
-  console.log('Send Event Email Fired');
+  console.log('Email Controller Send Event Email Fired');
   console.log('alertInfo: ' + JSON.stringify(alertInfo));
   console.log('result: '+ JSON.stringify(result));
 
