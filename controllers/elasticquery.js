@@ -163,7 +163,6 @@ function runSearchInternal(query,timeFrame)
   console.log(query);
   var search = JSON.parse(query);
   console.log("post query" + search.query.query_string);
-  console.log("postedquery");
 
   var x = {
     index:search.index,
@@ -203,10 +202,9 @@ function runTimeFrameSearchInternal(query,timeFrame)
 {
   var deferred = Q.defer();
   console.log("Run Time Frame Search Internal");
-  console.log(query);
+  //console.log(query);
   var search = JSON.parse(query);
-  console.log("post query" + search.query.query_string);
-  console.log("postedquery");
+  console.log("post query" + JSON.stringify(search.query.query_string));
 
   var x = {
     index:search.index,

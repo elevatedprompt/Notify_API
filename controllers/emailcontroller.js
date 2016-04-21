@@ -73,10 +73,10 @@ module.exports.SendEventMail= function(alertInfo,result)
   console.log('Send Event Email Fired');
 
   //Read the contents of the call.
-var messagetext = JSON.stringify(alertInfo) + "\nResults:\n" + JSON.stringify(result);
+  var messagetext = JSON.stringify(alertInfo) + "\nResults:\n" + JSON.stringify(result);
 
   console.log(messagetext);
-  
+
   email =   {
 
      from:    "No Tify <EP.Alert.Test@gtmail.com>",
