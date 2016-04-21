@@ -78,12 +78,12 @@ module.exports.SendEventMail= function(alertInfo,result)
   console.log(messagetext);
 
   email =   {
-
      from:    "No Tify <EP.Alert.Test@gtmail.com>",
      to:      alertInfo.notifyEmail,
      subject: "Alert: " + alertInfo.notificationName,
      text: messagetext
   };
+  console.log('send email');
   server.send(email,
    function(err, message) { console.log(err || message); });
   return;
