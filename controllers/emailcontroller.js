@@ -71,9 +71,11 @@ module.exports.SendMail= function(req,res,next)
 module.exports.SendEventMail= function(alertInfo,result)
 {
   console.log('Send Event Email Fired');
+  console.log('alertInfo: ' + JSON.stringify(alertInfo));
+  console.log('result: '+ JSON.stringify(result));
 
-  //Read the contents of the call.
   var messagetext = JSON.stringify(alertInfo) + "\nResults:\n" + JSON.stringify(result);
+  //Read the contents of the call.
 
   console.log(messagetext);
 
