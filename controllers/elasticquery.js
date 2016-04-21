@@ -105,14 +105,20 @@ function getQuery(queryName){
 //timeFrame - time frame Now till - (24h or 2m)
 module.exports.EvaluateSearchInternal = function(queryName,timeFrame){
   console.log("Evaluate Search Internal");
-var query = getQueryString(queryName).then(function(result){
+  var deferred = Q.defer();
+
+  var query = getQueryString(queryName).then(function(result){
   runTimeFrameSearchInternal(result,timeFrame)
   .then(function(queryResult){
+    deferred.resolve(queryResult);
     return queryResult;
   });
 },function(err){
-  return err;
+  console.trace(err);
+  deferred.reject(err);
+  return deferred.promise;
 });
+return deferred.promise;
 }
 
 

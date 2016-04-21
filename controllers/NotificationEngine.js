@@ -41,11 +41,16 @@ emitter.on('ThresholdMet', function(alertInfo) {
   //queryName,eventTime,triggerTime,
   console.log("Threshold Met fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
   //console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
-  var result = es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame);
-  //result will have count information that will be evaluated
-  emailEvent(alertInfo,result);
-  //Collect the data
-  //Send the email
+  var result = es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
+  .then(function(result){
+    //result will have count information that will be evaluated
+      //Send the email
+      console.log("Return from Search with Result");
+      console.log(result);
+    emailEvent(alertInfo,result);
+  });
+
+
 
 });
 emitter.on('FloorEvent', function(alertInfo) {
@@ -73,7 +78,6 @@ emitter.on('Register',function(alertInfo){
     //This is where the magic happens
     emitter.emit(alertInfo.thresholdType,alertInfo);
 
-    console.log("inside interval");
     console.log(JSON.stringify(alertInfo));
     console.log('checked ' + alertInfo.notificationName);
 
