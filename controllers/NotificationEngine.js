@@ -47,6 +47,8 @@ emitter.on('ThresholdMet', function(alertInfo) {
       //Send the email
       console.log("Return from Search with Result");
       console.log(result);
+      console.log("alert Info");
+      console.log(alertInfo);
       emailEvent(alertInfo,result);
   },function(error){
     console.log('Error in EvaluateSearchInternal');
