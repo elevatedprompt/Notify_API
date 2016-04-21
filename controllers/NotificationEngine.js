@@ -41,7 +41,7 @@ emitter.on('ThresholdMet', function(alertInfo) {
   //queryName,eventTime,triggerTime,
   console.log("Threshold Met fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
   //console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
-  var result = es.EvaluateSearchInternal(alertInfo.selectedSearch, newNotification.timeValue + newNotification.timeFrame);
+  var result = es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame);
   //result will have count information that will be evaluated
   emailEvent(alertInfo,result);
   //Collect the data
