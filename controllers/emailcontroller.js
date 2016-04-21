@@ -71,8 +71,10 @@ module.exports.SendMail= function(req,res,next)
 module.exports.SendEventMail= function(alertInfo,result)
 {
   console.log('Email Controller Send Event Email Fired');
-  console.log('alertInfo: ' + JSON.stringify(alertInfo));
-  console.log('result: '+ JSON.stringify(result));
+  
+  console.log(JSON.stringify(alertInfo));
+  console.log('result: ');
+  console.log(JSON.stringify(result));
 
   var messagetext = JSON.stringify(alertInfo) + "\nResults:\n" + JSON.stringify(result);
   //Read the contents of the call.
