@@ -87,14 +87,26 @@ module.exports.SendEventMail = function(alertInfo,result)// function(notificatio
   // Count
   // timeframe
   // search result
-
+  var timeframe = ""
+  switch(alertInfo.timeFrame)
+  {
+    case "m":
+    timeframe = "Minutes";
+    break;
+    case "h":
+    timeframe = "Hours";
+    break;
+    case "d":
+    timeframe = "Days";
+    break;
+  }
   var messagetext = alertInfo.notificationName +
-                      "\nSelected Search:\n" +
+                      "\nSelected Search: " +
                       alertInfo.selectedSearch + "\n" +
-                      "\nResult Count:" +
+                      "\nResult Count: " +
                       result.total +
-                      "\nTime Frame:\n" +
-                      alertInfo.timeValue + alertInfo.timeFrame + "\n";
+                      "\nTime Frame: " +
+                      alertInfo.timeValue + " " + timeframe + "\n";
 
   //Read the contents of the call.
 
