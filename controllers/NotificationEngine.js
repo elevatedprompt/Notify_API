@@ -165,7 +165,8 @@ emitter.on('Register',function(alertInfo){
     emitter.emit(alertInfo.thresholdType,alertInfo);
     // console.log(JSON.stringify(alertInfo));
 
-  },alertInfo.interval,alertInfo);
+  },alertInfo.checkFreq||60000,alertInfo);
+
   alertInfo.intervalObject = intervalObject;
   alertInfos.push(alertInfo);
 });
