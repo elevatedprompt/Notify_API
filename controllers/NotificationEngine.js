@@ -61,6 +61,8 @@ emitter.on('ThresholdMet', function(alertInfo) {
         console.log("Threshold not Met!")
       }
       var sendingResult = JSON.stringify(result);
+      console.log("sendingResult");
+      console.log(sendingResult);
 console.log(alertInfo.notificationName+ ":: " + alertInfo.notifyEmail+ ":: " + alertInfo.notificationDescription + ":: " +result)  ;
       emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription,sendingResult);
   },function(error){
