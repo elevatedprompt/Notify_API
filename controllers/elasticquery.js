@@ -265,6 +265,47 @@ function runTimeFrameSearchInternal(query,timeFrame)
   return deferred.promise;
 }
 
+//runTimeFrameSearchInternalWResults
+//return the results of the query based on timeframe
+function runTimeFrameSearchInternalWResults(query,timeFrame,numResults)
+{
+  var deferred = Q.defer();
+  console.log("Run Time Frame Search Internal");
+  //console.log(query);
+  var search = JSON.parse(query);
+  console.log("post query" + JSON.stringify(search.query.query_string));
+
+  var x = {
+    index:search.index,
+    searchType:"count",
+    size: numResults
+    q:'@timestamp:(>now-' + timeFrame + ') AND ' +search.query.query_string.query//,
+    //'@timestamp':"(>now-15m)"
+  };
+
+    //search.query
+  elasticClient.search(x).then(
+    function(result){
+      var ii = 0, hits_in, hits_out = [];
+      hits_in = (result.hits || {}).hits || [];
+      deferred.resolve(result.hits);
+      var result;
+      for(; ii < hits_in.length; ii++) {
+          result = JSON.stringify(hits_in[ii]._source.kibanaSavedObjectMeta.searchSourceJSON);
+      }
+      console.log("Search result");
+      console.log(JSON.stringify(result.hits));
+      return result.hits;
+
+    }, function (error) {
+      console.trace(error.message);
+      deferred.reject(error.message);
+      return deferred.promise;
+    }
+  );
+  return deferred.promise;
+}
+
 
 ///Returns the query based on the query name
 //Params: queryName

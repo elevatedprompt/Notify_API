@@ -72,21 +72,6 @@ module.exports.SendMail= function(req,res,next)
 module.exports.SendEventMail = function(alertInfo,result)// function(notificationName,toEmail,notificationDescription,result)
 {
   console.log('Email Controller:Send Event Email Fired');
-  // console.log('result: ');
-  // console.log(result);
-  // console.log("toEmail");
-  // console.log(toEmail);
-  //
-  // console.log(notificationName);
-  //
-  // console.log(notificationDescription);
-  //
-
-  // notificationName + "\n"
-  // selectedSearch
-  // Count
-  // timeframe
-  // search result
   var timeframe = ""
   switch(alertInfo.timeFrame)
   {
@@ -107,10 +92,6 @@ module.exports.SendEventMail = function(alertInfo,result)// function(notificatio
                       result.total +
                       "\nTime Frame: " +
                       alertInfo.timeValue + " " + timeframe + "\n";
-
-  //Read the contents of the call.
-
-  console.log(messagetext);
 
   email =   {
      from:    "No Tify <EP.Alert.Test@gtmail.com>",
