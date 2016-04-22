@@ -47,10 +47,7 @@ emitter.on('ThresholdMet', function(alertInfo) {
   .then(function(result){
     //result will have count information that will be evaluated
       //Send the email
-      // console.log("Return from Search with Result");
-      // console.log(result);
-      // console.log("alert Info");
-      // console.log(alertInfo);
+
 
       if(result.total >= parseInt(alertInfo.thresholdCount,10)){
         console.log("Threshold Met!")
@@ -60,18 +57,7 @@ emitter.on('ThresholdMet', function(alertInfo) {
       else {
         console.log("Threshold not Met!")
       }
-      var sendingResult = JSON.stringify(result);
-      var name = alertInfo.notificationName;
-      var email = alertInfo.notifyEmail;
-      var description = alertInfo.notificationDescription;
-
-
-      console.log("sendingResult");
-      console.log(sendingResult);
-      console.log(alertInfo.notificationName+ ":: " + alertInfo.notifyEmail+ ":: " + alertInfo.notificationDescription + ":: " +result);
-      //emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription, result);
       emailEvent(alertInfo, result);
-      //emailEvent(name,email,description,sendingResult);
   },function(error){
     console.log('Error in EvaluateSearchInternal');
     console.log(error.message);
@@ -104,8 +90,6 @@ emitter.on('FloorEvent', function(alertInfo) {
       else {
         console.log("Floor Condition not Met!")
       }
-    console.log(alertInfo.notificationName+ ":: " + alertInfo.notifyEmail+ ":: " + alertInfo.notificationDescription + ":: " +result)  ;
-    //emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription, JSON.stringify(result));
     emailEvent(alertInfo, result);
   },function(error){
     console.log('Error in EvaluateSearchInternal');
@@ -139,7 +123,8 @@ emitter.on('CelingEvent', function(alertInfo) {
       }
 
       console.log(alertInfo.notificationName+ ":: " + alertInfo.notifyEmail+ ":: " + alertInfo.notificationDescription + ":: " +result)  ;
-  //  emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription, JSON.stringify(result));
+
+    emailEvent(alertInfo, result);
   },function(error){
     console.log('Error in EvaluateSearchInternal');
     console.log(error.message);
