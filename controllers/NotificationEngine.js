@@ -51,7 +51,6 @@ emitter.on('ThresholdMet', function(alertInfo) {
 
       if(result.total >= parseInt(alertInfo.thresholdCount,10)){
         console.log("Threshold Met!")
-        var triggerTime = new Date();
         //retrieve the result set.
         var triggerTime = new Date();
         es.EvaluateSearchInternalWResults(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame,result.total)
@@ -194,7 +193,7 @@ function emailEvent(alert,result){
 }
 
 function emailResultEvent(alert,result,valuableResults){
-  console.log("NotificationEngine:emailEvent");
+  console.log("NotificationEngine:emailResultEvent");
   emailManager.SendEventMail(alert,result,valuableResults);
 }
 
