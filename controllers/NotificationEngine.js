@@ -69,7 +69,7 @@ emitter.on('ThresholdMet', function(alertInfo) {
       console.log("sendingResult");
       console.log(sendingResult);
       console.log(alertInfo.notificationName+ ":: " + alertInfo.notifyEmail+ ":: " + alertInfo.notificationDescription + ":: " +result);
-      emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription, sendingResult);
+      emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription, JSON.stringify(result));
       //emailEvent(name,email,description,sendingResult);
   },function(error){
     console.log('Error in EvaluateSearchInternal');
@@ -104,7 +104,7 @@ emitter.on('FloorEvent', function(alertInfo) {
         console.log("Floor Condition not Met!")
       }
     console.log(alertInfo.notificationName+ ":: " + alertInfo.notifyEmail+ ":: " + alertInfo.notificationDescription + ":: " +result)  ;
-    emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription, result);
+    emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription, JSON.stringify(result));
   },function(error){
     console.log('Error in EvaluateSearchInternal');
     console.log(error.message);
