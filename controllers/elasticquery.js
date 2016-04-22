@@ -18,6 +18,7 @@ var elasticsearch = require('elasticsearch');
 //         }
 //     }
 // }
+
 var elastichost = '192.168.1.104:9200';//'127.0.0.1:9200';
 var tracelevel = 'debug';
 
@@ -29,11 +30,11 @@ var elasticClient = new elasticsearch.Client({
 });
 //elasticClient.Connection();
 
-
+//pingCluster
+//returns a list of servers in the cluster
 module.exports.pingCluster = function(req,res,next){
   elasticClient.ping({
     requestTimeout: 30000,
-
     // undocumented params are appended to the query string
     hello: "elasticsearch"
   }, function (error) {
@@ -49,9 +50,31 @@ module.exports.pingCluster = function(req,res,next){
   });
 }
 
+//PingClusterInternal
+//USE to pulllist of servers
+module.exports.PingClusterInternal = function(){
 
+  elasticClient.ping({
+    requestTimeout: 30000,
+    // undocumented params are appended to the query string
+    hello: "elasticsearch"
+  }, function (error) {
+    if (error) {
+      console.error('elasticsearch cluster is down!');
+      res.sendStatus(false);
+
+    } else {
+      console.log('All is well');
+      res.sendStatus(true);
+
+    }
+  });
+}
+
+//ListSearches
+//Returns a list of defined searches
 module.exports.ListSearches= function(req,res,next){
-console.log('Get List Of searches');
+  console.log('ElasticController:ListSearches');
 
   //return a list of search types.
   elasticClient.search({
@@ -64,11 +87,11 @@ console.log('Get List Of searches');
       searches.push(result);
     }
     res.sendStatus(searches);
-  //  next();
   }, function (error) {
     console.trace(error.message);
   });
 }
+
 ///Alternate
 /*
 module.exports.ListSearches= function(req,res,next){

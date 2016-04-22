@@ -20,8 +20,6 @@
 //EP.Alert.Test@gmail.com
 //pw: TestingEP
 
-//TOOD: Add method to send off the results along with the data
-//
 
 var email   = require("emailjs");
 var configuration =   {
@@ -64,10 +62,15 @@ module.exports.SendMail= function(req,res,next)
      subject: "some alert"
   };
   server.send(email,
-   function(err, message) { console.log(err || message); });
+   function(err, message) { console.log(err || message);
+     if(err!=null){
+       console.log("EmailController:SendEventMailError:" + err);
+     }});
   next();
 }
 
+//SendEventMail
+//Sends
 module.exports.SendEventMail = function(notificationName,toEmail,notificationDescription,result)
 {
   console.log('Email Controller Send Event Email Fired');
@@ -93,24 +96,11 @@ module.exports.SendEventMail = function(notificationName,toEmail,notificationDes
   };
   console.log('send email');
   server.send(email,
-   function(err, message) { console.log(err || message);
-   return; });
-}
-
-
-module.exports.testEmail= function(email,next)
-{
-  console.log('Test Email Fired');
-
-  email =   {
-     text:    "Alert Notification",
-     from:    "No Tify <EP.Alert.Test@gtmail.com>",
-     to:      "someone <colin.goss@gmail.com>",
-
-     subject: "EP testing email Notifications"
-  };
-
-    server.send(email,
-     function(err, message) { console.log(err || message); });
-     next();
+   function(err, message) {
+     if(err!=null){
+       console.log("EmailController:SendEventMailError:" + err);
+     }
+     console.log(err || message);
+     return;
+ });
 }

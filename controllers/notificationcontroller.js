@@ -22,9 +22,10 @@ module.exports = function(app, route){
   };
 };
 
+//LoadNotifications
 //Load All Notifications
 module.exports.LoadNotifications = function(){
-  console.log("Load Notifications");
+  console.log("NotificationController:Load Notifications");
 
 fs.readdirSync(notificationDirectory)
   //For each notification in the list
@@ -32,19 +33,17 @@ fs.readdirSync(notificationDirectory)
      file = notificationDirectory+'/'+file;
      var data = fs.readFileSync(file,'utf8');
      var alertInfo = JSON.parse(data);
-//     console.log(alertInfo);
      if(alertInfo.enabled == 'true'){
        notificationEngine.RegisterNotification(alertInfo);
-       //Register the Notification with the Notification Engine
      }
-//     console.log(alertInfo);
  });
 }
 
-
+//GetNotifications
 //return the list of notifications
 module.exports.GetNotifications = function(req,res,next)
 {
+  console.log("NotificationController:GetNotifications");
   var dir = '/opt/API/Notifications/';
   fs.readdirSync(dir)
     .forEach(function(file) {
@@ -56,17 +55,15 @@ module.exports.GetNotifications = function(req,res,next)
            results = results.concat(_getAllFilesFromFolder(file))
        } else results.push(file);
    });
-
-   console.log('Get Notifiation File List');
-   console.log(results);
    res.send(results);
    next();
 };
 
-
+//GetAllNotifications
 //Returns a list of all notifications
 module.exports.GetAllNotifications = function ()
 {
+  console.log("NotificationController:GeAlltNotifications");
   var notifications = [];
   var dir = '/opt/API/Notifications/';
   fs.readdirSync(dir)
@@ -79,26 +76,24 @@ module.exports.GetAllNotifications = function ()
   return notifications;
 }
 
+//RegisterNotification
 module.exports.RegisterNotification= function(req,res,next)
 {
-  //console.log(req.body);
-  console.log("Register Notification:" + req.body.notificationName);
+  console.log("NotificationController:Register Notification:" + req.body.notificationName);
 
-  //read the file
   var alertInfo = req.body;
 
-  //unregister notification first to prevent duplicate events.
   notificationEngine.UnregisterNotification(alertInfo);
   notificationEngine.RegisterNotification(alertInfo);
   res.sendStatus('true');
   next();
 }
 
+//UnregisterNotification
 module.exports.UnregisterNotification= function(req,res,next)
 {
+  console.log("NotificationController:UnregisterNotification:" + req.body.notificationName);
   var alertInfo = req.body;
-  console.log("Unregister Called: " + req.body.notificationName);
-
   notificationEngine.UnregisterNotification(alertInfo);
   res.sendStatus('true');
   next();
