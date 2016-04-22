@@ -43,7 +43,6 @@ app.all('/RegisterNotification', notificationController.RegisterNotification);
 app.all('/UnregisterNotification', notificationController.UnregisterNotification);
 
 //Email Controller
-app.all('/testEmail',emailcontroller.testEmail);
 //app.all('/sendMessage',emailcontroller.sendMessage);
 app.all('/SendMail',emailcontroller.SendMail);
 
