@@ -278,7 +278,7 @@ function runTimeFrameSearchInternalWResults(query,timeFrame,numResults)
   var x = {
     index:search.index,
     searchType:"count",
-    size: numResults
+    size: numResults,
     q:'@timestamp:(>now-' + timeFrame + ') AND ' +search.query.query_string.query//,
     //'@timestamp':"(>now-15m)"
   };
