@@ -109,3 +109,49 @@ module.exports.SendEventMail = function(alertInfo,result)// function(notificatio
      return;
  });
 }
+
+//SendResultEventMail
+
+module.exports.SendResultEventMail = function(alertInfo,result,valuableResults)
+{
+  console.log('Email Controller:Send Event Email Fired');
+  var timeframe = ""
+  switch(alertInfo.timeFrame)
+  {
+    case "m":
+    timeframe = "Minutes";
+    break;
+    case "h":
+    timeframe = "Hours";
+    break;
+    case "d":
+    timeframe = "Days";
+    break;
+  }
+  var messagetext = alertInfo.notificationName +
+                      "\nSelected Search: " +
+                      alertInfo.selectedSearch + "\n" +
+                      "\nResult Count: " +
+                      result.total +
+                      "\nTime Frame: " +
+                      alertInfo.timeValue + " " +timeframe + "\n" +
+                      "\nData: " +
+                      JSON.stringify(valuableResults);
+
+
+  email =   {
+     from:    "No Tify <EP.Alert.Test@gtmail.com>",
+     to:      alertInfo.notifyEmail,
+     subject: "Alert: " + alertInfo.notificationName,
+     text: messagetext
+  };
+  console.log('send email');
+  server.send(email,
+   function(err, message) {
+     if(err!=null){
+       console.log("EmailController:SendEventMailError:" + err);
+     }
+     console.log(err || message);
+     return;
+ });
+}

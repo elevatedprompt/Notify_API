@@ -186,7 +186,7 @@ function emailEvent(alert,result){
 
 function emailResultEvent(alert,result,valuableResults){
   console.log("NotificationEngine:emailResultEvent");
-  emailManager.SendEventMail(alert,result,valuableResults);
+  emailManager.SendResultEventMail(alert,result,valuableResults);
 }
 
 
