@@ -128,7 +128,8 @@ module.exports.SendResultEventMail = function(alertInfo,result,valuableResults)
     timeframe = "Days";
     break;
   }
-  var messagetext = alertInfo.notificationName +
+  var messagetext = "\nNotification Name: " +
+                      alertInfo.notificationName +
                       "\nSelected Search: " +
                       alertInfo.selectedSearch + "\n" +
                       "\nResult Count: " +
