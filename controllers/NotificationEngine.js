@@ -55,6 +55,7 @@ emitter.on('ThresholdMet', function(alertInfo) {
         var triggerTime = new Date();
         es.EvaluateSearchInternalWResults(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame,result.total)
         .then(function(valuableResults){
+          console.log("Inside internalQuery");
             emailResultEvent(alertInfo, result,valuableResults);
         },function(error){
           console.log('Error in EvaluateSearchInternalWResults');
@@ -84,10 +85,6 @@ emitter.on('FloorEvent', function(alertInfo) {
   .then(function(result){
     //result will have count information that will be evaluated
       //Send the email
-      // console.log("Return from Search with Result");
-      // console.log(result);
-      // console.log("alert Info");
-      // console.log(alertInfo);
 
       if(result.total <= parseInt(alertInfo.thresholdCount,10)){
         console.log("Floor Condition Met!")
@@ -122,10 +119,6 @@ emitter.on('CelingEvent', function(alertInfo) {
   .then(function(result){
     //result will have count information that will be evaluated
       //Send the email
-      console.log("Return from Search with Result");
-      console.log(result);
-      console.log("alert Info");
-      console.log(alertInfo);
 
       if(result.total <= parseInt(alertInfo.thresholdCount,10)){
         console.log("Floor Condition Met!")
