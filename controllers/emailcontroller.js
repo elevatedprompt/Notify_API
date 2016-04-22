@@ -114,8 +114,8 @@ module.exports.SendEventMail = function(alertInfo,result)// function(notificatio
 
   email =   {
      from:    "No Tify <EP.Alert.Test@gtmail.com>",
-     to:      toEmail,
-     subject: "Alert: " + notificationName,
+     to:      alertInfo.notifyEmail,
+     subject: "Alert: " + alertInfo.notificationName,
      text: messagetext
   };
   console.log('send email');
