@@ -179,8 +179,8 @@ emitter.on('ClearInterval',function(alertInfo){
 
 //emailEvent
 //InternalMethod
-function emailEvent(alertInfo,result){
-  emailManager.SendEventMail(alertInfo,result);
+function emailEvent(name,email,description,result){
+  emailManager.SendEventMail(name,email,description,sendingResult);
 }
 
 //UnregisterEventMonitor
