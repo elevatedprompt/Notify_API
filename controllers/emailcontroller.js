@@ -38,9 +38,7 @@ var configuration =   {
      text:    "Alert Notification",
      from:    "No Tify <EP.Alert.Test@gtmail.com>",
      to:      email,
-
      subject: "EP testing email Notifications",
-
   };
   //
     server.send(email,
@@ -57,7 +55,7 @@ module.exports.SendMail= function(req,res,next)
 
   email =   {
      text:    "this is a test",
-     from:    "No Tify <EP.Alert.Test@gtmail.com>",
+     from:    "No Tify <EP.Alert.Test@gmail.com>",
      to:      "colin.goss@gmail.com",
      subject: "some alert"
   };
