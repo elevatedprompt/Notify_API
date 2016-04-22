@@ -69,7 +69,7 @@ module.exports.SendMail= function(req,res,next)
 
 //SendEventMail
 //Sends
-module.exports.SendEventMail = function(notificationName,toEmail,notificationDescription,result)
+module.exports.SendEventMail = function(alertInfo,result)// function(notificationName,toEmail,notificationDescription,result)
 {
   console.log('Email Controller:Send Event Email Fired');
   console.log('result: ');
@@ -82,7 +82,13 @@ module.exports.SendEventMail = function(notificationName,toEmail,notificationDes
   console.log(notificationDescription);
 
 
-  var messagetext = notificationName + "\nResults:\n" + result;
+  notificationName + "\n"
+  selectedSearch
+  Count
+  timeframe
+  search result
+
+  var messagetext = notificationName + "\nSelected Search:\n" + result;
   //Read the contents of the call.
 
   console.log(messagetext);

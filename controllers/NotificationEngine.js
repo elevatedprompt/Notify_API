@@ -69,7 +69,8 @@ emitter.on('ThresholdMet', function(alertInfo) {
       console.log("sendingResult");
       console.log(sendingResult);
       console.log(alertInfo.notificationName+ ":: " + alertInfo.notifyEmail+ ":: " + alertInfo.notificationDescription + ":: " +result);
-      emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription, result);
+      //emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription, result);
+      emailEvent(alertInfo, result);
       //emailEvent(name,email,description,sendingResult);
   },function(error){
     console.log('Error in EvaluateSearchInternal');
@@ -104,7 +105,8 @@ emitter.on('FloorEvent', function(alertInfo) {
         console.log("Floor Condition not Met!")
       }
     console.log(alertInfo.notificationName+ ":: " + alertInfo.notifyEmail+ ":: " + alertInfo.notificationDescription + ":: " +result)  ;
-    emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription, JSON.stringify(result));
+    //emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription, JSON.stringify(result));
+    emailEvent(alertInfo, result);
   },function(error){
     console.log('Error in EvaluateSearchInternal');
     console.log(error.message);
@@ -137,7 +139,7 @@ emitter.on('CelingEvent', function(alertInfo) {
       }
 
       console.log(alertInfo.notificationName+ ":: " + alertInfo.notifyEmail+ ":: " + alertInfo.notificationDescription + ":: " +result)  ;
-    emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription, JSON.stringify(result));
+  //  emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription, JSON.stringify(result));
   },function(error){
     console.log('Error in EvaluateSearchInternal');
     console.log(error.message);
@@ -179,14 +181,19 @@ emitter.on('ClearInterval',function(alertInfo){
 
 //emailEvent
 //InternalMethod
-function emailEvent(name,email,description,result){
+// function emailEvent(name,email,description,result){
+//   console.log("NotificationEngine:emailEvent");
+//   console.log("NotificationEngine:emailEvent" + name);
+//   console.log("NotificationEngine:emailEvent"+email);
+//   console.log("NotificationEngine:emailEvent"+description);
+//   console.log("NotificationEngine:emailEvent"+result);
+//   emailManager.SendEventMail(name,email,description,result);
+// }
+function emailEvent(alert,result){
   console.log("NotificationEngine:emailEvent");
-  console.log("NotificationEngine:emailEvent" + name);
-  console.log("NotificationEngine:emailEvent"+email);
-  console.log("NotificationEngine:emailEvent"+description);
-  console.log("NotificationEngine:emailEvent"+result);
-  emailManager.SendEventMail(name,email,description,result);
+  emailManager.SendEventMail(alert,result);
 }
+
 
 //UnregisterEventMonitor
 //Internal method.
