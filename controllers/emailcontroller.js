@@ -76,6 +76,7 @@ module.exports.SendEventMail = function(notificationName,toEmail,notificationDes
   console.log(result);
   console.log("toEmail");
   console.log(toEmail);
+  
   console.log(notificationName);
 
   console.log(notificationDescription);

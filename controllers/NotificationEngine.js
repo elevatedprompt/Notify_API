@@ -47,10 +47,10 @@ emitter.on('ThresholdMet', function(alertInfo) {
   .then(function(result){
     //result will have count information that will be evaluated
       //Send the email
-      console.log("Return from Search with Result");
-      console.log(result);
-      console.log("alert Info");
-      console.log(alertInfo);
+      // console.log("Return from Search with Result");
+      // console.log(result);
+      // console.log("alert Info");
+      // console.log(alertInfo);
 
       if(result.total >= parseInt(alertInfo.thresholdCount,10)){
         console.log("Threshold Met!")
@@ -61,7 +61,7 @@ emitter.on('ThresholdMet', function(alertInfo) {
         console.log("Threshold not Met!")
       }
 
-      emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription, JSON.stringify(result));
+      emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription,result);
   },function(error){
     console.log('Error in EvaluateSearchInternal');
     console.log(error.message);
@@ -81,10 +81,10 @@ emitter.on('FloorEvent', function(alertInfo) {
   .then(function(result){
     //result will have count information that will be evaluated
       //Send the email
-      console.log("Return from Search with Result");
-      console.log(result);
-      console.log("alert Info");
-      console.log(alertInfo);
+      // console.log("Return from Search with Result");
+      // console.log(result);
+      // console.log("alert Info");
+      // console.log(alertInfo);
 
       if(result.total <= parseInt(alertInfo.thresholdCount,10)){
         console.log("Floor Condition Met!")
@@ -94,7 +94,7 @@ emitter.on('FloorEvent', function(alertInfo) {
       else {
         console.log("Floor Condition not Met!")
       }
-    emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription, JSON.stringify(result));
+    emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription, result);
   },function(error){
     console.log('Error in EvaluateSearchInternal');
     console.log(error.message);
