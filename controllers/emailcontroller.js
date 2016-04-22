@@ -71,7 +71,7 @@ module.exports.SendMail= function(req,res,next)
 //Sends
 module.exports.SendEventMail = function(notificationName,toEmail,notificationDescription,result)
 {
-  console.log('Email Controller Send Event Email Fired');
+  console.log('Email Controller:Send Event Email Fired');
   console.log('result: ');
   console.log(result);
   console.log("toEmail");
