@@ -267,7 +267,7 @@ function runTimeFrameSearchInternal(query,timeFrame)
 
 //runTimeFrameSearchInternalWResults
 //return the results of the query based on timeframe
-function runTimeFrameSearchInternalWResults(query,timeFrame,numResults)
+module.exports.runTimeFrameSearchInternalWResults = function (query,timeFrame,numResults)
 {
   var deferred = Q.defer();
   console.log("Run Time Frame Search Internal");

@@ -51,7 +51,7 @@ emitter.on('ThresholdMet', function(alertInfo) {
       if(result.total >= parseInt(alertInfo.thresholdCount,10)){
         console.log("Threshold Met!")
         //retrieve the result set.
-      //  var triggerTime = new Date();
+        var triggerTime = new Date();
         es.runTimeFrameSearchInternalWResults(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame,result.total)
         .then(function(valuableResults){
           console.log("Inside internalQuery");
@@ -120,7 +120,7 @@ emitter.on('CelingEvent', function(alertInfo) {
       //Send the email
 
       if(result.total <= parseInt(alertInfo.thresholdCount,10)){
-        console.log("Floor Condition Met!")
+        console.log("Celing Condition Met!")
         //retrieve the result set.
         var triggerTime = new Date();
         es.runTimeFrameSearchInternalWResults(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame,result.total)
@@ -132,7 +132,7 @@ emitter.on('CelingEvent', function(alertInfo) {
         });
       }
       else {
-        console.log("Floor Condition not Met!")
+        console.log("Celing Condition not Met!")
       }
 
       console.log(alertInfo.notificationName+ ":: " + alertInfo.notifyEmail+ ":: " + alertInfo.notificationDescription + ":: " +result)  ;
