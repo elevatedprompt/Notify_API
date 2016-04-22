@@ -180,6 +180,7 @@ emitter.on('ClearInterval',function(alertInfo){
 //emailEvent
 //InternalMethod
 function emailEvent(name,email,description,result){
+  console.log("NotificationEngine:emailEvent");
   emailManager.SendEventMail(name,email,description,sendingResult);
 }
 
