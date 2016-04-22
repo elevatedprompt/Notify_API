@@ -270,14 +270,13 @@ function runTimeFrameSearchInternal(query,timeFrame)
 module.exports.runTimeFrameSearchInternalWResults = function (query,timeFrame,numResults)
 {
   var deferred = Q.defer();
-  console.log("Run Time Frame Search Internal");
+  console.log("Run Time Frame Search Internal wResults");
   //console.log(query);
   var search = JSON.parse(query);
   console.log("post query" + JSON.stringify(search.query.query_string));
 
   var x = {
     index:search.index,
-    searchType:"count",
     size: numResults,
     q:'@timestamp:(>now-' + timeFrame + ') AND ' +search.query.query_string.query//,
     //'@timestamp':"(>now-15m)"
