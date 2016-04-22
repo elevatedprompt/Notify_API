@@ -60,7 +60,7 @@ emitter.on('ThresholdMet', function(alertInfo) {
       else {
         console.log("Threshold not Met!")
       }
-
+console.log(alertInfo.notificationName+ ":: " + alertInfo.notifyEmail+ ":: " + alertInfo.notificationDescription + ":: " +results)  ;
       emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription,result);
   },function(error){
     console.log('Error in EvaluateSearchInternal');
@@ -94,6 +94,7 @@ emitter.on('FloorEvent', function(alertInfo) {
       else {
         console.log("Floor Condition not Met!")
       }
+    console.log(alertInfo.notificationName+ ":: " + alertInfo.notifyEmail+ ":: " + alertInfo.notificationDescription + ":: " +results)  ;
     emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription, result);
   },function(error){
     console.log('Error in EvaluateSearchInternal');
@@ -125,6 +126,7 @@ emitter.on('CelingEvent', function(alertInfo) {
       else {
         console.log("Floor Condition not Met!")
       }
+      console.log(alertInfo.notificationName+ ":: " + alertInfo.notifyEmail+ ":: " + alertInfo.notificationDescription + ":: " +results)  ;
     emailEvent(alertInfo.notificationName,alertInfo.notifyEmail,alertInfo.notificationDescription, JSON.stringify(result));
   },function(error){
     console.log('Error in EvaluateSearchInternal');
