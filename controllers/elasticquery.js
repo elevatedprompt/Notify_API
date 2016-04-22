@@ -265,9 +265,32 @@ function runTimeFrameSearchInternal(query,timeFrame)
   return deferred.promise;
 }
 
+
+//GetSearchResult
+//queryName - Query name
+//timeFrame - time frame Now till - (24h or 2m)
+//numResults - count of results
+module.exports.GetSearchResult = function(queryName,timeFrame,numResults){
+  console.log("Get Search Result");
+  var deferred = Q.defer();
+
+  var query = getQueryString(queryName).then(function(result){
+  runTimeFrameSearchInternalWResults(result,timeFrame,numResults)
+  .then(function(queryResult){
+    deferred.resolve(queryResult);
+    return queryResult;
+  });
+},function(err){
+  console.trace(err);
+  deferred.reject(err);
+  return deferred.promise;
+});
+return deferred.promise;
+}
+
 //runTimeFrameSearchInternalWResults
 //return the results of the query based on timeframe
-module.exports.runTimeFrameSearchInternalWResults = function (query,timeFrame,numResults)
+function runTimeFrameSearchInternalWResults(query,timeFrame,numResults)
 {
   var deferred = Q.defer();
   console.log("Run Time Frame Search Internal wResults");
@@ -279,7 +302,6 @@ module.exports.runTimeFrameSearchInternalWResults = function (query,timeFrame,nu
     index:search.index,
     size: numResults,
     q:'@timestamp:(>now-' + timeFrame + ') AND ' +search.query.query_string.query//,
-    //'@timestamp':"(>now-15m)"
   };
 
     //search.query
