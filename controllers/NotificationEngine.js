@@ -9,7 +9,7 @@
 //     newNotification.notifyEmail
 
 
-var alertInfos = []; //This is a list of all active notifications on this node.
+var alertInfos = []; 
 var emailManager = require('./emailcontroller');
 var es = require('./elasticquery');
 
