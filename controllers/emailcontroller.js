@@ -102,7 +102,7 @@ module.exports.SendEventMail = function(alertInfo,result)
      attachment:
      [
         {data:"<html>i <i>hope</i> this works!</html>", alternative:alertInfo.htmlEmail=='true'},
-        {path:"path/to/file.zip", type:"application/zip", name:"alertMesages.csv"}
+        // {path:"path/to/file.zip", type:"application/zip", name:"alertMesages.csv"}
      ]
   };
   console.log('send email');
@@ -159,7 +159,7 @@ module.exports.SendResultEventMail = function(alertInfo,result,valuableResults)
      attachment:
      [
         {data:"<html>i <i>hope</i> this works!</html>", alternative:alertInfo.htmlEmail=='true'},
-        {path:"path/to/file.zip", type:"application/zip", name:"renamed.zip"}
+        // {path:"path/to/file.zip", type:"application/zip", name:"renamed.zip"}
      ]
   };
 
