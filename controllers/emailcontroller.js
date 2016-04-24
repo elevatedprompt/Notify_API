@@ -40,6 +40,7 @@ var configuration =   {
      from:    "No Tify <EP.Alert.Test@gtmail.com>",
      to:      email,
      subject: "EP testing email Notifications",
+
   };
   //
     server.send(email,
@@ -120,6 +121,7 @@ var messagetext = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN
      to:      alertInfo.notifyEmail,
      subject: "Alert: " + alertInfo.notificationName,
      text: messagetext,
+     content: 'text/html; charset=utf-8',
      // attachment:
      // [
      //    {data:"<html>i <i>hope</i> this works!</html>", alternative:alertInfo.htmlEmail=='true'},
