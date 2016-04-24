@@ -121,13 +121,14 @@ var messagetext = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN
      to:      alertInfo.notifyEmail,
      subject: "Alert: " + alertInfo.notificationName,
      text: messagetext,
-     Content-Type: 'text/html; charset=UTF-8'
+     content: "text/html; charset=UTF-8"
      // attachment:
      // [
      //    {data:"<html>i <i>hope</i> this works!</html>", alternative:alertInfo.htmlEmail=='true'},
      //    // {path:"path/to/file.zip", type:"application/zip", name:"alertMesages.csv"}
      // ]
   };
+  console.log(email.content);
   console.log('send email');
   server.send(email,
    function(err, message) {
