@@ -52,14 +52,16 @@ emitter.on('ThresholdMet', function(alertInfo) {
         console.log("Threshold Met!")
         //retrieve the result set.
         var triggerTime = new Date();
-        es.GetSearchResult(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame,result.total)
-        .then(function(valuableResults){
-          console.log("Inside internalQuery");
-            emailResultEvent(alertInfo, result,valuableResults);
-        },function(error){
-          console.log('Error in EvaluateSearchInternalWResults');
-          console.log(error.message);
-        });
+        emailEvent(alertInfo, result);
+        if(false){
+          es.GetSearchResult(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame,result.total)
+          .then(function(valuableResults){
+            console.log("Inside internalQuery");
+              emailResultEvent(alertInfo, result,valuableResults);
+          },function(error){
+            console.log('Error in EvaluateSearchInternalWResults');
+            console.log(error.message);
+          });}
       }
       else {
         console.log("Threshold not Met!")
@@ -83,24 +85,24 @@ emitter.on('FloorEvent', function(alertInfo) {
   es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
   .then(function(result){
     //result will have count information that will be evaluated
-      //Send the email
 
       if(result.total <= parseInt(alertInfo.thresholdCount,10)){
         console.log("Floor Condition Met!")
         var triggerTime = new Date();
-        es.GetSearchResult(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame,result.total)
-        .then(function(valuableResults){
-            emailResultEvent(alertInfo, result,valuableResults);
-        },function(error){
-          console.log('Error in EvaluateSearchInternalWResults');
-          console.log(error.message);
-        });
-        //retrieve the result set.
+        emailEvent(alertInfo, result);
+        if(false){
+          es.GetSearchResult(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame,result.total)
+          .then(function(valuableResults){
+              emailResultEvent(alertInfo, result,valuableResults);
+          },function(error){
+            console.log('Error in EvaluateSearchInternalWResults');
+            console.log(error.message);
+          });
+        }
       }
       else {
         console.log("Floor Condition not Met!")
       }
-
   },function(error){
     console.log('Error in EvaluateSearchInternal');
     console.log(error.message);
@@ -110,34 +112,29 @@ emitter.on('FloorEvent', function(alertInfo) {
 //CelingEvent
 //Max record count hit for a given search based on the timeframe.
 emitter.on('CelingEvent', function(alertInfo) {
-  //A celing Event has been met.
   console.log("NotificationEngine:Celing Event fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
 
   //  console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
   es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
   .then(function(result){
-    //result will have count information that will be evaluated
-      //Send the email
-
       if(result.total <= parseInt(alertInfo.thresholdCount,10)){
         console.log("Celing Condition Met!")
         //retrieve the result set.
         var triggerTime = new Date();
-        es.GetSearchResult(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame,result.total)
-        .then(function(valuableResults){
-            emailResultEvent(alertInfo, result,valuableResults);
-        },function(error){
-          console.log('Error in EvaluateSearchInternalWResults');
-          console.log(error.message);
-        });
+        emailEvent(alertInfo, result);
+        if(false){
+          es.GetSearchResult(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame,result.total)
+          .then(function(valuableResults){
+              emailResultEvent(alertInfo, result,valuableResults);
+          },function(error){
+            console.log('Error in EvaluateSearchInternalWResults');
+            console.log(error.message);
+          });
+        }
       }
       else {
         console.log("Celing Condition not Met!")
       }
-
-      console.log(alertInfo.notificationName+ ":: " + alertInfo.notifyEmail+ ":: " + alertInfo.notificationDescription + ":: " +result)  ;
-
-    //emailEvent(alertInfo, result);
   },function(error){
     console.log('Error in EvaluateSearchInternal');
     console.log(error.message);
@@ -154,10 +151,7 @@ emitter.on('Register',function(alertInfo){
     //Emit the threshold type to be evaluated
     console.log("NotificationEngine:Interval Hit:" + alertInfo.notificationName);
     emitter.emit(alertInfo.thresholdType,alertInfo);
-    // console.log(JSON.stringify(alertInfo));
-
   },alertInfo.checkFreq||60000,alertInfo);
-
   alertInfo.intervalObject = intervalObject;
   alertInfos.push(alertInfo);
 });
@@ -166,9 +160,7 @@ emitter.on('Register',function(alertInfo){
 //stop the timer and remove the object from the list
 emitter.on('UnRegister',function(alertInfo){
   console.log("NotificationEngine:event Listiner Unregistered: " + alertInfo.notificationName);
-  //stop the event
    clearInterval(alertInfo.intervalObject);
-   //Remove the alert from the collection
    delete alertInfos[alertInfos.indexOf(alertInfo)];
 });
 

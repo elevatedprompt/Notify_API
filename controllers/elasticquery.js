@@ -19,7 +19,7 @@ var elasticsearch = require('elasticsearch');
 //     }
 // }
 
-var elastichost = '192.168.1.104:9200';//'127.0.0.1:9200';
+var elastichost = '127.0.0.1:9200';//'127.0.0.1:9200';
 var tracelevel = 'debug';
 
 var elasticClient = new elasticsearch.Client({

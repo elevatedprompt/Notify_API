@@ -1,7 +1,8 @@
 //email controller:
 //used to send emails on notification
-
-
+//https://github.com/eleith/emailjs
+//worth checking
+//http://best-web-creation.com/articles/view/id/nodejs-mailing?lang=en
 //Message
 // configuration aka options =
 // {
@@ -68,8 +69,8 @@ module.exports.SendMail= function(req,res,next)
 }
 
 //SendEventMail
-//Sends
-module.exports.SendEventMail = function(alertInfo,result)// function(notificationName,toEmail,notificationDescription,result)
+//This will send an email to the recipent that a trigegr has happened
+module.exports.SendEventMail = function(alertInfo,result)
 {
   console.log('Email Controller:Send Event Email Fired');
   var timeframe = ""
@@ -97,7 +98,12 @@ module.exports.SendEventMail = function(alertInfo,result)// function(notificatio
      from:    "No Tify <EP.Alert.Test@gtmail.com>",
      to:      alertInfo.notifyEmail,
      subject: "Alert: " + alertInfo.notificationName,
-     text: messagetext
+     text: messagetext,
+     attachment:
+     [
+        {data:"<html>i <i>hope</i> this works!</html>", alternative:alertInfo.htmlEmail=='true'},
+        {path:"path/to/file.zip", type:"application/zip", name:"alertMesages.csv"}
+     ]
   };
   console.log('send email');
   server.send(email,
@@ -111,7 +117,7 @@ module.exports.SendEventMail = function(alertInfo,result)// function(notificatio
 }
 
 //SendResultEventMail
-
+//Will send an email to the recipient that an event has happened with the data attached.
 module.exports.SendResultEventMail = function(alertInfo,result,valuableResults)
 {
   console.log('Email Controller:Send Event Email Fired');
@@ -128,6 +134,8 @@ module.exports.SendResultEventMail = function(alertInfo,result,valuableResults)
     timeframe = "Days";
     break;
   }
+
+
   var messagetext = "\nNotification Name: " +
                       alertInfo.notificationName +
                       "\nSelected Search: " +
@@ -135,17 +143,28 @@ module.exports.SendResultEventMail = function(alertInfo,result,valuableResults)
                       "\nResult Count: " +
                       result.total +
                       "\nTime Frame: " +
-                      alertInfo.timeValue + " " +timeframe + "\n" +
-                      "\nData: " +
-                      JSON.stringify(valuableResults);
+                      alertInfo.timeValue + " " +timeframe;
 
+    if(alertInfo.htmlEmail=='true')
+    {
+      messagetext + "\nData: " +
+      JSON.stringify(valuableResults);
+    }
 
   email =   {
      from:    "No Tify <EP.Alert.Test@gtmail.com>",
      to:      alertInfo.notifyEmail,
      subject: "Alert: " + alertInfo.notificationName,
-     text: messagetext
+     text: messagetext,
+     attachment:
+     [
+        {data:"<html>i <i>hope</i> this works!</html>", alternative:alertInfo.htmlEmail=='true'},
+        {path:"path/to/file.zip", type:"application/zip", name:"renamed.zip"}
+     ]
   };
+
+
+
   console.log('send email');
   server.send(email,
    function(err, message) {
