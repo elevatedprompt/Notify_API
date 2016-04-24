@@ -88,12 +88,12 @@ module.exports.SendEventMail = function(alertInfo,result)
   }
 
   var messagetext = "<div class='navbar-header'>"+
-                 "<a class="navbar-brand" onclick="window.open(&quot;http://elevatedprompt.com&quot;)" href="https://127.0.0.1/#/"><img src="./EPStack Administration Panel_files/EP-logo.jpg" height="30" width="30" alt="Elevated Prompt"> EPSTACK</a>"+
-                "<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">"+
-                "    <span class="sr-only">Toggle navigation</span>"+
-                "    <span class="icon-bar"></span>"+
-                "    <span class="icon-bar"></span>"+
-                "    <span class="icon-bar"></span>"+
+                 "<a class='navbar-brand' onclick='window.open(&quot;http://elevatedprompt.com&quot;)' href='https://127.0.0.1/#/'><img src='./EPStack Administration Panel_files/EP-logo.jpg' height='30' width='30' alt='Elevated Prompt'> EPSTACK</a>"+
+                "<button type='button' class='navbar-toggle collapsed' data-toggle='collapse' data-target='#js-navbar-collapse'>"+
+                  "  <span class='sr-only'>Toggle navigation</span>"+
+                  "  <span class='icon-bar'></span>"+
+                  "  <span class='icon-bar'></span>"+
+                 "   <span class='icon-bar'></span>"+
                 "</button>"+
                 "<br>"+
                 "<br>"+
