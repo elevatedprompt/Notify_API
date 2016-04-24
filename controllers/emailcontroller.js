@@ -132,6 +132,7 @@ var messagetext = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN
   console.log('send email');
   server.send(email,
    function(err, message) {
+     message.content = "text/html; charset=UTF-8";
      if(err!=null){
        console.log("EmailController:SendEventMailError:" + err);
      }
