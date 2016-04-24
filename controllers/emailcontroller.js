@@ -122,7 +122,7 @@ var messagetext = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN
      subject: "Alert: " + alertInfo.notificationName,
      text: messagetext,
      content: "text/html; charset=UTF-8",
-     alternative = true,
+     alternative : true,
      // attachment:
      // [
      //    {data:"<html>i <i>hope</i> this works!</html>", alternative:alertInfo.htmlEmail=='true'},
