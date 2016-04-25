@@ -39,7 +39,6 @@ var configuration =   {
  ssl:     true
 };
 var fromSender = "No Tify <EP.Alert.Test@gtmail.com>";
-var server  = email.server.connect(configuration);
 
 //SendEventMail
 //This will send an email to the recipent that a trigegr has happened
