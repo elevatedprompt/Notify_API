@@ -1,29 +1,28 @@
 //email controller:
 //used to send emails on notification
-//https://github.com/eleith/emailjs
-//worth checking
-//http://best-web-creation.com/articles/view/id/nodejs-mailing?lang=en
-//Message
-// configuration aka options =
-// {
-//     user        // username for logging into smtp
-//     password // password for logging into smtp
-//     host        // smtp host
-//     port        // smtp port (if null a standard port number will be used)
-//     ssl     // boolean or object {key, ca, cert} (if true or object, ssl connection will be made)
-//     tls     // boolean or object (if true or object, starttls will be initiated)
-//     timeout // max number of milliseconds to wait for smtp responses (defaults to 5000)
-//     domain  // domain to greet smtp with (defaults to os.hostname)
-// authentication // array of preferred authentication methods (ex: email.authentication.PLAIN, email.authentication.XOAUTH2)
-// }
+//https://www.npmjs.com/package/nodemailer
 
-//No Tify
-//EP.Alert.Test@gmail.com
-//pw: TestingEP
-
-
-var email   = require("emailjs");
 var nodemailer   = require("nodemailer");
+
+// Create a SMTP transporter object
+// var transporter = nodemailer.createTransport({
+//     service: 'Gmail',
+//     auth: {
+//         user: 'test.nodemailer@gmail.com',
+//         pass: 'Nodemailer123'
+//     },
+//     logger: true, // log to console
+//     debug: true // include SMTP traffic in the logs
+// }, {
+//     // default message fields
+//
+//     // sender info
+//     from: 'Sender Name <sender@example.com>',
+//     headers: {
+//         'X-Laziness-level': 1000 // just an example header, no need to use this
+//     }
+// });
+
 // create reusable transporter object using SMTP transport
 var transporter = nodemailer.createTransport({
     service: 'Gmail',
@@ -41,44 +40,6 @@ var configuration =   {
 };
 var fromSender = "No Tify <EP.Alert.Test@gtmail.com>";
 var server  = email.server.connect(configuration);
-
- function sendMessage(email)
-{
-  console.log('Send Email');
-
-  email =   {
-     text:    "Alert Notification",
-     from:    "No Tify <EP.Alert.Test@gtmail.com>",
-     to:      email,
-     subject: "EP testing email Notifications",
-
-  };
-  //
-    server.send(email,
-    function(err, message) { console.log(err || message); });
-}
-
-
-
-module.exports.SendMail= function(req,res,next)
-{
-  console.log('Send Email Fired');
-  console.log(req.body);
-  //Read the contents of the call.
-
-  email =   {
-     text:    "this is a test",
-     from:    "No Tify <EP.Alert.Test@gmail.com>",
-     to:      "colin.goss@gmail.com",
-     subject: "some alert"
-  };
-  server.send(email,
-   function(err, message) { console.log(err || message);
-     if(err!=null){
-       console.log("EmailController:SendEventMailError:" + err);
-     }});
-  next();
-}
 
 //SendEventMail
 //This will send an email to the recipent that a trigegr has happened
@@ -98,27 +59,23 @@ module.exports.SendEventMail = function(alertInfo,result)
     timeframe = "Days";
     break;
   }
+
   var thresholdType = "";
-switch(alertInfo.thresholdType){
-  case "FloorEvent":
-  timeframe = "Less Than";
-  break;
-  case "CelingEvent":
-  timeframe = "More Than";
-  break;
-  case "ThresholdMet":
-  timeframe = "More Than";
-  break;
-}
+  switch(alertInfo.thresholdType){
+    case "FloorEvent":
+    thresholdType = "Less Than";
+    break;
+    case "CelingEvent":
+    thresholdType = "More Than";
+    break;
+    case "ThresholdMet":
+    thresholdType = "More Than";
+    break;
+  }
 
 
 var messagetext =
-                // "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>"
-                // +"<html xmlns='http://www.w3.org/1999/xhtml'>"
-                // +"<head>"
-                // +"<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />"
-                // +"<title>EPStack - Notification: " + alertInfo.notificationName  + "</title>"
-                // +"<meta name='viewport' content='width=device-width, initial-scale=1.0'/>"
+
                 "<table><tr><td colspan='2'>A conditional search trigger has been met.</td>"+
                 "<tr><td><strong>Notification Name:</strong></td><td>"
                 + alertInfo.notificationName +
@@ -135,54 +92,26 @@ var messagetext =
                 "</td></tr>" +
                 "<tr><td><strong>Description:</strong></td><td>"
                 + alertInfo.notificationDescription +
-                "</td></tr></table>"
-                // +"</head>"
-                // +"</html>"
-                ;
+                "</td></tr></table>";
 
 
-  email =   {
-     from:    "No Tify <EP.Alert.Test@gtmail.com>",
-     to:      alertInfo.notifyEmail,
-     subject: "Alert: " + alertInfo.notificationName,
-     text: messagetext,
-      content: "text/html; charset=UTF-8",
-     'Content-Type': "text/html; charset=UTF-8",
-
-     //'Content-Type': "multipart/alternative;",
-    //  alternative : true,
-    html:messagetext
+    var mailOptions = {
+      from: fromSender,
+      to: alertInfo.notifyEmail,
+      subject: "Alert: " + alertInfo.notificationName,
+      text: "Alert: " + alertInfo.notificationName,
+      html: messagetext
   };
 
-  var mailOptions = {
-    from: fromSender,
-    to: alertInfo.notifyEmail,
-    subject: "Alert: " + alertInfo.notificationName,
-    text: "Alert: " + alertInfo.notificationName,
-    html: messagetext
-};
+  // send mail with defined transport object
+  transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+          console.log(error);
+      } else {
+          console.log('Message sent: ' + info.response);
+      }
+  });
 
-// send mail with defined transport object
-transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-        console.log(error);
-    } else {
-        console.log('Message sent: ' + info.response);
-    }
-});
-
-// //  email.content = "text/html; charset=UTF-8";
-// //  console.log(email.content);
-// //  console.log('send email');
-//   server.send(email,
-//    function(err, message) {
-//     // message.content = "text/html; charset=UTF-8";
-//      if(err!=null){
-//        console.log("EmailController:SendEventMailError:" + err);
-//      }
-//      console.log(err || message);
-//      return;
-//  });
 }
 
 //SendResultEventMail
@@ -220,22 +149,21 @@ module.exports.SendResultEventMail = function(alertInfo,result,valuableResults)
       JSON.stringify(valuableResults);
     }
 
-  email =   {
-     from:    "No Tify <EP.Alert.Test@gmail.com>",
-     to:      alertInfo.notifyEmail,
-     subject: "Alert: " + alertInfo.notificationName,
-     text: messagetext,
+
+    var mailOptions = {
+      from: fromSender,
+      to: alertInfo.notifyEmail,
+      subject: "Alert: " + alertInfo.notificationName,
+      text: "Alert: " + alertInfo.notificationName,
+      html: messagetext
   };
 
-
-
   console.log('send email');
-  server.send(email,
-   function(err, message) {
-     if(err!=null){
-       console.log("EmailController:SendEventMailError:" + err);
-     }
-     console.log(err || message);
-     return;
- });
+  transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+          console.log(error);
+      } else {
+          console.log('Message sent: ' + info.response);
+      }
+  });
 }

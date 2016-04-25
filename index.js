@@ -42,9 +42,6 @@ app.all('/PingCluster',elasticquery.pingCluster)
 app.all('/RegisterNotification', notificationController.RegisterNotification);
 app.all('/UnregisterNotification', notificationController.UnregisterNotification);
 
-//Email Controller
-//app.all('/sendMessage',emailcontroller.sendMessage);
-app.all('/SendMail',emailcontroller.SendMail);
 
 console.log('Listening on port 3003...');
 //Load the Notification Engine
