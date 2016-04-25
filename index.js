@@ -18,14 +18,14 @@ app.use(function(req, res, next) {
                                     next();
                                   });
 
-global.tracelevel = 'debug';
-global.elastichost = '127.0.0.1:9200';
+global.tracelevel =   'debug';
+global.elastichost =  '127.0.0.1:9200';
 global.emailConfiguration =   {
-                               user:    "ep.alert.test@gmail.com",
-                               password:"TestinEP",
-                               host:    "smtp.gmail.com",
-                               ssl:     true,
-                               fromSender = "No Tify <EP.Alert.Test@gtmail.com>"
+                               user:        "ep.alert.test@gmail.com",
+                               password:    "TestinEP",
+                               host:        "smtp.gmail.com",
+                               ssl:         true,
+                               fromSender:  "No Tify <EP.Alert.Test@gtmail.com>"
                               };
 
 var emailcontroller = require('./controllers/emailcontroller');
