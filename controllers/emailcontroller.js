@@ -167,7 +167,7 @@ module.exports.SendResultEventMail = function(alertInfo,result,valuableResults)
 }
 
 function logEvent(message){
-  if(tracelevel == 'debug'){
+  if(global.tracelevel == 'debug'){
     console.log(message);
   }
 }

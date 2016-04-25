@@ -18,7 +18,7 @@ app.use(function(req, res, next) {
   next();
 });
 
-var tracelevel = 'debug';
+global.tracelevel = 'debug';
 var emailcontroller = require('./controllers/emailcontroller');
 var notificationController = require('./controllers/notificationcontroller');
 var elasticquery = require('./controllers/elasticquery');

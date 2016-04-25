@@ -392,12 +392,12 @@ function getQueryString(queryName, callback)
 }
 
 function logEvent(message){
-  if(tracelevel == 'debug'){
+  if(global.tracelevel == 'debug'){
     console.log(message);
   }
 }
 function traceEvent(message){
-  if(tracelevel == 'debug'){
+  if(global.tracelevel == 'debug'){
     console.log(message);
   }
 }
