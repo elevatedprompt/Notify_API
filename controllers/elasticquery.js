@@ -1,8 +1,3 @@
-//this file lists off the functions that will be avalible for the notification engine.
-
-
-//Pull saved queries.
-//Gets a list of saved queries and displays them by name.
 
 var Q = require ('q');
 var elasticsearch = require('elasticsearch');
