@@ -12,13 +12,22 @@ app.use(bodyParser.json());
 app.use(methodOverride('X-HTTP-Method-Override'));
 // CORS Support
 app.use(function(req, res, next) {
-  res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
-  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-  next();
-});
+                                    res.header('Access-Control-Allow-Origin', '*');
+                                    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+                                    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+                                    next();
+                                  });
 
 global.tracelevel = 'debug';
+global.elastichost = '127.0.0.1:9200';
+global.emailConfiguration =   {
+                               user:    "ep.alert.test@gmail.com",
+                               password:"TestinEP",
+                               host:    "smtp.gmail.com",
+                               ssl:     true,
+                               fromSender = "No Tify <EP.Alert.Test@gtmail.com>"
+                              };
+
 var emailcontroller = require('./controllers/emailcontroller');
 var notificationController = require('./controllers/notificationcontroller');
 var elasticquery = require('./controllers/elasticquery');

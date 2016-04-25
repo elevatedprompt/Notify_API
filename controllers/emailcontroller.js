@@ -25,149 +25,137 @@ var nodemailer   = require("nodemailer");
 
 // create reusable transporter object using SMTP transport
 var transporter = nodemailer.createTransport({
-    service: 'Gmail',
-    auth: {
-        user: 'ep.alert.test@gmail.com',
-        pass: 'TestinEP'
-    }
-});
+                                                service: 'Gmail',
+                                                secure: true,
+                                                auth: {
+                                                    user: global.emailConfiguration.user,
+                                                    pass: global.emailConfiguration.password
+                                                }
+                                            });
 
-var configuration =   {
- user:    "ep.alert.test@gmail.com",
- password:"TestinEP",
- host:    "smtp.gmail.com",
- ssl:     true
-};
-var fromSender = "No Tify <EP.Alert.Test@gtmail.com>";
 
 //SendEventMail
 //This will send an email to the recipent that a trigegr has happened
-module.exports.SendEventMail = function(alertInfo,result)
-{
-  logEvent('Email Controller:Send Event Email Fired');
-  var timeframe = ""
-  switch(alertInfo.timeFrame)
-  {
-    case "m":
-    timeframe = "Minutes";
-    break;
-    case "h":
-    timeframe = "Hours";
-    break;
-    case "d":
-    timeframe = "Days";
-    break;
-  }
+module.exports.SendEventMail = function(alertInfo,result){
+                                                          logEvent('Email Controller:Send Event Email Fired');
+                                                          var timeframe = ""
+                                                          switch(alertInfo.timeFrame){
+                                                                                      case "m":
+                                                                                      timeframe = "Minutes";
+                                                                                      break;
+                                                                                      case "h":
+                                                                                      timeframe = "Hours";
+                                                                                      break;
+                                                                                      case "d":
+                                                                                      timeframe = "Days";
+                                                                                      break;
+                                                                                    }
 
-  var thresholdType = "";
-  switch(alertInfo.thresholdType){
-    case "FloorEvent":
-    thresholdType = "Less Than";
-    break;
-    case "CelingEvent":
-    thresholdType = "More Than";
-    break;
-    case "ThresholdMet":
-    thresholdType = "More Than";
-    break;
-  }
+                                                          var thresholdType = "";
+                                                          switch(alertInfo.thresholdType){
+                                                                                            case "FloorEvent":
+                                                                                            thresholdType = "Less Than";
+                                                                                            break;
+                                                                                            case "CelingEvent":
+                                                                                            thresholdType = "More Than";
+                                                                                            break;
+                                                                                            case "ThresholdMet":
+                                                                                            thresholdType = "More Than";
+                                                                                            break;
+                                                                                          }
 
 
-var messagetext =
+                                                        var messagetext =
+                                                                        "<table><tr><td colspan='2'>A conditional search trigger has been met.</td></tr><tr><td colspan='2'></td></tr>"+
+                                                                        "<tr><td><strong>Notification Name:</strong></td><td>"
+                                                                        + alertInfo.notificationName +
+                                                                        "</td></tr>" +
+                                                                        "<tr><td><strong>Search Name:</strong></td><td>"
+                                                                        + alertInfo.selectedSearch +
+                                                                        "</td></tr>" +
+                                                                        "<tr><td><strong>Condition:</strong></td><td>" +
+                                                                        thresholdType + " "
+                                                                        + alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + timeframe + "\n" +
+                                                                        "</td></tr>" +
+                                                                        "<tr><td><strong>Result Count:</strong></td><td>"
+                                                                        + result.total +
+                                                                        "</td></tr>" +
+                                                                        "<tr><td><strong>Description:</strong></td><td>"
+                                                                        + alertInfo.notificationDescription +
+                                                                        "</td></tr></table>";
 
-                "<table><tr><td colspan='2'>A conditional search trigger has been met.</td></tr><tr><td colspan='2'></td></tr>"+
-                "<tr><td><strong>Notification Name:</strong></td><td>"
-                + alertInfo.notificationName +
-                "</td></tr>" +
-                "<tr><td><strong>Search Name:</strong></td><td>"
-                + alertInfo.selectedSearch +
-                "</td></tr>" +
-                "<tr><td><strong>Condition:</strong></td><td>" +
-                thresholdType + " "
-                + alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + timeframe + "\n" +
-                "</td></tr>" +
-                "<tr><td><strong>Result Count:</strong></td><td>"
-                + result.total +
-                "</td></tr>" +
-                "<tr><td><strong>Description:</strong></td><td>"
-                + alertInfo.notificationDescription +
-                "</td></tr></table>";
 
+                                                            var mailOptions = {
+                                                              from: global.emailConfiguration.fromSender,
+                                                              to: alertInfo.notifyEmail,
+                                                              subject: "Alert: " + alertInfo.notificationName,
+                                                              text: "Alert: " + alertInfo.notificationName,
+                                                              html: messagetext
+                                                          };
 
-    var mailOptions = {
-      from: fromSender,
-      to: alertInfo.notifyEmail,
-      subject: "Alert: " + alertInfo.notificationName,
-      text: "Alert: " + alertInfo.notificationName,
-      html: messagetext
-  };
+                                                          // send mail with defined transport object
+                                                          transporter.sendMail(mailOptions, function (error, info) {
+                                                                                                                      if (error) {
+                                                                                                                          logEvent(error);
+                                                                                                                      } else {
+                                                                                                                          logEvent('Message sent: ' + info.response);
+                                                                                                                      }
+                                                                                                                  });
 
-  // send mail with defined transport object
-  transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-          logEvent(error);
-      } else {
-          logEvent('Message sent: ' + info.response);
-      }
-  });
-
-}
+                                                        }
 
 //SendResultEventMail
 //Will send an email to the recipient that an event has happened with the data attached.
-module.exports.SendResultEventMail = function(alertInfo,result,valuableResults)
-{
-  logEvent('Email Controller:Send Event Email Fired');
-  var timeframe = ""
-  switch(alertInfo.timeFrame)
-  {
-    case "m":
-    timeframe = "Minutes";
-    break;
-    case "h":
-    timeframe = "Hours";
-    break;
-    case "d":
-    timeframe = "Days";
-    break;
-  }
+module.exports.SendResultEventMail = function(alertInfo,result,valuableResults){
+                                                                                logEvent('Email Controller:Send Event Email Fired');
+                                                                                var timeframe = ""
+                                                                                switch(alertInfo.timeFrame) {
+                                                                                                              case "m":
+                                                                                                              timeframe = "Minutes";
+                                                                                                              break;
+                                                                                                              case "h":
+                                                                                                              timeframe = "Hours";
+                                                                                                              break;
+                                                                                                              case "d":
+                                                                                                              timeframe = "Days";
+                                                                                                              break;
+                                                                                                            }
 
-  var messagetext = "\nNotification Name: " +
-                      alertInfo.notificationName +
-                      "\nSelected Search: " +
-                      alertInfo.selectedSearch + "\n" +
-                      "\nResult Count: " +
-                      result.total +
-                      "\nTime Frame: " +
-                      alertInfo.timeValue + " " +timeframe;
+                                                                                var messagetext = "\nNotification Name: " +
+                                                                                                    alertInfo.notificationName +
+                                                                                                    "\nSelected Search: " +
+                                                                                                    alertInfo.selectedSearch + "\n" +
+                                                                                                    "\nResult Count: " +
+                                                                                                    result.total +
+                                                                                                    "\nTime Frame: " +
+                                                                                                    alertInfo.timeValue + " " +timeframe;
 
-    if(alertInfo.htmlEmail=='true')
-    {
-      messagetext + "\nData: " +
-      JSON.stringify(valuableResults);
-    }
+                                                                                  if(alertInfo.htmlEmail=='true'){
+                                                                                                                    messagetext + "\nData: " +
+                                                                                                                    JSON.stringify(valuableResults);
+                                                                                                                  }
 
 
-    var mailOptions = {
-      from: fromSender,
-      to: alertInfo.notifyEmail,
-      subject: "Alert: " + alertInfo.notificationName,
-      text: "Alert: " + alertInfo.notificationName,
-      html: messagetext
-  };
+                                                                                  var mailOptions = {
+                                                                                                        from: global.emailConfiguration.fromSender,
+                                                                                                        to: alertInfo.notifyEmail,
+                                                                                                        subject: "Alert: " + alertInfo.notificationName,
+                                                                                                        text: "Alert: " + alertInfo.notificationName,
+                                                                                                        html: messagetext
+                                                                                                    };
 
-  logEvent('send email');
-  transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-          logEvent(error);
-      } else {
-          logEvent('Message sent: ' + info.response);
-      }
-  });
-}
+                                                                                logEvent('send email');
+                                                                                transporter.sendMail(mailOptions, function (error, info) {
+                                                                                                                                            if (error) {
+                                                                                                                                                logEvent(error);
+                                                                                                                                            } else {
+                                                                                                                                                logEvent('Message sent: ' + info.response);
+                                                                                                                                            }
+                                                                                                                                        });
+                                                                              }
 
 function logEvent(message){
-  if(global.tracelevel == 'debug'){
-    console.log(message);
-  }
-}
+                            if(global.tracelevel == 'debug'){
+                              console.log(message);
+                            }
+                          }
