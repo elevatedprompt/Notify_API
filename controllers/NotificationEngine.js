@@ -1,7 +1,7 @@
-var debug = true;
 var alertInfos = [];
 var emailManager = require('./emailcontroller');
 var es = require('./elasticquery');
+var tracelevel = 'debug';
 
 var EP_EventEmitter = function() {
   this.events = {};
@@ -172,7 +172,7 @@ module.exports.UnregisterNotification = function(notification)
   return true;
 }
 function logEvent(message){
-  if(debug){
+  if(tracelevel == 'debug'){
   console.log(message);
   }
 }

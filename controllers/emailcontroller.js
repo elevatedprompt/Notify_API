@@ -1,7 +1,7 @@
 //email controller:
 //used to send emails on notification
 //https://www.npmjs.com/package/nodemailer
-
+var tracelevel = 'debug';
 var nodemailer   = require("nodemailer");
 
 // Create a SMTP transporter object
@@ -45,7 +45,7 @@ var server  = email.server.connect(configuration);
 //This will send an email to the recipent that a trigegr has happened
 module.exports.SendEventMail = function(alertInfo,result)
 {
-  console.log('Email Controller:Send Event Email Fired');
+  logEvent('Email Controller:Send Event Email Fired');
   var timeframe = ""
   switch(alertInfo.timeFrame)
   {
@@ -106,9 +106,9 @@ var messagetext =
   // send mail with defined transport object
   transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
-          console.log(error);
+          logEvent(error);
       } else {
-          console.log('Message sent: ' + info.response);
+          logEvent('Message sent: ' + info.response);
       }
   });
 
@@ -118,7 +118,7 @@ var messagetext =
 //Will send an email to the recipient that an event has happened with the data attached.
 module.exports.SendResultEventMail = function(alertInfo,result,valuableResults)
 {
-  console.log('Email Controller:Send Event Email Fired');
+  logEvent('Email Controller:Send Event Email Fired');
   var timeframe = ""
   switch(alertInfo.timeFrame)
   {
@@ -132,7 +132,6 @@ module.exports.SendResultEventMail = function(alertInfo,result,valuableResults)
     timeframe = "Days";
     break;
   }
-
 
   var messagetext = "\nNotification Name: " +
                       alertInfo.notificationName +
@@ -158,12 +157,18 @@ module.exports.SendResultEventMail = function(alertInfo,result,valuableResults)
       html: messagetext
   };
 
-  console.log('send email');
+  logEvent('send email');
   transporter.sendMail(mailOptions, function (error, info) {
       if (error) {
-          console.log(error);
+          logEvent(error);
       } else {
-          console.log('Message sent: ' + info.response);
+          logEvent('Message sent: ' + info.response);
       }
   });
+}
+
+function logEvent(message){
+  if(tracelevel == 'debug'){
+    console.log(message);
+  }
 }

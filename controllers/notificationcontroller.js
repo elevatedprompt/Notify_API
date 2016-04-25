@@ -9,6 +9,7 @@ EvaluateNotification
 
 
 */
+var tracelevel = 'debug';
 var Resource = require('resourcejs');
 var fs = require ('fs');
 var elasticsearch = require("elasticsearch");
@@ -25,7 +26,7 @@ module.exports = function(app, route){
 //LoadNotifications
 //Load All Notifications
 module.exports.LoadNotifications = function(){
-  console.log("NotificationController:Load Notifications");
+  logEvent("NotificationController:Load Notifications");
 
 fs.readdirSync(notificationDirectory)
   //For each notification in the list
@@ -43,7 +44,7 @@ fs.readdirSync(notificationDirectory)
 //return the list of notifications
 module.exports.GetNotifications = function(req,res,next)
 {
-  console.log("NotificationController:GetNotifications");
+  logEvent("NotificationController:GetNotifications");
   var dir = '/opt/API/Notifications/';
   fs.readdirSync(dir)
     .forEach(function(file) {
@@ -63,7 +64,7 @@ module.exports.GetNotifications = function(req,res,next)
 //Returns a list of all notifications
 module.exports.GetAllNotifications = function ()
 {
-  console.log("NotificationController:GeAlltNotifications");
+  logEvent("NotificationController:GeAlltNotifications");
   var notifications = [];
   var dir = '/opt/API/Notifications/';
   fs.readdirSync(dir)
@@ -79,7 +80,7 @@ module.exports.GetAllNotifications = function ()
 //RegisterNotification
 module.exports.RegisterNotification= function(req,res,next)
 {
-  console.log("NotificationController:Register Notification:" + req.body.notificationName);
+  logEvent("NotificationController:Register Notification:" + req.body.notificationName);
 
   var alertInfo = req.body;
 
@@ -92,9 +93,15 @@ module.exports.RegisterNotification= function(req,res,next)
 //UnregisterNotification
 module.exports.UnregisterNotification= function(req,res,next)
 {
-  console.log("NotificationController:UnregisterNotification:" + req.body.notificationName);
+  logEvent("NotificationController:UnregisterNotification:" + req.body.notificationName);
   var alertInfo = req.body;
   notificationEngine.UnregisterNotification(alertInfo);
   res.sendStatus('true');
   next();
+}
+
+function logEvent(message){
+  if(var tracelevel == 'debug'){
+  console.log(message);
+  }
 }

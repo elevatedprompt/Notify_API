@@ -25,11 +25,6 @@ var notificationController = require('./controllers/notificationcontroller');
 var elasticquery = require('./controllers/elasticquery');
 var notificationEngine = require('./controllers/NotificationEngine');
 
-//var notifications = notificationController.GetAllNotifications();
-app.all('/testQuery',elasticquery.testQuery);
-//app.all('/testSearchExists',elasticquery.testSearchExists);
-
-
 //ElasticSearch Controller
 app.all('/ListSearches',elasticquery.ListSearches)
 app.all('/runSearch',elasticquery.runSearch);
@@ -43,25 +38,8 @@ app.all('/RegisterNotification', notificationController.RegisterNotification);
 app.all('/UnregisterNotification', notificationController.UnregisterNotification);
 
 
-console.log('Listening on port 3003...');
 //Load the Notification Engine
 notificationController.LoadNotifications();
-//app.listen(3003);
+
+console.log('Listening on port 3003...');
 app.listen(3003,'127.0.0.1');
-//get list of notifications.
-
-
-//https://nodejs.org/api/timers.html
-
-//TODO: Add test to register timer events.
-// var immediateObject = setInterval(function(){
-//   console.log('timmer tick');
-// },20000);
-//
-// var immediateObject2 = setInterval(function(){
-//  console.log('timmer 2 Tick');
-//},6000);
-//immediateObject.ref();
-//immediateObject.unref();
-
-//for all notifications evaluate the notification.
