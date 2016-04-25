@@ -139,7 +139,7 @@ var messagetext = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN
 
      //'Content-Type': "multipart/alternative;",
     //  alternative : true,
-    Content:messagetext
+    data:messagetext
   };
 //  email.content = "text/html; charset=UTF-8";
 //  console.log(email.content);
