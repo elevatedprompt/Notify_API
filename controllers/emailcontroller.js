@@ -130,7 +130,7 @@ var messagetext = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN
      subject: "Alert: " + alertInfo.notificationName,
      text: messagetext,
      content: "text/html; charset=UTF-8",
-     headers:[{Content/-Type: "text/html; charset=UTF-8"}],
+     //headers:[{/^content/-Type: "text/html; charset=UTF-8"}],
      alternative : true,
      // attachment:
      // [
@@ -138,6 +138,7 @@ var messagetext = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN
      //    // {path:"path/to/file.zip", type:"application/zip", name:"alertMesages.csv"}
      // ]
   };
+  email.content = "text/html; charset=UTF-8";
   console.log(email.content);
   console.log('send email');
   server.send(email,
