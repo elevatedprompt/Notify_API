@@ -116,7 +116,7 @@ var messagetext = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN
 "</td></tr>" +
 "<tr><td><strong>Condition:</strong></td><td>" +
 thresholdType + " "
-+ alertInfo.thresholdCount + " in " alertInfo.timeValue + " " + timeframe + "\n" +
++ alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + timeframe + "\n" +
 "</td></tr>" +
 "<tr><td><strong>Result Count:</strong></td><td>"
 + result.total +
