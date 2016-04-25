@@ -1,7 +1,7 @@
 //email controller:
 //used to send emails on notification
 //https://www.npmjs.com/package/nodemailer
-var tracelevel = 'debug';
+
 var nodemailer   = require("nodemailer");
 
 // Create a SMTP transporter object
@@ -75,7 +75,7 @@ module.exports.SendEventMail = function(alertInfo,result)
 
 var messagetext =
 
-                "<table><tr><td colspan='2'>A conditional search trigger has been met.</td>"+
+                "<table><tr><td colspan='2'>A conditional search trigger has been met.</td></tr><tr><td colspan='2'></td></tr>"+
                 "<tr><td><strong>Notification Name:</strong></td><td>"
                 + alertInfo.notificationName +
                 "</td></tr>" +

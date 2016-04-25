@@ -15,11 +15,10 @@ app.use(function(req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
   res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-
   next();
 });
 
-
+var tracelevel = 'debug';
 var emailcontroller = require('./controllers/emailcontroller');
 var notificationController = require('./controllers/notificationcontroller');
 var elasticquery = require('./controllers/elasticquery');
@@ -32,11 +31,9 @@ app.all('/getQuery',elasticquery.getQuery);
 app.all('/CallQuery',elasticquery.CallQuery);
 app.all('/EvaluateSearch',elasticquery.EvaluateSearch);
 app.all('/PingCluster',elasticquery.pingCluster)
-//app.all('/CallQueryStep1',elasticquery.CallQueryStep1);
 
 app.all('/RegisterNotification', notificationController.RegisterNotification);
 app.all('/UnregisterNotification', notificationController.UnregisterNotification);
-
 
 //Load the Notification Engine
 notificationController.LoadNotifications();

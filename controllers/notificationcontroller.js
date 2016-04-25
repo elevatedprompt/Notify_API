@@ -9,7 +9,7 @@ EvaluateNotification
 
 
 */
-var tracelevel = 'debug';
+
 var Resource = require('resourcejs');
 var fs = require ('fs');
 var elasticsearch = require("elasticsearch");

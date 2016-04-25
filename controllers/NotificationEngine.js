@@ -1,7 +1,7 @@
 var alertInfos = [];
 var emailManager = require('./emailcontroller');
 var es = require('./elasticquery');
-var tracelevel = 'debug';
+
 
 var EP_EventEmitter = function() {
   this.events = {};
