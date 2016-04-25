@@ -113,12 +113,12 @@ switch(alertInfo.thresholdType){
 
 
 var messagetext =
-                "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>"
-                +"<html xmlns='http://www.w3.org/1999/xhtml'>"
-                +"<head>"
-                +"<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />"
-                +"<title>EPStack - Notification: " + alertInfo.notificationName  + "</title>"
-                +"<meta name='viewport' content='width=device-width, initial-scale=1.0'/>"
+                // "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>"
+                // +"<html xmlns='http://www.w3.org/1999/xhtml'>"
+                // +"<head>"
+                // +"<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />"
+                // +"<title>EPStack - Notification: " + alertInfo.notificationName  + "</title>"
+                // +"<meta name='viewport' content='width=device-width, initial-scale=1.0'/>"
                 "<table><tr><td colspan='2'>A conditional search trigger has been met.</td>"+
                 "<tr><td><strong>Notification Name:</strong></td><td>"
                 + alertInfo.notificationName +
@@ -135,9 +135,10 @@ var messagetext =
                 "</td></tr>" +
                 "<tr><td><strong>Description:</strong></td><td>"
                 + alertInfo.notificationDescription +
-                "</td></tr></table>" +
-                +"</head>"
-                +"</html>";
+                "</td></tr></table>"
+                // +"</head>"
+                // +"</html>"
+                ;
 
 
   email =   {
