@@ -136,10 +136,10 @@ var messagetext = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN
      text: messagetext,
     //  content: "text/html; charset=UTF-8",
      'Content-Type': "text/html; charset=UTF-8",
-     'MIME-Version': "1.0",
-     'Content-Type': "multipart/alternative;",
+
+     //'Content-Type': "multipart/alternative;",
     //  alternative : true,
-    content:messagetext
+    Content:messagetext
   };
 //  email.content = "text/html; charset=UTF-8";
 //  console.log(email.content);
