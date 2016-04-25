@@ -37,7 +37,7 @@ emitter.on('ThresholdMet', function(alertInfo) {
     //result will have count information that will be evaluated
       //Send the email
 
-      if(result.total >= parseInt(alertInfo.thresholdCount,10)){
+      if(result.total > 0){
         logEvent("Threshold Met!")
         //retrieve the result set.
         var triggerTime = new Date();

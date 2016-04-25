@@ -87,18 +87,19 @@ module.exports.SendEventMail = function(alertInfo,result)
     timeframe = "Days";
     break;
   }
+  var thresholdType = "";
+switch(alertInfo.thresholdType){
+  case "FloorEvent":
+  timeframe = "Less Than";
+  break;
+  case "CelingEvent":
+  timeframe = "More Than";
+  break;
+  case "ThresholdMet":
+  timeframe = "More Than";
+  break;
+}
 
-  var messagetext = "<html><div class='navbar-header'>"+
-                 "<a class='navbar-brand' onclick='window.open(&quot;http://elevatedprompt.com&quot;)' href='https://127.0.0.1/#/'><img src='./EPStack Administration Panel_files/EP-logo.jpg' height='30' width='30' alt='Elevated Prompt'> EPSTACK</a>"+
-                "<button type='button' class='navbar-toggle collapsed' data-toggle='collapse' data-target='#js-navbar-collapse'>"+
-                  "  <span class='sr-only'>Toggle navigation</span>"+
-
-                 "   <span class='icon-bar'></span>"+
-                "</button>"+
-                "<br>"+
-                "<br>"+
-                "<br>"+
-            "</div></html>";
 
 var messagetext = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>"
 +"<html xmlns='http://www.w3.org/1999/xhtml'>"
@@ -106,23 +107,26 @@ var messagetext = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN
 +"<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />"
 +"<title>EPStack - Notification: " + alertInfo.notificationName  + "</title>"
 +"<meta name='viewport' content='width=device-width, initial-scale=1.0'/>"
-"<table><tr><td>"
+"<table><tr><td colspan='2'>A conditional search trigger has been met.</td>"+
+"<tr><td><strong>Notification Name:</strong></td><td>"
 + alertInfo.notificationName +
-                    "\nSelected Search: " +
-                    alertInfo.selectedSearch + "\n" +
-                    "\nResult Count: " +
-                    result.total +
-                    "\nTime Frame: " +
-                    alertInfo.timeValue + " " + timeframe + "\n" +
+"</td></tr>" +
+"<tr><td><strong>Search Name:</strong></td><td>"
++ alertInfo.selectedSearch +
+"</td></tr>" +
+"<tr><td><strong>Condition:</strong></td><td>" +
+thresholdType + " "
++ alertInfo.thresholdCount + " in " alertInfo.timeValue + " " + timeframe + "\n" +
+"</td></tr>" +
+"<tr><td><strong>Result Count:</strong></td><td>"
++ result.total +
+"</td></tr>" +
+"<tr><td><strong>Description:</strong></td><td>"
++ alertInfo.notificationDescription +
+"</td></tr>" +
 +"</head>"
 +"</html>";
-  // var messagetext = alertInfo.notificationName +
-  //                     "\nSelected Search: " +
-  //                     alertInfo.selectedSearch + "\n" +
-  //                     "\nResult Count: " +
-  //                     result.total +
-  //                     "\nTime Frame: " +
-  //                     alertInfo.timeValue + " " + timeframe + "\n";
+
 
   email =   {
      from:    "No Tify <EP.Alert.Test@gtmail.com>",
@@ -131,13 +135,7 @@ var messagetext = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN
      text: messagetext,
      content: "text/html; charset=UTF-8",
      'content-type': "text/html; charset=UTF-8",
-     //headers:{"content-type": {}},
      alternative : true,
-     // attachment:
-     // [
-     //    {data:"<html>i <i>hope</i> this works!</html>", alternative:alertInfo.htmlEmail=='true'},
-     //    // {path:"path/to/file.zip", type:"application/zip", name:"alertMesages.csv"}
-     // ]
   };
   email.content = "text/html; charset=UTF-8";
   console.log(email.content);
