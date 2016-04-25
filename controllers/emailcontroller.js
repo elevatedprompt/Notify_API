@@ -29,7 +29,8 @@ var configuration =   {
  host:    "smtp.gmail.com",
  ssl:     true
 };
-  var server  = email.server.connect(configuration);
+var fromSender = "No Tify <EP.Alert.Test@gtmail.com>";
+var server  = email.server.connect(configuration);
 
  function sendMessage(email)
 {
@@ -102,30 +103,30 @@ switch(alertInfo.thresholdType){
 
 
 var messagetext = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN' 'http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd'>"
-+"<html xmlns='http://www.w3.org/1999/xhtml'>"
-+"<head>"
-+"<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />"
-+"<title>EPStack - Notification: " + alertInfo.notificationName  + "</title>"
-+"<meta name='viewport' content='width=device-width, initial-scale=1.0'/>"
-"<table><tr><td colspan='2'>A conditional search trigger has been met.</td>"+
-"<tr><td><strong>Notification Name:</strong></td><td>"
-+ alertInfo.notificationName +
-"</td></tr>" +
-"<tr><td><strong>Search Name:</strong></td><td>"
-+ alertInfo.selectedSearch +
-"</td></tr>" +
-"<tr><td><strong>Condition:</strong></td><td>" +
-thresholdType + " "
-+ alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + timeframe + "\n" +
-"</td></tr>" +
-"<tr><td><strong>Result Count:</strong></td><td>"
-+ result.total +
-"</td></tr>" +
-"<tr><td><strong>Description:</strong></td><td>"
-+ alertInfo.notificationDescription +
-"</td></tr>" +
-+"</head>"
-+"</html>";
+                +"<html xmlns='http://www.w3.org/1999/xhtml'>"
+                +"<head>"
+                +"<meta http-equiv='Content-Type' content='text/html; charset=UTF-8' />"
+                +"<title>EPStack - Notification: " + alertInfo.notificationName  + "</title>"
+                +"<meta name='viewport' content='width=device-width, initial-scale=1.0'/>"
+                "<table><tr><td colspan='2'>A conditional search trigger has been met.</td>"+
+                "<tr><td><strong>Notification Name:</strong></td><td>"
+                + alertInfo.notificationName +
+                "</td></tr>" +
+                "<tr><td><strong>Search Name:</strong></td><td>"
+                + alertInfo.selectedSearch +
+                "</td></tr>" +
+                "<tr><td><strong>Condition:</strong></td><td>" +
+                thresholdType + " "
+                + alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + timeframe + "\n" +
+                "</td></tr>" +
+                "<tr><td><strong>Result Count:</strong></td><td>"
+                + result.total +
+                "</td></tr>" +
+                "<tr><td><strong>Description:</strong></td><td>"
+                + alertInfo.notificationDescription +
+                "</td></tr>" +
+                +"</head>"
+                +"</html>";
 
 
   email =   {
@@ -137,9 +138,9 @@ thresholdType + " "
      'content-type': "text/html; charset=UTF-8",
      alternative : true,
   };
-  email.content = "text/html; charset=UTF-8";
-  console.log(email.content);
-  console.log('send email');
+//  email.content = "text/html; charset=UTF-8";
+//  console.log(email.content);
+//  console.log('send email');
   server.send(email,
    function(err, message) {
      message.content = "text/html; charset=UTF-8";
@@ -187,15 +188,10 @@ module.exports.SendResultEventMail = function(alertInfo,result,valuableResults)
     }
 
   email =   {
-     from:    "No Tify <EP.Alert.Test@gtmail.com>",
+     from:    "No Tify <EP.Alert.Test@gmail.com>",
      to:      alertInfo.notifyEmail,
      subject: "Alert: " + alertInfo.notificationName,
      text: messagetext,
-     attachment:
-     [
-        {data:"<html>i <i>hope</i> this works!</html>", alternative:alertInfo.htmlEmail=='true'},
-        // {path:"path/to/file.zip", type:"application/zip", name:"renamed.zip"}
-     ]
   };
 
 
