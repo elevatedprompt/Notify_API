@@ -134,9 +134,10 @@ var messagetext = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN
      to:      alertInfo.notifyEmail,
      subject: "Alert: " + alertInfo.notificationName,
      text: messagetext,
-     content: "text/html; charset=UTF-8",
+    //  content: "text/html; charset=UTF-8",
      'content-type': "text/html; charset=UTF-8",
-     alternative : true,
+    //  alternative : true,
+    content:messagetext
   };
 //  email.content = "text/html; charset=UTF-8";
 //  console.log(email.content);
