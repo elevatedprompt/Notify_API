@@ -115,20 +115,21 @@ module.exports.EvaluateSearchInternal = function(queryName,timeFrame){
 
 
 module.exports.EvaluateSearch = function(req,res,next){
-  var queryName = req.body.queryName;
-  var timeFrame = req.body.timeFrame;
-  var query = getQueryString(queryName).then(function(result){
-                                                              runTimeFrameSearchInternal(result,timeFrame)
-                                                              .then(function(queryResult){
-                                                                                                res.sendStatus(queryResult);
-                                                                                                next();
-                                                                                              });
-                                                                                            },function(err){
-                                                                                                            logEvent(err.message);
-                                                                                                            res.sendStatus(err.message);
-                                                                                                            next();
-                                                                                                          });
-                                                              }
+                                                      var queryName = req.body.queryName;
+                                                      var timeFrame = req.body.timeFrame;
+                                                      var query = getQueryString(queryName)
+                                                      .then(function(result){
+                                                                              runTimeFrameSearchInternal(result,timeFrame)
+                                                                              .then(function(queryResult){
+                                                                                                                res.sendStatus(queryResult);
+                                                                                                                next();
+                                                                                                              });
+                                                                                                            },function(err){
+                                                                                                                            logEvent(err.message);
+                                                                                                                            res.sendStatus(err.message);
+                                                                                                                            next();
+                                                                                                                          });
+                                                                              }
 
 //Call search by name
 module.exports.CallQuery= function(req,res,next){

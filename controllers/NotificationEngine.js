@@ -16,9 +16,9 @@ EP_EventEmitter.prototype.emit = function(eventname) {
                                                         var args = Array.prototype.slice.call(arguments, 1);
                                                         if (this.events[eventname]) {
                                                           this.events[eventname].forEach(function(callback) {
-                                                            callback.apply(this, args);
-                                                          });
-                                                        }
+                                                                                        callback.apply(this, args);
+                                                                                      });
+                                                                                    }
                                                       };
 
 var emitter = new EP_EventEmitter();
