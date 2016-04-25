@@ -23,6 +23,16 @@
 
 
 var email   = require("emailjs");
+var nodemailer   = require("nodemailer");
+// create reusable transporter object using SMTP transport
+var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'ep.alert.test@gmail.com',
+        pass: 'TestinEP'
+    }
+});
+
 var configuration =   {
  user:    "ep.alert.test@gmail.com",
  password:"TestinEP",
@@ -141,18 +151,36 @@ var messagetext = "<!DOCTYPE html PUBLIC '-//W3C//DTD XHTML 1.0 Transitional//EN
     //  alternative : true,
     html:messagetext
   };
-//  email.content = "text/html; charset=UTF-8";
-//  console.log(email.content);
-//  console.log('send email');
-  server.send(email,
-   function(err, message) {
-    // message.content = "text/html; charset=UTF-8";
-     if(err!=null){
-       console.log("EmailController:SendEventMailError:" + err);
-     }
-     console.log(err || message);
-     return;
- });
+
+  var mailOptions = {
+    from: fromSender,
+    to: alertInfo.notifyEmail,
+    subject: "Alert: " + alertInfo.notificationName,
+    text: "Alert: " + alertInfo.notificationName,
+    html: messagetext
+};
+
+// send mail with defined transport object
+transporter.sendMail(mailOptions, function (error, info) {
+    if (error) {
+        console.log(error);
+    } else {
+        console.log('Message sent: ' + info.response);
+    }
+});
+
+// //  email.content = "text/html; charset=UTF-8";
+// //  console.log(email.content);
+// //  console.log('send email');
+//   server.send(email,
+//    function(err, message) {
+//     // message.content = "text/html; charset=UTF-8";
+//      if(err!=null){
+//        console.log("EmailController:SendEventMailError:" + err);
+//      }
+//      console.log(err || message);
+//      return;
+//  });
 }
 
 //SendResultEventMail
