@@ -37,7 +37,7 @@ emitter.on('ThresholdMet', function(alertInfo) {
                                                                       if(result.total > 0){
                                                                         logEvent("Threshold Met!")
                                                                         var triggerTime = new Date();
-                                                                        emailEvent(alertInfo, result);
+                                                                        emailEvent(alertInfo, result,triggerTime);
                                                                       }
                                                                       else {
                                                                         logEvent("Threshold not Met!")
@@ -59,7 +59,7 @@ emitter.on('FloorEvent', function(alertInfo) {
                                                                     if(result.total <= parseInt(alertInfo.thresholdCount,10)){
                                                                       logEvent("Floor Condition Met!")
                                                                       var triggerTime = new Date();
-                                                                      emailEvent(alertInfo, result);
+                                                                      emailEvent(alertInfo, result,triggerTime);
                                                                     }
                                                                     else {
                                                                       logEvent("Floor Condition not Met!")
@@ -81,7 +81,7 @@ emitter.on('CelingEvent', function(alertInfo) {
                                                                           logEvent("Celing Condition Met!")
                                                                           //retrieve the result set.
                                                                           var triggerTime = new Date();
-                                                                          emailEvent(alertInfo, result);
+                                                                          emailEvent(alertInfo, result,triggerTime);
                                                                         }
                                                                         else {
                                                                           console.log("Celing Condition not Met!")
@@ -122,9 +122,9 @@ emitter.on('ClearInterval',function(alertInfo){
                                               });
 
 //emailEvent
-function emailEvent(alert,result){
+function emailEvent(alert,result,triggerTime){
                                     logEvent("NotificationEngine:emailEvent");
-                                    emailManager.SendEventMail(alert,result);
+                                    emailManager.SendEventMail(alert,result,triggerTime);
                                   }
 
 function emailResultEvent(alert,result,valuableResults){
