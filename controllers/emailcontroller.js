@@ -69,7 +69,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                         "<table><tr><td colspan='2'><strong>A conditional search trigger has been met.</strong></td></tr><tr><td colspan='2'>&nbsp;</td></tr>"+
                                                                         "<tr><td><strong>Notification Name:</strong></td><td>"
                                                                         + alertInfo.notificationName + " @ " + triggerTime.toISOString()
-                                                                                                                          .replace(/T/, ' ')    
+                                                                                                                          .replace(/T/, ' ')
                                                                                                                           .replace(/\..+/, '') +
                                                                         "</td></tr>" +
                                                                         "<tr><td><strong>Search Name:</strong></td><td>"
@@ -98,7 +98,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                           // send mail with defined transport object
                                                           transporter.sendMail(mailOptions, function (error, info) {
                                                                                                                       if (error) {
-                                                                                                                          logEvent(error);
+                                                                                                                          logEvent('Send Email Error:' + error);
                                                                                                                       } else {
                                                                                                                           logEvent('Message sent: ' + info.response);
                                                                                                                       }
