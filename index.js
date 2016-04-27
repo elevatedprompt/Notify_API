@@ -30,16 +30,7 @@ global.emailConfiguration =   {
 
 var emailcontroller = require('./controllers/emailcontroller');
 var notificationController = require('./controllers/notificationcontroller');
-// var elasticquery = require('./controllers/elasticquery');
 var notificationEngine = require('./controllers/NotificationEngine');
-
-//ElasticSearch Controller
-// app.all('/ListSearches',elasticquery.ListSearches)
-// app.all('/runSearch',elasticquery.runSearch);
-// app.all('/getQuery',elasticquery.getQuery);
-// app.all('/CallQuery',elasticquery.CallQuery);
-// app.all('/EvaluateSearch',elasticquery.EvaluateSearch);
-// app.all('/PingCluster',elasticquery.pingCluster)
 
 app.all('/RegisterNotification', notificationController.RegisterNotification);
 app.all('/UnregisterNotification', notificationController.UnregisterNotification);
