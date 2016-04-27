@@ -90,6 +90,6 @@ module.exports.UnregisterNotification= function(req,res,next){
 
 function logEvent(message){
                             if(global.tracelevel == 'debug'){
-                            console.log(message);
-                            }
+                                                              console.log(message);
+                                                              }
                           }

@@ -102,7 +102,7 @@ emitter.on('Register',function(alertInfo){
                                                                                                 //Emit the threshold type to be evaluated
                                                                                                 logEvent("NotificationEngine:Interval Hit:" + alertInfo.notificationName);
                                                                                                 emitter.emit(alertInfo.thresholdType,alertInfo);
-                                                                                              },alertInfo.checkFreq||60000,alertInfo);
+                                                                                              },alertInfo.checkFreq*60000||60000,alertInfo);
                                           alertInfo.intervalObject = intervalObject;
                                           alertInfos.push(alertInfo);
                                         });
@@ -123,9 +123,9 @@ emitter.on('ClearInterval',function(alertInfo){
 
 //emailEvent
 function emailEvent(alert,result,triggerTime){
-                                    logEvent("NotificationEngine:emailEvent");
-                                    emailManager.SendEventMail(alert,result,triggerTime);
-                                  }
+                                                logEvent("NotificationEngine:emailEvent");
+                                                emailManager.SendEventMail(alert,result,triggerTime);
+                                              }
 
 function emailResultEvent(alert,result,valuableResults){
                                                           logEvent("NotificationEngine:emailResultEvent");
@@ -164,6 +164,6 @@ module.exports.UnregisterNotification = function(notification){
                                                               }
 function logEvent(message){
                             if(global.tracelevel == 'debug'){
-                            console.log(message);
-                            }
+                                                            console.log(message);
+                                                            }
                           }
