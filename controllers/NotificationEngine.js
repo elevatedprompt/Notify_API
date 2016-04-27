@@ -43,7 +43,7 @@ emitter.on('ThresholdMet', function(alertInfo) {
                                                                         logEvent("Threshold not Met!")
                                                                       }
                                                                   },function(error){
-                                                                    logEvent('Error in EvaluateSearchInternal');
+                                                                    logEvent('Error in EvaluateSearchInternal: Alert:' + alertInfo.notificationName);
                                                                     logEvent(error.message);
                                                                   });
                                             });
@@ -65,7 +65,7 @@ emitter.on('FloorEvent', function(alertInfo) {
                                                                       logEvent("Floor Condition not Met!")
                                                                     }
                                                                 },function(error){
-                                                                  logEvent('Error in EvaluateSearchInternal');
+                                                                  logEvent('Error in EvaluateSearchInternal: Alert:' + alertInfo.notificationName);
                                                                   logEvent(error.message);
                                                                 });
                                           });
@@ -87,7 +87,7 @@ emitter.on('CelingEvent', function(alertInfo) {
                                                                           console.log("Celing Condition not Met!")
                                                                         }
                                                                     },function(error){
-                                                                      logEvent('Error in EvaluateSearchInternal');
+                                                                      logEvent('Error in EvaluateSearchInternal: Alert:' + alertInfo.notificationName);
                                                                       logEvent(error.message);
                                                                     });
                                             });
