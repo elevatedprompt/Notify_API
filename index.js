@@ -18,7 +18,7 @@ app.use(function(req, res, next) {
                                     next();
                                   });
 
-global.tracelevel =   'debug';
+global.tracelevel =   'error';
 global.elastichost =  '127.0.0.1:9200';
 global.emailConfiguration =   {
                                user:        "ep.alert.test@gmail.com",
