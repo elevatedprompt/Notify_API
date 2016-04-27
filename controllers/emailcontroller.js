@@ -1,87 +1,163 @@
 //email controller:
 //used to send emails on notification
+//https://www.npmjs.com/package/nodemailer
+
+var nodemailer   = require("nodemailer");
+
+// Create a SMTP transporter object
+// var transporter = nodemailer.createTransport({
+//     service: 'Gmail',
+//     auth: {
+//         user: 'test.nodemailer@gmail.com',
+//         pass: 'Nodemailer123'
+//     },
+//     logger: true, // log to console
+//     debug: true // include SMTP traffic in the logs
+// }, {
+//     // default message fields
+//
+//     // sender info
+//     from: 'Sender Name <sender@example.com>',
+//     headers: {
+//         'X-Laziness-level': 1000 // just an example header, no need to use this
+//     }
+// });
+
+// create reusable transporter object using SMTP transport
+var transporter = nodemailer.createTransport({
+                                                service: 'Gmail',
+                                                secure: true,
+                                                auth: {
+                                                    user: global.emailConfiguration.user,
+                                                    pass: global.emailConfiguration.password
+                                                }
+                                            });
 
 
-//Message
-// configuration aka options =
-// {
-//     user        // username for logging into smtp
-//     password // password for logging into smtp
-//     host        // smtp host
-//     port        // smtp port (if null a standard port number will be used)
-//     ssl     // boolean or object {key, ca, cert} (if true or object, ssl connection will be made)
-//     tls     // boolean or object (if true or object, starttls will be initiated)
-//     timeout // max number of milliseconds to wait for smtp responses (defaults to 5000)
-//     domain  // domain to greet smtp with (defaults to os.hostname)
-// authentication // array of preferred authentication methods (ex: email.authentication.PLAIN, email.authentication.XOAUTH2)
-// }
+//SendEventMail
+//This will send an email to the recipent that a trigegr has happened
+module.exports.SendEventMail = function(alertInfo,result,triggerTime){
+                                                          logEvent('Email Controller:Send Event Email Fired');
+                                                          var timeframe = ""
+                                                          switch(alertInfo.timeFrame){
+                                                                                      case "m":
+                                                                                      timeframe = "Minutes";
+                                                                                      break;
+                                                                                      case "h":
+                                                                                      timeframe = "Hours";
+                                                                                      break;
+                                                                                      case "d":
+                                                                                      timeframe = "Days";
+                                                                                      break;
+                                                                                    }
 
-//No Tify
-//EP.Alert.Test@gmail.com
-//pw: TestingEP
-
-//TOOD: Add method to send off the results along with the data
-//  
-
-var email   = require("emailjs");
-var configuration =   {
- user:    "ep.alert.test@gmail.com",
- password:"TestinEP",
- host:    "smtp.gmail.com",
- ssl:     true
-};
-  var server  = email.server.connect(configuration);
-
- function sendMessage(email)
-{
-  console.log('Send Email');
-
-  email =   {
-     text:    "Alert Notification",
-     from:    "No Tify <EP.Alert.Test@gtmail.com>",
-     to:      email,
-
-     subject: "EP testing email Notifications"
-  };
-  //
-    server.send(email,
-    function(err, message) { console.log(err || message); });
-}
+                                                          var thresholdType = "";
+                                                          switch(alertInfo.thresholdType){
+                                                                                            case "FloorEvent":
+                                                                                            thresholdType = "Less Than";
+                                                                                            break;
+                                                                                            case "CelingEvent":
+                                                                                            thresholdType = "More Than";
+                                                                                            break;
+                                                                                            case "ThresholdMet":
+                                                                                            thresholdType = "More Than";
+                                                                                            break;
+                                                                                          }
 
 
+                                                        var messagetext =
+                                                                        "<table><tr><td colspan='2'><strong>A conditional search trigger has been met.</strong></td></tr><tr><td colspan='2'>&nbsp;</td></tr>"+
+                                                                        "<tr><td><strong>Notification Name:</strong></td><td>"
+                                                                        + alertInfo.notificationName + " @ " + triggerTime.toISOString()
+                                                                                                                          .replace(/T/, ' ')
+                                                                                                                          .replace(/\..+/, '') +
+                                                                        "</td></tr>" +
+                                                                        "<tr><td><strong>Search Name:</strong></td><td>"
+                                                                        + alertInfo.selectedSearch +
+                                                                        "</td></tr>" +
+                                                                        "<tr><td><strong>Condition:</strong></td><td>" +
+                                                                        thresholdType + " "
+                                                                        + alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + timeframe + "\n" +
+                                                                        "</td></tr>" +
+                                                                        "<tr><td><strong>Result Count:</strong></td><td>"
+                                                                        + result.total +
+                                                                        "</td></tr>" +
+                                                                        "<tr><td><strong>Description:</strong></td><td>"
+                                                                        + alertInfo.notificationDescription +
+                                                                        "</td></tr></table>";
 
-module.exports.SendMail= function(req,res,next)
-{
-  console.log('Send Email Fired');
-  console.log(req.body);
-  //Read the contents of the call.
 
-  email =   {
-     text:    "this is a test",
-     from:    "No Tify <EP.Alert.Test@gtmail.com>",
-     to:      "colin.goss@gmail.com",
-     subject: "some alert"
-  };
-  server.send(email,
-   function(err, message) { console.log(err || message); });
-  next();
-}
+                                                            var mailOptions = {
+                                                              from: global.emailConfiguration.fromSender,
+                                                              to: alertInfo.notifyEmail,
+                                                              subject: "Alert: " + alertInfo.notificationName,
+                                                              text: "Alert: " + alertInfo.notificationName,
+                                                              html: messagetext
+                                                          };
+
+                                                          // send mail with defined transport object
+                                                          transporter.sendMail(mailOptions, function (error, info) {
+                                                                                                                      if (error) {
+                                                                                                                          logEvent('Send Email Error:' + error);
+                                                                                                                      } else {
+                                                                                                                          logEvent('Message sent: ' + info.response);
+                                                                                                                      }
+                                                                                                                  });
+
+                                                        }
+
+//SendResultEventMail
+//Will send an email to the recipient that an event has happened with the data attached.
+module.exports.SendResultEventMail = function(alertInfo,result,valuableResults){
+                                                                                logEvent('Email Controller:Send Event Email Fired');
+                                                                                var timeframe = ""
+                                                                                switch(alertInfo.timeFrame) {
+                                                                                                              case "m":
+                                                                                                              timeframe = "Minutes";
+                                                                                                              break;
+                                                                                                              case "h":
+                                                                                                              timeframe = "Hours";
+                                                                                                              break;
+                                                                                                              case "d":
+                                                                                                              timeframe = "Days";
+                                                                                                              break;
+                                                                                                            }
+
+                                                                                var messagetext = "\nNotification Name: " +
+                                                                                                    alertInfo.notificationName +
+                                                                                                    "\nSelected Search: " +
+                                                                                                    alertInfo.selectedSearch + "\n" +
+                                                                                                    "\nResult Count: " +
+                                                                                                    result.total +
+                                                                                                    "\nTime Frame: " +
+                                                                                                    alertInfo.timeValue + " " +timeframe;
+
+                                                                                  if(alertInfo.htmlEmail=='true'){
+                                                                                                                    messagetext + "\nData: " +
+                                                                                                                    JSON.stringify(valuableResults);
+                                                                                                                  }
 
 
+                                                                                  var mailOptions = {
+                                                                                                        from: global.emailConfiguration.fromSender,
+                                                                                                        to: alertInfo.notifyEmail,
+                                                                                                        subject: "Alert: " + alertInfo.notificationName,
+                                                                                                        text: "Alert: " + alertInfo.notificationName,
+                                                                                                        html: messagetext
+                                                                                                    };
 
-module.exports.testEmail= function(email,next)
-{
-  console.log('Test Email Fired');
+                                                                                logEvent('send email');
+                                                                                transporter.sendMail(mailOptions, function (error, info) {
+                                                                                                                                            if (error) {
+                                                                                                                                                logEvent(error);
+                                                                                                                                            } else {
+                                                                                                                                                logEvent('Message sent: ' + info.response);
+                                                                                                                                            }
+                                                                                                                                        });
+                                                                              }
 
-  email =   {
-     text:    "Alert Notification",
-     from:    "No Tify <EP.Alert.Test@gtmail.com>",
-     to:      "someone <colin.goss@gmail.com>",
-
-     subject: "EP testing email Notifications"
-  };
-
-    server.send(email,
-     function(err, message) { console.log(err || message); });
-     next();
-}
+function logEvent(message){
+                            if(global.tracelevel == 'debug'){
+                              console.log(message);
+                            }
+                          }

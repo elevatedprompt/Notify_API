@@ -1,109 +1,169 @@
-
-var alertInfos = []; //This is a list of all active notifications on this node.
-
-
-
-//     newNotification.notificationName
-//     newNotification.selectedSearch
-//     newNotification.thresholdType
-//     newNotification.thresholdCount
-//     newNotification.timeValue
-//     newNotification.timeFrame
-//     newNotification.notificationDescription
-//     newNotification.enabled
-//     newNotification.notifyEmail
+var alertInfos = [];
+var emailManager = require('./emailcontroller');
+var es = require('./elasticquery');
 
 
 var EP_EventEmitter = function() {
-  this.events = {};
-};
+                                    this.events = {};
+                                  };
 
 EP_EventEmitter.prototype.on = function(eventname, callback) {
-  this.events[eventname] || (this.events[eventname] = []);
-  this.events[eventname].push(callback);
-};
+                                                                this.events[eventname] || (this.events[eventname] = []);
+                                                                this.events[eventname].push(callback);
+                                                              };
 
 EP_EventEmitter.prototype.emit = function(eventname) {
-  var args = Array.prototype.slice.call(arguments, 1);
-  if (this.events[eventname]) {
-    this.events[eventname].forEach(function(callback) {
-      callback.apply(this, args);
-    });
-  }
-};
+                                                        var args = Array.prototype.slice.call(arguments, 1);
+                                                        if (this.events[eventname]) {
+                                                          this.events[eventname].forEach(function(callback) {
+                                                                                        callback.apply(this, args);
+                                                                                      });
+                                                                                    }
+                                                      };
+
+var emitter = new EP_EventEmitter();
 
 //Event Implementation
-//
-var emitter = new EP_EventEmitter();
-emitter.on('ThresholdMet', function(queryName,eventTime,triggerTime,alertInfo) {
-  //An threshold has been met
-  console.log("Threshold Met fired - Query:" + queryName + " Alert Name: " + alertInfo.AlertName);
-  console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
-  //Collect the data
-  //Send the email
 
-});
-emitter.on('FloorEvent', function(queryName,eventTime,triggerTime,alertInfo) {
-  //An Floor Event has been met
-  console.log("Floor Event fired - Query:" + queryName + " Alert Name: " + alertInfo.AlertName);
-  console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
-  //Collect the data
-  //Send the email
+//ThresholdMet
+//A threshold has been met
+//The search rowcount has passed the notification threshold.
+emitter.on('ThresholdMet', function(alertInfo) {
+                                              logEvent("NotificationEngine:Threshold Met fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
 
-});
-emitter.on('CelingEvent', function(queryName,eventTime,triggerTime,alertInfo) {
-  //A celing Event has been met.
-  console.log("Celing Event fired - Query:" + queryName + " Alert Name: " + alertInfo.AlertName);
-  console.log("Event Time: " + eventTime + " Trigger Time: " + triggerTime);
-  //Collect the data
-  //Send the email
-});
+                                              es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
+                                              .then(function(result){
 
+                                                                      if(result.total > 0){
+                                                                        logEvent("Threshold Met!")
+                                                                        var triggerTime = new Date();
+                                                                        emailEvent(alertInfo, result,triggerTime);
+                                                                      }
+                                                                      else {
+                                                                        logEvent("Threshold not Met!")
+                                                                      }
+                                                                  },function(error){
+                                                                    logEvent('Error in EvaluateSearchInternal: Alert:' + alertInfo.notificationName);
+                                                                    logEvent(error.message);
+                                                                  });
+                                            });
+
+//FloorEvent
+//The rowcount for the search query has dropped below the expected value.
+//This function is usefull for validating expected levels
+emitter.on('FloorEvent', function(alertInfo) {
+                                            logEvent("Floor Event fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
+
+                                            es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
+                                            .then(function(result){
+                                                                    if(result.total <= parseInt(alertInfo.thresholdCount,10)){
+                                                                      logEvent("Floor Condition Met!")
+                                                                      var triggerTime = new Date();
+                                                                      emailEvent(alertInfo, result,triggerTime);
+                                                                    }
+                                                                    else {
+                                                                      logEvent("Floor Condition not Met!")
+                                                                    }
+                                                                },function(error){
+                                                                  logEvent('Error in EvaluateSearchInternal: Alert:' + alertInfo.notificationName);
+                                                                  logEvent(error.message);
+                                                                });
+                                          });
+
+//CelingEvent
+//Max record count hit for a given search based on the timeframe.
+emitter.on('CelingEvent', function(alertInfo) {
+                                              logEvent("NotificationEngine:Celing Event fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
+
+                                              es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
+                                              .then(function(result){
+                                                                        if(result.total <= parseInt(alertInfo.thresholdCount,10)){
+                                                                          logEvent("Celing Condition Met!")
+                                                                          //retrieve the result set.
+                                                                          var triggerTime = new Date();
+                                                                          emailEvent(alertInfo, result,triggerTime);
+                                                                        }
+                                                                        else {
+                                                                          console.log("Celing Condition not Met!")
+                                                                        }
+                                                                    },function(error){
+                                                                      logEvent('Error in EvaluateSearchInternal: Alert:' + alertInfo.notificationName);
+                                                                      logEvent(error.message);
+                                                                    });
+                                            });
+
+
+
+//Register
+//Register and setup interval for monitor
 emitter.on('Register',function(alertInfo){
-  console.log("event Listener Registered: " + alertInfo.AlertName);
-  var intervalObject = setInterval(function(alertInfo){
-    console.log("inside interval");
-    console.log(JSON.stringify(alertInfo));
-    console.log('checked ' + alertInfo.AlertName);
+                                          logEvent("NotificationEngine:event Listiner Registered: " + alertInfo.notificationName);
+                                          var intervalObject = setInterval(function(alertInfo){
+                                                                                                //Emit the threshold type to be evaluated
+                                                                                                logEvent("NotificationEngine:Interval Hit:" + alertInfo.notificationName);
+                                                                                                emitter.emit(alertInfo.thresholdType,alertInfo);
+                                                                                              },alertInfo.checkFreq*60000||60000,alertInfo);
+                                          alertInfo.intervalObject = intervalObject;
+                                          alertInfos.push(alertInfo);
+                                        });
 
-  },alertInfo.interval,alertInfo);
-  alertInfo.intervalObject = intervalObject;
-  alertInfos.push(alertInfo);
-});
-
+//Unregister
+//stop the timer and remove the object from the list
 emitter.on('UnRegister',function(alertInfo){
-  console.log("event Listener Unregistered: " + alertInfo.AlertName);
-  //stop the event
-   clearInterval(alertInfo.intervalObject);
-   //Remove the alert from the collection
-   delete alertInfos[alertInfos.indexOf(alertInfo)];
-});
+                                              logEvent("NotificationEngine:event Listiner Unregistered: " + alertInfo.notificationName);
+                                               clearInterval(alertInfo.intervalObject);
+                                               delete alertInfos[alertInfos.indexOf(alertInfo)];
+                                            });
+
 //Unref
 emitter.on('ClearInterval',function(alertInfo){
-  ClearInterval(alertInfo.intervalObject);//Stop the interval from happening
-});
+                                                logEvent("NotificationEngine:Clear Interval" + alertInfo.notificationName);
+                                                clearInterval(alertInfo.intervalObject);//Stop the interval from happening
+                                              });
+
+//emailEvent
+function emailEvent(alert,result,triggerTime){
+                                                logEvent("NotificationEngine:emailEvent");
+                                                emailManager.SendEventMail(alert,result,triggerTime);
+                                              }
+
+function emailResultEvent(alert,result,valuableResults){
+                                                          logEvent("NotificationEngine:emailResultEvent");
+                                                          emailManager.SendResultEventMail(alert,result,valuableResults);
+                                                        }
 
 
-module.exports.RegisterNotification = function(alertInfo){
-  emitter.emit('Register',alertInfo);
-}
-
+//UnregisterEventMonitor
+//Internal method.
 function UnregisterEventMonitor(alertInfo){
-  clearInterval(alertInfo.intervalObject);
+                                            clearInterval(alertInfo.intervalObject);
+                                            emitter.emit('Unregister',alertInfo);
+                                          }
 
-  emitter.emit('Unregister',alertInfo);
-}
+//RegisterNotification
+//emit's an event to register the alertInfo
+module.exports.RegisterNotification = function(alertInfo){
+                                                          logEvent('NotificationEngine:Register Notification');
+                                                          emitter.emit('Register',alertInfo);
+                                                        }
 
-
-
+//UnregisterNotification
 //Unregiser the event.
-module.exports.UnregisterNotification = function(notificationName)
-{
-  forEach(alertInfo in alertInfos)
-  {
-    if(alertInfo.notificationName == notificationName)
-        emitter.emit('Unregister',alertInfo);
-  }
+module.exports.UnregisterNotification = function(notification){
+                                                                logEvent('NotificationEngine:Unregister Notification: ' + notification.notificationName);
 
-  return true;
-}
+                                                                if(alertInfos.length>=0)
+                                                                  return true;
+                                                                forEach(alertInfo in alertInfos)
+                                                                {
+                                                                  logEvent(alertInfo);
+                                                                  if(alertInfo.notificationName == notification.notificationName)
+                                                                      emitter.emit('Unregister',alertInfo);
+                                                                }
+                                                                return true;
+                                                              }
+function logEvent(message){
+                            if(global.tracelevel == 'debug'){
+                                                            console.log(message);
+                                                            }
+                          }
