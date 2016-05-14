@@ -39,8 +39,8 @@ module.exports.LoadNotifications = function(){
 //return the list of notifications
 module.exports.GetNotifications = function(req,res,next){
                                                           logEvent("NotificationController:GetNotifications");
-                                                          var dir = '/opt/API/Notifications/';
-                                                          fs.readdirSync(dir)
+                                                          
+                                                          fs.readdirSync(global.notificationDirectory)
                                                             .forEach(function(file) {
 
                                                                                      file = dir+'/'+file;
@@ -59,8 +59,8 @@ module.exports.GetNotifications = function(req,res,next){
 module.exports.GetAllNotifications = function (){
                                                   logEvent("NotificationController:GeAlltNotifications");
                                                   var notifications = [];
-                                                  var dir = '/opt/API/Notifications/';
-                                                  fs.readdirSync(dir)
+
+                                                  fs.readdirSync(global.notificationDirectory)
                                                     .forEach(function(file) {
                                                                                var data = fs.readFileSync(file,'utf8');
                                                                                var obj = JSON.parse(data);
