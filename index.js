@@ -20,6 +20,7 @@ app.use(function(req, res, next) {
 
 global.tracelevel =   'error';
 global.elastichost =  '127.0.0.1:9200';
+global.notificationDirectory = '/opt/API/Notifications/';
 global.emailConfiguration =   {
                                user:        "ep.alert.test@gmail.com",
                                password:    "TestinEP",

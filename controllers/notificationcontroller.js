@@ -12,7 +12,7 @@ var Resource = require('resourcejs');
 var fs = require ('fs');
 var elasticsearch = require("elasticsearch");
 var notificationEngine = require("./NotificationEngine");
-var notificationDirectory = "/opt/API/Notifications/";
+
 
 module.exports = function(app, route){
                                         return function(req, res, next) {
@@ -24,9 +24,9 @@ module.exports = function(app, route){
 //Load All Notifications
 module.exports.LoadNotifications = function(){
                                             logEvent("NotificationController:Load Notifications");
-                                            fs.readdirSync(notificationDirectory)
+                                            fs.readdirSync(global.notificationDirectory)
                                               .forEach(function(file) {
-                                                                         file = notificationDirectory+'/'+file;
+                                                                         file = global.notificationDirectory+'/'+file;
                                                                          var data = fs.readFileSync(file,'utf8');
                                                                          var alertInfo = JSON.parse(data);
                                                                          if(alertInfo.enabled == 'true'){
