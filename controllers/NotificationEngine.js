@@ -102,7 +102,7 @@ emitter.on("EventTriggered", function(alertInfo){
 
                                                   logEvent("Disable the notification for " + alertInfo.interval + "ms");
                                                   logEvent(alertInfo.intervalObject);
-                                                  alertInfo.interval.idleTimeout = alertInfo.interval-60000;
+                                                  alertInfo.interval._idleTimeout = alertInfo.interval-60000;
                                                   logEvent(alertInfo.intervalObject);
                                                   var intervalObject = alertInfo.intervalObject;
                                                   //intervalObject.unref();
