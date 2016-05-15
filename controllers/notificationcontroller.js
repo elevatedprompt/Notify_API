@@ -39,11 +39,11 @@ module.exports.LoadNotifications = function(){
 //return the list of notifications
 module.exports.GetNotifications = function(req,res,next){
                                                           logEvent("NotificationController:GetNotifications");
-                                                          
+
                                                           fs.readdirSync(global.notificationDirectory)
                                                             .forEach(function(file) {
 
-                                                                                     file = dir+'/'+file;
+                                                                                     file = global.notificationDirectory+'/'+file;
                                                                                      var stat = fs.statSync(file);
 
                                                                                      if (stat && stat.isDirectory()) {

@@ -33,7 +33,7 @@ emitter.on('ThresholdMet', function(alertInfo) {
 
                                               es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
                                               .then(function(result){
-
+                                                                    logEvent(JSON.stringify(result));
                                                                       if(result.total > 0){
                                                                         logEvent("Threshold Met!")
                                                                         var triggerTime = new Date();
