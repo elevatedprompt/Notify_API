@@ -100,7 +100,7 @@ emitter.on('CeilingEvent', function(alertInfo) {
 
 
 emitter.on("EventTriggered", function(alertInfo){
-                                                  logEvent("Re Enable the notification");
+                                                  logEvent("Disable the notification for " + alertInfo.interval + "ms");
                                                   alertInfo.intervalObject.unref();
                                                   setTimeout(function(alertInfo){
                                                                                   logEvent("Re enable the notification");
