@@ -105,12 +105,12 @@ emitter.on("EventTriggered", function(alertInfo){
                                                   logEvent(alertInfo.intervalObject);
                                                   var intervalObject = alertInfo.intervalObject;
                                                   intervalObject.unref();
-                                                  setTimeout(function(alertInfo){
+                                                  setTimeout(function(intervalObject){
                                                                                   logEvent("Re enable the notification");
-                                                                                  var intervalObject = alertInfo.intervalObject;
+
                                                                                   //alertInfo.interval.idleTimeout = 60000;
                                                                                   intervalObject.ref();
-                                                                                },alertInfo.interval-60000||60000,alertInfo);
+                                                                                },alertInfo.interval-60000||60000,intervalObject);
                                                   });
 //pause the interval
 //create a timeout for the set timeFrame - 1 minutes
