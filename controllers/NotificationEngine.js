@@ -99,16 +99,18 @@ emitter.on('CeilingEvent', function(alertInfo) {
 
 
 emitter.on("EventTriggered", function(alertInfo){
+
                                                   logEvent("Disable the notification for " + alertInfo.interval + "ms");
                                                   logEvent(alertInfo.intervalObject);
-                                                  var intervalObject = alertInfo.intervalObject;
-                                                  intervalObject.unref();
+                                                  alertInfo.interval.idleTimeout = alertInfo.interval-60000;
                                                   logEvent(alertInfo.intervalObject);
-                                                  logEvent(alertInfo.interval-60000);
+                                                  var intervalObject = alertInfo.intervalObject;
+                                                  //intervalObject.unref();
                                                   setTimeout(function(alertInfo){
                                                                                   logEvent("Re enable the notification");
                                                                                   var intervalObject = alertInfo.intervalObject;
-                                                                                  intervalObject.ref();
+                                                                                  alertInfo.interval.idleTimeout = 60000;
+                                                    //                              intervalObject.ref();
                                                                                 },alertInfo.interval-60000);
                                                   });
 //pause the interval
