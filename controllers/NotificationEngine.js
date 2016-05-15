@@ -87,7 +87,6 @@ emitter.on('CeilingEvent', function(alertInfo) {
                                                                           var triggerTime = new Date();
                                                                           emailEvent(alertInfo, result,triggerTime);
                                                                           emitter.emit("EventTriggered", alertInfo);
-
                                                                         }
                                                                         else {
                                                                           console.log("Ceiling Condition not Met!")
@@ -101,10 +100,15 @@ emitter.on('CeilingEvent', function(alertInfo) {
 
 emitter.on("EventTriggered", function(alertInfo){
                                                   logEvent("Disable the notification for " + alertInfo.interval + "ms");
-                                                  alertInfo.intervalObject.unref();
+                                                  logEvent(JSON.stringify(alertInfo.intervalObject));
+                                                  var intervalObject = alertInfo.intervalObject;
+                                                  intervalObject.unref();
+                                                  logEvent(JSON.stringify(alertInfo.intervalObject));
+                                                  
                                                   setTimeout(function(alertInfo){
                                                                                   logEvent("Re enable the notification");
-                                                                                  alertInfo.intervalObject.ref();
+                                                                                  var intervalObject = alertInfo.intervalObject;
+                                                                                  intervalObject.ref();
                                                                                 },alertInfo.interval-60000);
                                                   });
 //pause the interval
