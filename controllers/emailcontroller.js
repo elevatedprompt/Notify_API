@@ -56,7 +56,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                                             case "FloorEvent":
                                                                                             thresholdType = "Less Than";
                                                                                             break;
-                                                                                            case "CelingEvent":
+                                                                                            case "CeilingEvent":
                                                                                             thresholdType = "More Than";
                                                                                             break;
                                                                                             case "ThresholdMet":
