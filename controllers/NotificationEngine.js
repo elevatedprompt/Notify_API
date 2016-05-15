@@ -38,6 +38,7 @@ emitter.on('ThresholdMet', function(alertInfo) {
                                                                         logEvent("Threshold Met!")
                                                                         var triggerTime = new Date();
                                                                         emailEvent(alertInfo, result,triggerTime);
+                                                                        emitter.emit("EventTriggered", alertInfo);
                                                                       }
                                                                       else {
                                                                         logEvent("Threshold not Met!")
@@ -61,6 +62,7 @@ emitter.on('FloorEvent', function(alertInfo) {
                                                                       logEvent("Floor Condition Met!")
                                                                       var triggerTime = new Date();
                                                                       emailEvent(alertInfo, result,triggerTime);
+                                                                      emitter.emit("EventTriggered", alertInfo);
                                                                     }
                                                                     else {
                                                                       logEvent("Floor Condition not Met!")
@@ -71,9 +73,9 @@ emitter.on('FloorEvent', function(alertInfo) {
                                                                 });
                                           });
 
-//CelingEvent
+//CeilingEvent
 //Max record count hit for a given search based on the timeframe.
-emitter.on('CelingEvent', function(alertInfo) {
+emitter.on('CeilingEvent', function(alertInfo) {
                                               logEvent("NotificationEngine:Ceiling Event fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
 
                                               es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
@@ -84,6 +86,8 @@ emitter.on('CelingEvent', function(alertInfo) {
                                                                           //retrieve the result set.
                                                                           var triggerTime = new Date();
                                                                           emailEvent(alertInfo, result,triggerTime);
+                                                                          emitter.emit("EventTriggered", alertInfo);
+
                                                                         }
                                                                         else {
                                                                           console.log("Ceiling Condition not Met!")
@@ -95,6 +99,16 @@ emitter.on('CelingEvent', function(alertInfo) {
                                             });
 
 
+emitter.on("EventTriggered", function(alertInfo){
+
+                                                  alertInfo.intervalObject.unref();
+                                                  setTimeout(function(alertInfo){
+                                                                                  alertInfo.intervalObject.ref();
+                                                                                },alertInfo.interval-60000);
+                                                  });
+//pause the interval
+//create a timeout for the set timeFrame - 1 minutes
+//enable the interval
 
 //Register
 //Register and setup interval for monitor
