@@ -99,19 +99,18 @@ emitter.on('CeilingEvent', function(alertInfo) {
 
 
 emitter.on("EventTriggered", function(alertInfo){
-
                                                   logEvent("Disable the notification for " + alertInfo.interval + "ms");
-                                                  logEvent(alertInfo.intervalObject);
-                                                  alertInfo.interval._idleTimeout = alertInfo.interval-60000;
+                                              //    logEvent(alertInfo.intervalObject);
+                                              //    alertInfo.interval._idleTimeout = alertInfo.interval-60000;
                                                   logEvent(alertInfo.intervalObject);
                                                   var intervalObject = alertInfo.intervalObject;
-                                                  //intervalObject.unref();
+                                                  intervalObject.unref();
                                                   setTimeout(function(alertInfo){
                                                                                   logEvent("Re enable the notification");
                                                                                   var intervalObject = alertInfo.intervalObject;
-                                                                                  alertInfo.interval.idleTimeout = 60000;
-                                                    //                              intervalObject.ref();
-                                                                                },alertInfo.interval-60000);
+                                                                                  //alertInfo.interval.idleTimeout = 60000;
+                                                                                  intervalObject.ref();
+                                                                                },alertInfo.interval-60000||60000,alertInfo);
                                                   });
 //pause the interval
 //create a timeout for the set timeFrame - 1 minutes
