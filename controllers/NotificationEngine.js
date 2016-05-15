@@ -113,7 +113,7 @@ emitter.on('Register',function(alertInfo){
                                                                                                 //Emit the threshold type to be evaluated
                                                                                                 logEvent("NotificationEngine:Interval Hit:" + alertInfo.notificationName);
                                                                                                 emitter.emit(alertInfo.thresholdType,alertInfo);
-                                                                                              },alertInfo.checkFreq*60000||60000,alertInfo);
+                                                                                              },alertInfo.checkFreq*60000||300000,alertInfo);
                                           alertInfo.intervalObject = intervalObject;
                                           alertInfos.push(alertInfo);
                                         });
