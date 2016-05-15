@@ -102,7 +102,7 @@ emitter.on('CeilingEvent', function(alertInfo) {
                                                                                                         logEvent("Ceiling Condition Met!")
                                                                                                         //retrieve the result set.
                                                                                                         var triggerTime = new Date();
-                                                                                                        alertInfo.triggerTime = triggerTime;
+                                                                                                        alertInfo.triggerTime = triggerTime.getTime();
                                                                                                         emailEvent(alertInfo, result,triggerTime);
                                                                                                         // emitter.emit("EventTriggered", alertInfo);
                                                                                                       }
