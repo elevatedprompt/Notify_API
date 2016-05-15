@@ -56,6 +56,7 @@ emitter.on('FloorEvent', function(alertInfo) {
 
                                             es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
                                             .then(function(result){
+                                                                    logEvent(JSON.stringify(result));
                                                                     if(result.total <= parseInt(alertInfo.thresholdCount,10)){
                                                                       logEvent("Floor Condition Met!")
                                                                       var triggerTime = new Date();
@@ -73,18 +74,19 @@ emitter.on('FloorEvent', function(alertInfo) {
 //CelingEvent
 //Max record count hit for a given search based on the timeframe.
 emitter.on('CelingEvent', function(alertInfo) {
-                                              logEvent("NotificationEngine:Celing Event fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
+                                              logEvent("NotificationEngine:Ceiling Event fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
 
                                               es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
                                               .then(function(result){
-                                                                        if(result.total <= parseInt(alertInfo.thresholdCount,10)){
-                                                                          logEvent("Celing Condition Met!")
+                                                                        logEvent(JSON.stringify(result));
+                                                                        if(result.total >= parseInt(alertInfo.thresholdCount,10)){
+                                                                          logEvent("Ceiling Condition Met!")
                                                                           //retrieve the result set.
                                                                           var triggerTime = new Date();
                                                                           emailEvent(alertInfo, result,triggerTime);
                                                                         }
                                                                         else {
-                                                                          console.log("Celing Condition not Met!")
+                                                                          console.log("Ceiling Condition not Met!")
                                                                         }
                                                                     },function(error){
                                                                       logEvent('Error in EvaluateSearchInternal: Alert:' + alertInfo.notificationName);
