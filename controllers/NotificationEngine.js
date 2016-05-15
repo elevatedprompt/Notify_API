@@ -30,31 +30,24 @@ var emitter = new EP_EventEmitter();
 //The search rowcount has passed the notification threshold.
 emitter.on('ThresholdMet', function(alertInfo) {
                                               logEvent("NotificationEngine:Threshold Met fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
-                                              //if the time since the last trigger time plus the interval has passed
-                                              var currentTime = new Date();
-                                              if((alertInfo.triggerTime||0 + alertInfo.interval)
-                                                        >currentTime.getTime()){
-                                                                                es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
-                                                                                .then(function(result){
-                                                                                                      logEvent(JSON.stringify(result));
-                                                                                                        if(result.total > 0){
-                                                                                                          logEvent("Threshold Met!")
-                                                                                                          var triggerTime = new Date();
-                                                                                                          alertInfo.triggerTime = triggerTime.getTime();
-                                                                                                          emailEvent(alertInfo, result,triggerTime);
-                                                                                                          // emitter.emit("EventTriggered", alertInfo);
-                                                                                                        }
-                                                                                                        else {
-                                                                                                          logEvent("Threshold not Met!")
-                                                                                                        }
-                                                                                                    },function(error){
-                                                                                                      logEvent('Error in EvaluateSearchInternal: Alert:' + alertInfo.notificationName);
-                                                                                                      logEvent(error.message);
-                                                                                                    });
-                                                                                }
-                                                                                else {
-                                                                                  logEvent("time Threshold Not met");
-                                                                                }
+
+                                              es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
+                                              .then(function(result){
+                                                                    logEvent(JSON.stringify(result));
+                                                                      if(result.total > 0){
+                                                                        logEvent("Threshold Met!")
+                                                                        var triggerTime = new Date();
+                                                                        alertInfo.triggerTime = triggerTime;
+                                                                        emailEvent(alertInfo, result,triggerTime);
+                                                                      //  emitter.emit("EventTriggered", alertInfo);
+                                                                      }
+                                                                      else {
+                                                                        logEvent("Threshold not Met!")
+                                                                      }
+                                                                  },function(error){
+                                                                    logEvent('Error in EvaluateSearchInternal: Alert:' + alertInfo.notificationName);
+                                                                    logEvent(error.message);
+                                                                  });
                                             });
 
 //FloorEvent
@@ -62,61 +55,48 @@ emitter.on('ThresholdMet', function(alertInfo) {
 //This function is usefull for validating expected levels
 emitter.on('FloorEvent', function(alertInfo) {
                                             logEvent("Floor Event fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
-                                            var currentTime = new Date();
-                                            if((alertInfo.triggerTime||0 + alertInfo.interval)
-                                                      >currentTime.getTime()){
-                                                                            es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
-                                                                            .then(function(result){
-                                                                                                    logEvent(JSON.stringify(result));
-                                                                                                    if(result.total <= parseInt(alertInfo.thresholdCount,10)){
-                                                                                                      logEvent("Floor Condition Met!")
-                                                                                                      var triggerTime = new Date();
-                                                                                                      alertInfo.triggerTime = triggerTime.getTime();
-                                                                                                      emailEvent(alertInfo, result,triggerTime);
-                                                                                                      // emitter.emit("EventTriggered", alertInfo);
-                                                                                                    }
-                                                                                                    else {
-                                                                                                      logEvent("Floor Condition not Met!")
-                                                                                                    }
-                                                                                                },function(error){
-                                                                                                  logEvent('Error in EvaluateSearchInternal: Alert:' + alertInfo.notificationName);
-                                                                                                  logEvent(error.message);
-                                                                                                });
-                                                                             }
-                                                                             else {
-                                                                               logEvent("time Threshold Not met");
-                                                                             }
+
+                                            es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
+                                            .then(function(result){
+                                                                    logEvent(JSON.stringify(result));
+                                                                    if(result.total <= parseInt(alertInfo.thresholdCount,10)){
+                                                                      logEvent("Floor Condition Met!")
+                                                                      var triggerTime = new Date();
+                                                                      alertInfo.triggerTime = triggerTime;
+                                                                      emailEvent(alertInfo, result,triggerTime);
+                                                                  //    emitter.emit("EventTriggered", alertInfo);
+                                                                    }
+                                                                    else {
+                                                                      logEvent("Floor Condition not Met!")
+                                                                    }
+                                                                },function(error){
+                                                                  logEvent('Error in EvaluateSearchInternal: Alert:' + alertInfo.notificationName);
+                                                                  logEvent(error.message);
+                                                                });
                                           });
 
 //CeilingEvent
 //Max record count hit for a given search based on the timeframe.
 emitter.on('CeilingEvent', function(alertInfo) {
                                               logEvent("NotificationEngine:Ceiling Event fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
-                                              var currentTime = new Date();
-                                              if((alertInfo.triggerTime||0 + alertInfo.interval)
-                                                        >currentTime.getTime()){
-                                                                            es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
-                                                                            .then(function(result){
-                                                                                                      logEvent(JSON.stringify(result));
-                                                                                                      if(result.total >= parseInt(alertInfo.thresholdCount,10)){
-                                                                                                        logEvent("Ceiling Condition Met!")
-                                                                                                        //retrieve the result set.
-                                                                                                        var triggerTime = new Date();
-                                                                                                        alertInfo.triggerTime = triggerTime.getTime();
-                                                                                                        emailEvent(alertInfo, result,triggerTime);
-                                                                                                        // emitter.emit("EventTriggered", alertInfo);
-                                                                                                      }
-                                                                                                      else {
-                                                                                                        console.log("Ceiling Condition not Met!")
-                                                                                                      }
-                                                                                                  },function(error){
-                                                                                                    logEvent('Error in EvaluateSearchInternal: Alert:' + alertInfo.notificationName);
-                                                                                                    logEvent(error.message);
-                                                                                                  });
-                                                                                }
-                                                                                else {
-                                                                                  logEvent("time Threshold Not met");
-                                                                                }
+
+                                              es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
+                                              .then(function(result){
+                                                                        logEvent(JSON.stringify(result));
+                                                                        if(result.total >= parseInt(alertInfo.thresholdCount,10)){
+                                                                          logEvent("Ceiling Condition Met!")
+                                                                          //retrieve the result set.
+                                                                          var triggerTime = new Date();
+                                                                          emailEvent(alertInfo, result,triggerTime);
+                                                                        //  emitter.emit("EventTriggered", alertInfo);
+                                                                        }
+                                                                        else {
+                                                                          console.log("Ceiling Condition not Met!")
+                                                                        }
+                                                                    },function(error){
+                                                                      logEvent('Error in EvaluateSearchInternal: Alert:' + alertInfo.notificationName);
+                                                                      logEvent(error.message);
+                                                                    });
                                             });
 
 
