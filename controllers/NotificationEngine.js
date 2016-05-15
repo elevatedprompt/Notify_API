@@ -104,7 +104,7 @@ emitter.on("EventTriggered", function(alertInfo){
                                                   var intervalObject = alertInfo.intervalObject;
                                                   intervalObject.unref();
                                                   logEvent(JSON.stringify(alertInfo.intervalObject));
-                                                  
+                                                  logEvent(alertInfo.interval-60000);
                                                   setTimeout(function(alertInfo){
                                                                                   logEvent("Re enable the notification");
                                                                                   var intervalObject = alertInfo.intervalObject;
