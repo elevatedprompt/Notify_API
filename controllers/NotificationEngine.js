@@ -100,9 +100,10 @@ emitter.on('CeilingEvent', function(alertInfo) {
 
 
 emitter.on("EventTriggered", function(alertInfo){
-
+                                                  logEvent("Re Enable the notification");
                                                   alertInfo.intervalObject.unref();
                                                   setTimeout(function(alertInfo){
+                                                                                  logEvent("Re enable the notification");
                                                                                   alertInfo.intervalObject.ref();
                                                                                 },alertInfo.interval-60000);
                                                   });
