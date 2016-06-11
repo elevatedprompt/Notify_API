@@ -18,7 +18,7 @@ app.use(function(req, res, next) {
                                     next();
                                   });
 
-global.tracelevel =   'error';
+global.tracelevel =   'debug';
 global.elastichost =  '127.0.0.1:9200';
 global.notificationDirectory = '/opt/API/Notifications/';
 global.emailConfiguration =   {
