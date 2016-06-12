@@ -27,9 +27,6 @@ var configuration = JSON.parse(
     fs.readFileSync(configurationFile)
 );
 
-console.log(configuration);
-
-
 global.UbuntuV16 = configuration.UbuntuV16;
 global.tracelevel =   configuration.tracelevel;
 global.elastichost =  configuration.elastichost;
