@@ -30,7 +30,6 @@ var emitter = new EP_EventEmitter();
 //The search rowcount has passed the notification threshold.
 emitter.on('ThresholdMet', function(alertInfo) {
                                               logEvent("NotificationEngine:Threshold Met fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
-
                                               es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
                                               .then(function(result){
                                                                     logEvent(JSON.stringify(result));

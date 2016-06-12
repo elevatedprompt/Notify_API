@@ -1,0 +1,13 @@
+{
+  "UbuntuV16" : true,
+"tracelevel" :   "debug",
+"elastichost" :  "127.0.0.1:9200",
+"notificationDirectory" : "/opt/API/Notifications/",
+"emailConfiguration" :   {
+                               "user":        "ep.alert.test@gmail.com",
+                               "password":    "TestinEP",
+                               "host":        "smtp.gmail.com",
+                               "ssl":         true,
+                               "fromSender":  "No Tify <EP.Alert.Test@gtmail.com>"
+                              }
+                            }

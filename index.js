@@ -18,16 +18,25 @@ app.use(function(req, res, next) {
                                     next();
                                   });
 
-global.tracelevel =   'debug';
-global.elastichost =  '127.0.0.1:9200';
-global.notificationDirectory = '/opt/API/Notifications/';
-global.emailConfiguration =   {
-                               user:        "ep.alert.test@gmail.com",
-                               password:    "TestinEP",
-                               host:        "smtp.gmail.com",
-                               ssl:         true,
-                               fromSender:  "No Tify <EP.Alert.Test@gtmail.com>"
-                              };
+                                  var fs, configurationFile;
+
+configurationFile = 'configuration.json';
+fs = require('fs');
+
+var configuration = JSON.parse(
+    fs.readFileSync(configurationFile)
+);
+
+console.log(configuration);
+
+
+global.UbuntuV16 = configuration.UbuntuV16;
+global.tracelevel =   configuration.tracelevel;
+global.elastichost =  configuration.elastichost;
+global.notificationDirectory = configuration.notificationDirectory;
+global.emailConfiguration =   configuration.emailConfiguration;
+
+
 
 var emailcontroller = require('./controllers/emailcontroller');
 var notificationController = require('./controllers/notificationcontroller');
