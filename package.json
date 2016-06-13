@@ -16,6 +16,7 @@
     "lodash": "^4.6.1",
     "method-override": "^2.3.5",
     "q": "^1.4.1",
-    "resourcejs": "^1.0.6"
+    "resourcejs": "^1.0.6",
+    "unirest": "^0.4.2"
   }
 }

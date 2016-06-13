@@ -1,5 +1,6 @@
 var http = require('http');
 var req = require('request');
+var unirest = require('unirest');
 
 
 module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
@@ -25,15 +26,26 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
                   + alertInfo.notificationDescription +
                   "</td></tr></table>";
                   logEvent('https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage');
-                  req.post('https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage',
-              			{ form: { chat_id : global.telegramChatId,text : messagetext} },
-              			function (error, response, body) {
-                      logEvent("Sent message to Telegram");
-              				if (error) {
-              					console.log(body)
-              				}
-              			}
-              		);
+
+                  var methodCall ='https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage';
+
+                  unirest.post(methodCall)
+                //  .headers({'Accept': 'application/json','Content-Type': 'application/json'})
+                  .send({ form: { chat_id : global.telegramChatId,text : messagetext} })
+                  //JSON.stringify(notification))
+                  .end(function (response) {
+                    logEvent(response);
+                  });
+
+                  // req.post('https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage',
+              		// 	{ form: { chat_id : global.telegramChatId,text : messagetext} },
+              		// 	function (error, response, body) {
+                  //     logEvent("Sent message to Telegram");
+              		// 		if (error) {
+              		// 			console.log(body)
+              		// 		}
+              		// 	}
+              		// );
 }
 
 function logEvent(message){
