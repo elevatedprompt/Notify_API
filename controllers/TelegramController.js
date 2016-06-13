@@ -6,7 +6,7 @@ var unirest = require('unirest');
 module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
   logEvent("Telegram method fired");
   var messagetext =
-     'Alert Notification\n' +
+     "Alert Notification\n" +
         + alertInfo.notificationName;// + " @ " + triggerTime.toISOString()
                                             //              .replace(/T/, ' ')
                                             //              .replace(/\..+/, '') + "##";// +
