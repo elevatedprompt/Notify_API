@@ -104,11 +104,15 @@ emitter.on('Max', function(alertInfo) {
 //create a timeout for the set timeFrame - 1 minutes
 //enable the interval
 emitter.on('EventTriggered',function(alertInfo){
+                                                var timeInterval = (alertInfo.timeValue * 60000);
+                                                if(alertInfo.timeFrame = "d"){
+                                                    timeInterval = (alertInfo.timeValue * 60)*60000);
+                                                  }                                                 
                                                 logEvent("Event Triggered suspending intervalObject for " + alertInfo.timeValue + " " + alertInfo.timeFrame);
                                                 emitter.emit("UnRegister", alertInfo);
                                                 setTimeout(function(alertInfo){
                                                     emitter.emit("Register", alertInfo);
-                                                },alertInfo.timeValue*60000,alertInfo);
+                                                },timeInterval,alertInfo);
                                                 });
 //Register
 //Register and setup interval for monitor
