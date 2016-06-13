@@ -5,6 +5,11 @@ var _ = require('lodash');
 
 // Create the application.
 var app = express();
+function logEvent(message){
+                            if(global.tracelevel == 'debug'){
+                                                              console.log(message);
+                                                              }
+                          }
 
 // Add Middleware necessary for REST API's
 app.use(bodyParser.urlencoded({extended: true}));
@@ -26,6 +31,8 @@ fs = require('fs');
 var configuration = JSON.parse(
     fs.readFileSync(configurationFile)
 );
+
+logEvent(configuration);
 
 global.UbuntuV16 = configuration.UbuntuV16;
 global.tracelevel =   configuration.tracelevel;
