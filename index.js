@@ -40,7 +40,7 @@ global.elastichost =  configuration.elastichost;
 global.notificationDirectory = configuration.notificationDirectory;
 global.emailConfiguration = configuration.emailConfiguration;
 global.defaultInterval = configuration.defaultInterval;
-
+global.telegramChatId = configuration.telegramChatId;
 var emailcontroller = require('./controllers/emailcontroller');
 var notificationController = require('./controllers/notificationcontroller');
 var notificationEngine = require('./controllers/NotificationEngine');

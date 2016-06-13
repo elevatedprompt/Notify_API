@@ -4,6 +4,8 @@
 "elastichost"             : "127.0.0.1:9200",
 "notificationDirectory"   : "/opt/API/Notifications/",
 "defaultInterval"         : 5,
+"telegramChatId"          : "@telegramChatId",
+"telegramAPIKey"          : "telegramAPIKey",
 "emailConfiguration"      :   {
                                "user":        "user@domain.com",
                                "password":    "PWD",
