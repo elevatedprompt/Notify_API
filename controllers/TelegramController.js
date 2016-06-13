@@ -9,7 +9,7 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
 
          alertInfo.notificationName.toString() + " @ " + triggerTime.toISOString()
                                                           .replace(/T/, ' ')
-                                                          .replace(/\..+/, '') "\n" +
+                                                          .replace(/\..+/, '') + "\n" +
            "Search Name: " +alertInfo.selectedSearch + "\n" +
            "Condition:" + alertInfo.thresholdType + " "+ alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + alertInfo.timeframe + "\n" +
            "Result Count:" + result.total + "\n" ;
