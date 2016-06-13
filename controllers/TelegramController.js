@@ -5,29 +5,29 @@ var unirest = require('unirest');
 
 module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
   logEvent("Telegram method fired");
-  // var messagetext =
-  //                 "<table><tr><td colspan='2'><strong>A conditional search trigger has been met.</strong></td></tr><tr><td colspan='2'>&nbsp;</td></tr>"+
-  //                 "<tr><td><strong>Notification Name:</strong></td><td>"
-  //                 + alertInfo.notificationName + " @ " + triggerTime.toISOString()
-  //                                                                   .replace(/T/, ' ')
-  //                                                                   .replace(/\..+/, '') +
-  //                 "</td></tr>" +
-  //                 "<tr><td><strong>Search Name:</strong></td><td>"
-  //                 + alertInfo.selectedSearch +
-  //                 "</td></tr>" +
-  //                 "<tr><td><strong>Condition:</strong></td><td>" +
-  //                 alertInfo.thresholdType + " "
-  //                 + alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + alertInfo.timeframe + "\n" +
-  //                 "</td></tr>" +
-  //                 "<tr><td><strong>Result Count:</strong></td><td>"
-  //                 + result.total +
-  //                 "</td></tr>" +
-  //                 "<tr><td><strong>Description:</strong></td><td>"
-  //                 + alertInfo.notificationDescription +
-  //                 "</td></tr></table>";
+  var messagetext =
+                  "<table><tr><td colspan='2'><strong>A conditional search trigger has been met.</strong></td></tr><tr><td colspan='2'>&nbsp;</td></tr>"+
+                  "<tr><td><strong>Notification Name:</strong></td><td>"
+                  + alertInfo.notificationName + " @ " + triggerTime.toISOString()
+                                                                    .replace(/T/, ' ')
+                                                                    .replace(/\..+/, '') +
+                  "</td></tr>" +
+                  "<tr><td><strong>Search Name:</strong></td><td>"
+                  + alertInfo.selectedSearch +
+                  "</td></tr>" +
+                  "<tr><td><strong>Condition:</strong></td><td>" +
+                  alertInfo.thresholdType + " "
+                  + alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + alertInfo.timeframe + "\n" +
+                  "</td></tr>" +
+                  "<tr><td><strong>Result Count:</strong></td><td>"
+                  + result.total +
+                  "</td></tr>" +
+                  "<tr><td><strong>Description:</strong></td><td>"
+                  + alertInfo.notificationDescription +
+                  "</td></tr></table>";
                 //  logEvent('https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage');
 
-                  var methodCall ='https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage?text=test&chat_id=' +global.telegramChatId ;
+                  var methodCall ='https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage?text='+ messagetext +'&chat_id=' +global.telegramChatId ;
 
                   unirest.post(methodCall)
                   .headers({'Accept': 'application/json','Content-Type': 'application/json'})
