@@ -9,7 +9,7 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
     "#Alert Notification#\n" +
       +"##"  + alertInfo.notificationName + " @ " + triggerTime.toISOString()
                                                           .replace(/T/, ' ')
-                                                          .replace(/\..+/, '') + "##"
+                                                          .replace(/\..+/, '') + "##" +
           "A conditional search trigger has been met.\n" +
           "Search Name: " +alertInfo.selectedSearch + "\n" +
           "Condition:" +
