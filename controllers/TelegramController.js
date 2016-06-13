@@ -31,7 +31,9 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
 
                   unirest.post(methodCall)
                   .headers({'Accept': 'application/json','Content-Type': 'application/json'})
-                  .send({ form: { chat_id : global.telegramChatId,text : 'test'} })
+                  .field('chat_id',global.telegramChatId)
+                  .field('text','test')
+                  //.send({ form: { chat_id : global.telegramChatId,text : 'test'} })
                   //JSON.stringify(notification))
                   .end(function (response) {
                     logEvent(response);
