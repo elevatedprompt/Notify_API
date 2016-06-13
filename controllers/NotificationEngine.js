@@ -38,7 +38,7 @@ emitter.on('Any', function(alertInfo) {
                                                                         var triggerTime = new Date();
                                                                         alertInfo.triggerTime = triggerTime;
                                                                         emailEvent(alertInfo, result,triggerTime);
-                                                                      //  emitter.emit("EventTriggered", alertInfo);
+                                                                        emitter.emit("EventTriggered", alertInfo);
                                                                       }
                                                                       else {
                                                                         logEvent("Threshold not Met!")
@@ -63,7 +63,7 @@ emitter.on('Min', function(alertInfo) {
                                                                       var triggerTime = new Date();
                                                                       alertInfo.triggerTime = triggerTime;
                                                                       emailEvent(alertInfo, result,triggerTime);
-                                                                  //    emitter.emit("EventTriggered", alertInfo);
+                                                                      emitter.emit("EventTriggered", alertInfo);
                                                                     }
                                                                     else {
                                                                       logEvent("Min Condition not Met!")
@@ -87,7 +87,7 @@ emitter.on('Max', function(alertInfo) {
                                                                           //retrieve the result set.
                                                                           var triggerTime = new Date();
                                                                           emailEvent(alertInfo, result,triggerTime);
-                                                                        //  emitter.emit("EventTriggered", alertInfo);
+                                                                          emitter.emit("EventTriggered", alertInfo);
                                                                         }
                                                                         else {
                                                                           console.log("Max Condition not Met!")
@@ -103,7 +103,13 @@ emitter.on('Max', function(alertInfo) {
 //pause the interval
 //create a timeout for the set timeFrame - 1 minutes
 //enable the interval
-
+emitter.on('EventTriggered',function(alertInfo){
+                                                logEvent("Event Triggered suspending intervalObject for " + alertInfo.timeValue + " " + alertInfo.timeFrame);
+                                                emitter.emit("UnRegister", alertInfo);
+                                                setTimeout(function(alertInfo){
+                                                    emitter.emit("Register", alertInfo);
+                                                },alertInfo.timeValue*60000,alertInfo);
+                                                });
 //Register
 //Register and setup interval for monitor
 emitter.on('Register',function(alertInfo){
