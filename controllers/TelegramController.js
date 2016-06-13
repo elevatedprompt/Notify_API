@@ -27,12 +27,12 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
   //                 "</td></tr></table>";
                 //  logEvent('https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage');
 
-                  var methodCall ='https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage';
+                  var methodCall ='https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage?text=test&chat_id=' +global.telegramChatId ;
 
                   unirest.post(methodCall)
                   .headers({'Accept': 'application/json','Content-Type': 'application/json'})
-                  .field('chat_id',global.telegramChatId)
-                  .field('text','test')
+                //  .field('chat_id',global.telegramChatId)
+                //  .field('text','test')
                   //.send({ form: { chat_id : global.telegramChatId,text : 'test'} })
                   //JSON.stringify(notification))
                   .end(function (response) {
