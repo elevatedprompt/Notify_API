@@ -5,10 +5,10 @@
 "notificationDirectory"   : "/opt/API/Notifications/",
 "defaultInterval"         : 5,
 "emailConfiguration"      :   {
-                               "user":        "ep.alert.test@gmail.com",
-                               "password":    "TestinEP",
-                               "host":        "smtp.gmail.com",
+                               "user":        "user@domain.com",
+                               "password":    "PWD",
+                               "host":        "127.0.0.1",
                                "ssl":         true,
-                               "fromSender":  "No Tify <EP.Alert.Test@gtmail.com>"
+                               "fromSender":  "Alert <user@domain.com>"
                               }
                             }
