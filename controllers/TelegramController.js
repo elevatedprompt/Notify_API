@@ -37,7 +37,7 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
                                                           .replace(/\..+/, '') + "\n" +
            "Search Name: " +alertInfo.selectedSearch + "\n" +
            "Condition: " + thresholdType + " "+ alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + timeframe + "\n" +
-           "Result Count: " + result.total + "\n" ;
+           "Result Count: " + result.total + "\n" +
            "Description:\n " + alertInfo.notificationDescription;
 
                 logEvent(messagetext);
