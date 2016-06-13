@@ -53,20 +53,20 @@ emitter.on('Any', function(alertInfo) {
 //The rowcount for the search query has dropped below the expected value.
 //This function is usefull for validating expected levels
 emitter.on('Min', function(alertInfo) {
-                                            logEvent("Min Event fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
+                                            logEvent("Greater Than Event fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
 
                                             es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
                                             .then(function(result){
                                                                     logEvent(JSON.stringify(result));
                                                                     if(result.total >= parseInt(alertInfo.thresholdCount,10)){
-                                                                      logEvent("Min Condition Met!")
+                                                                      logEvent("> Condition Met!")
                                                                       var triggerTime = new Date();
                                                                       alertInfo.triggerTime = triggerTime;
                                                                       emailEvent(alertInfo, result,triggerTime);
                                                                       emitter.emit("EventTriggered", alertInfo);
                                                                     }
                                                                     else {
-                                                                      logEvent("Min Condition not Met!")
+                                                                      logEvent("> Condition not Met!")
                                                                     }
                                                                 },function(error){
                                                                   logEvent('Error in EvaluateSearchInternal: Alert:' + alertInfo.notificationName);
@@ -77,20 +77,20 @@ emitter.on('Min', function(alertInfo) {
 //CeilingEvent
 //Max record count hit for a given search based on the timeframe.
 emitter.on('Max', function(alertInfo) {
-                                              logEvent("NotificationEngine:Max Event fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
+                                              logEvent("NotificationEngine:Less Than Event fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
 
                                               es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
                                               .then(function(result){
                                                                         logEvent(JSON.stringify(result));
                                                                         if(result.total <= parseInt(alertInfo.thresholdCount,10)){
-                                                                          logEvent("Max Condition Met!")
+                                                                          logEvent("< Condition Met!")
                                                                           //retrieve the result set.
                                                                           var triggerTime = new Date();
                                                                           emailEvent(alertInfo, result,triggerTime);
                                                                           emitter.emit("EventTriggered", alertInfo);
                                                                         }
                                                                         else {
-                                                                          console.log("Max Condition not Met!")
+                                                                          console.log("< Condition not Met!")
                                                                         }
                                                                     },function(error){
                                                                       logEvent('Error in EvaluateSearchInternal: Alert:' + alertInfo.notificationName);
@@ -114,6 +114,7 @@ emitter.on('EventTriggered',function(alertInfo){
 //Register and setup interval for monitor
 emitter.on('Register',function(alertInfo){
                                           logEvent("NotificationEngine:event Listiner Registered: " + alertInfo.notificationName);
+                                          emitter.emit(alertInfo.thresholdType,alertInfo);//run the check immediately
                                           var intervalObject = setInterval(function(alertInfo){
                                                                                                 //Emit the threshold type to be evaluated
                                                                                                 logEvent("NotificationEngine:Interval Hit:" + alertInfo.notificationName);
