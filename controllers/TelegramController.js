@@ -9,25 +9,25 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
     "#Alert Notification#" +
       +"##"  + alertInfo.notificationName + " @ " + triggerTime.toISOString()
                                                           .replace(/T/, ' ')
-                                                          .replace(/\..+/, '') + "##" +
-          "A conditional search trigger has been met." +
-          "Search Name: " +alertInfo.selectedSearch + "" +
-          "Condition:" +
-          alertInfo.thresholdType + " "
-          + alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + alertInfo.timeframe + "" +
-          "" +
-                  "Result Count:"
-                  + result.total +
-                  "" +
-                  "Description:"
-                  + alertInfo.notificationDescription +
-                  "";
+                                                          .replace(/\..+/, '') + "##";// +
+          // "A conditional search trigger has been met." +
+          // "Search Name: " +alertInfo.selectedSearch + "" +
+          // "Condition:" +
+          // alertInfo.thresholdType + " "
+          // + alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + alertInfo.timeframe + "" +
+          // "" +
+          //         "Result Count:"
+          //         + result.total +
+          //         "" +
+          //         "Description:"
+          //         + alertInfo.notificationDescription +
+          //         "";
                 //  logEvent('https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage');
                 console.log(messagetext);
                   var methodCall ='https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage?chat_id=' +global.telegramChatId + '&text='+ messagetext;
 
                   unirest.post(methodCall)
-                  //.headers({'Accept': 'application/json','Content-Type': 'application/json'})
+                  .headers({'Accept': 'application/json','Content-Type': 'application/json'})
                 //  .field('chat_id',global.telegramChatId)
                 //  .field('text','test')
                   //.send({ form: { chat_id : global.telegramChatId,text : 'test'} })
