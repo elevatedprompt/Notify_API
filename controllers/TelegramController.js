@@ -30,7 +30,7 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
                   .headers({'Accept': 'application/json','Content-Type': 'application/json'})
                 //  .field('chat_id',global.telegramChatId)
                 //  .field('text','test')
-                  //.send({ form: { chat_id : global.telegramChatId,text : 'test'} })
+                  .send({ form: { chat_id : global.telegramChatId,text : 'test'} })
                   //JSON.stringify(notification))
                   .end(function (response) {
                     logEvent(response);
