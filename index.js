@@ -33,7 +33,8 @@ var configuration = JSON.parse(
 );
 
 logEvent(configuration);
-
+console.log("test");
+console.log(configuration);
 global.UbuntuV16 = configuration.UbuntuV16;
 global.tracelevel =   configuration.tracelevel;
 global.elastichost =  configuration.elastichost;
