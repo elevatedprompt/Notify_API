@@ -1,6 +1,6 @@
 var alertInfos = [];
 var emailManager = require('./emailcontroller');
-var telegramManager = require('/TelegramController');
+var telegramManager = require('./TelegramController');
 var es = require('./elasticquery');
 
 
