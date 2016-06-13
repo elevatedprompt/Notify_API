@@ -27,7 +27,7 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
                   var methodCall ='https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage?chat_id=' +global.telegramChatId + '&text='+ messagetext;
 
                   unirest.post(methodCall)
-                  .headers({'Accept': 'application/json','Content-Type': 'application/json'})
+                  //.headers({'Accept': 'application/json','Content-Type': 'application/json'})
                 //  .field('chat_id',global.telegramChatId)
                 //  .field('text','test')
                   //.send({ form: { chat_id : global.telegramChatId,text : 'test'} })
