@@ -20,14 +20,14 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
 
   var thresholdType = "";
   switch(alertInfo.thresholdType){
-                                    case "FloorEvent":
+                                    case "Max":
                                     thresholdType = "Less Than";
                                     break;
-                                    case "CeilingEvent":
+                                    case "Min":
                                     thresholdType = "More Than";
                                     break;
-                                    case "ThresholdMet":
-                                    thresholdType = "More Than";
+                                    case "Any":
+                                    thresholdType = "Any";
                                     break;
                                   }
   var messagetext =
