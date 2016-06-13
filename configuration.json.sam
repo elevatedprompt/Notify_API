@@ -1,9 +1,10 @@
 {
-"UbuntuV16" : true,
-"tracelevel" :   "debug",
-"elastichost" :  "127.0.0.1:9200",
-"notificationDirectory" : "/opt/API/Notifications/",
-"emailConfiguration" :   {
+"UbuntuV16"               : true,
+"tracelevel"              : "debug",
+"elastichost"             : "127.0.0.1:9200",
+"notificationDirectory"   : "/opt/API/Notifications/",
+"defaultInterval"         : 5,
+"emailConfiguration"      :   {
                                "user":        "ep.alert.test@gmail.com",
                                "password":    "TestinEP",
                                "host":        "smtp.gmail.com",
