@@ -106,8 +106,8 @@ emitter.on('Max', function(alertInfo) {
 emitter.on('EventTriggered',function(alertInfo){
                                                 var timeInterval = (alertInfo.timeValue * 60000);
                                                 if(alertInfo.timeFrame = "d"){
-                                                    timeInterval = (alertInfo.timeValue * 60)*60000);
-                                                  }                                                 
+                                                    timeInterval = ((alertInfo.timeValue * 60)*60000);
+                                                  }
                                                 logEvent("Event Triggered suspending intervalObject for " + alertInfo.timeValue + " " + alertInfo.timeFrame);
                                                 emitter.emit("UnRegister", alertInfo);
                                                 setTimeout(function(alertInfo){
