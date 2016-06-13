@@ -38,7 +38,8 @@ global.UbuntuV16 = configuration.UbuntuV16;
 global.tracelevel =   configuration.tracelevel;
 global.elastichost =  configuration.elastichost;
 global.notificationDirectory = configuration.notificationDirectory;
-global.emailConfiguration =   configuration.emailConfiguration;
+global.emailConfiguration = configuration.emailConfiguration;
+global.defaultInterval = configuration.defaultInterval;
 
 var emailcontroller = require('./controllers/emailcontroller');
 var notificationController = require('./controllers/notificationcontroller');
