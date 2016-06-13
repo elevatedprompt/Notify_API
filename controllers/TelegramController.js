@@ -23,7 +23,7 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
                   + alertInfo.notificationDescription +
                   "";
                 //  logEvent('https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage');
-
+                console.log(messagetext);
                   var methodCall ='https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage?text='+ messagetext +'&chat_id=' +global.telegramChatId ;
 
                   unirest.post(methodCall)
