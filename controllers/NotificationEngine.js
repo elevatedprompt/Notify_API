@@ -1,5 +1,6 @@
 var alertInfos = [];
 var emailManager = require('./emailcontroller');
+var telegramManager = require('/TelegramController');
 var es = require('./elasticquery');
 
 
@@ -146,6 +147,7 @@ emitter.on('ClearInterval',function(alertInfo){
 function emailEvent(alert,result,triggerTime){
                                                 logEvent("NotificationEngine:emailEvent");
                                                 emailManager.SendEventMail(alert,result,triggerTime);
+                                                telegramManager.SendTelegramEvent(alert,result,triggerTime);
                                               }
 
 function emailResultEvent(alert,result,valuableResults){
