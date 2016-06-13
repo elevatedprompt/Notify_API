@@ -6,8 +6,8 @@ var unirest = require('unirest');
 module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
   logEvent("Telegram method fired");
   var messagetext =
-     "Alert Notification\n" +
-        + alertInfo.notificationName.toString();// + " @ " + triggerTime.toISOString()
+     "Alert Notification\n " +
+         alertInfo.notificationName.toString();// + " @ " + triggerTime.toISOString()
                                             //              .replace(/T/, ' ')
                                             //              .replace(/\..+/, '') + "##";// +
           // "A conditional search trigger has been met." +
