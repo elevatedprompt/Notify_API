@@ -28,13 +28,13 @@ var emitter = new EP_EventEmitter();
 //ThresholdMet
 //A threshold has been met
 //The search rowcount has passed the notification threshold.
-emitter.on('ThresholdMet', function(alertInfo) {
-                                              logEvent("NotificationEngine:Threshold Met fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
+emitter.on('Any', function(alertInfo) {
+                                              logEvent("NotificationEngine:Any Threshold Met fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
                                               es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
                                               .then(function(result){
                                                                     logEvent(JSON.stringify(result));
                                                                       if(result.total > 0){
-                                                                        logEvent("Threshold Met!")
+                                                                        logEvent("Any Threshold Met!")
                                                                         var triggerTime = new Date();
                                                                         alertInfo.triggerTime = triggerTime;
                                                                         emailEvent(alertInfo, result,triggerTime);
@@ -52,21 +52,21 @@ emitter.on('ThresholdMet', function(alertInfo) {
 //FloorEvent
 //The rowcount for the search query has dropped below the expected value.
 //This function is usefull for validating expected levels
-emitter.on('FloorEvent', function(alertInfo) {
-                                            logEvent("Floor Event fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
+emitter.on('Min', function(alertInfo) {
+                                            logEvent("Min Event fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
 
                                             es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
                                             .then(function(result){
                                                                     logEvent(JSON.stringify(result));
-                                                                    if(result.total <= parseInt(alertInfo.thresholdCount,10)){
-                                                                      logEvent("Floor Condition Met!")
+                                                                    if(result.total >= parseInt(alertInfo.thresholdCount,10)){
+                                                                      logEvent("Min Condition Met!")
                                                                       var triggerTime = new Date();
                                                                       alertInfo.triggerTime = triggerTime;
                                                                       emailEvent(alertInfo, result,triggerTime);
                                                                   //    emitter.emit("EventTriggered", alertInfo);
                                                                     }
                                                                     else {
-                                                                      logEvent("Floor Condition not Met!")
+                                                                      logEvent("Min Condition not Met!")
                                                                     }
                                                                 },function(error){
                                                                   logEvent('Error in EvaluateSearchInternal: Alert:' + alertInfo.notificationName);
@@ -76,21 +76,21 @@ emitter.on('FloorEvent', function(alertInfo) {
 
 //CeilingEvent
 //Max record count hit for a given search based on the timeframe.
-emitter.on('CeilingEvent', function(alertInfo) {
-                                              logEvent("NotificationEngine:Ceiling Event fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
+emitter.on('Max', function(alertInfo) {
+                                              logEvent("NotificationEngine:Max Event fired - Query:" + alertInfo.selectedSearch + " Alert Name: " + alertInfo.notificationName);
 
                                               es.EvaluateSearchInternal(alertInfo.selectedSearch, alertInfo.timeValue + alertInfo.timeFrame)
                                               .then(function(result){
                                                                         logEvent(JSON.stringify(result));
-                                                                        if(result.total >= parseInt(alertInfo.thresholdCount,10)){
-                                                                          logEvent("Ceiling Condition Met!")
+                                                                        if(result.total <= parseInt(alertInfo.thresholdCount,10)){
+                                                                          logEvent("Max Condition Met!")
                                                                           //retrieve the result set.
                                                                           var triggerTime = new Date();
                                                                           emailEvent(alertInfo, result,triggerTime);
                                                                         //  emitter.emit("EventTriggered", alertInfo);
                                                                         }
                                                                         else {
-                                                                          console.log("Ceiling Condition not Met!")
+                                                                          console.log("Max Condition not Met!")
                                                                         }
                                                                     },function(error){
                                                                       logEvent('Error in EvaluateSearchInternal: Alert:' + alertInfo.notificationName);

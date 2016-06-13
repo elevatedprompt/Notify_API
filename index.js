@@ -33,8 +33,6 @@ global.elastichost =  configuration.elastichost;
 global.notificationDirectory = configuration.notificationDirectory;
 global.emailConfiguration =   configuration.emailConfiguration;
 
-
-
 var emailcontroller = require('./controllers/emailcontroller');
 var notificationController = require('./controllers/notificationcontroller');
 var notificationEngine = require('./controllers/NotificationEngine');
