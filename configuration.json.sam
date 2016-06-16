@@ -1,6 +1,6 @@
 {
-"UbuntuV16"               : true,
-"tracelevel"              : "debug",
+"UbuntuV16"               : false,
+"tracelevel"              : "error",
 "elastichost"             : "127.0.0.1:9200",
 "notificationDirectory"   : "/opt/API/Notifications/",
 "defaultInterval"         : 5,
@@ -13,4 +13,4 @@
                                "ssl":         true,
                                "fromSender":  "Alert <user@domain.com>"
                               }
-                            }
+}
