@@ -200,7 +200,7 @@ function runTimeFrameSearchInternal(query,timeFrame){
                                                                                                   var ii = 0, hits_in, hits_out = [];
                                                                                                   hits_in = (result.hits || {}).hits || [];
 
-                                                                                                  deferred.resolve(result);
+                                                                                                  deferred.resolve(hits_in);
                                                                                                   // var result;
                                                                                                   // for(; ii < hits_in.length; ii++) {
                                                                                                   //                                       result = JSON.stringify(hits_in[ii]._source.kibanaSavedObjectMeta.searchSourceJSON);
