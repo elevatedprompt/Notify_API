@@ -200,13 +200,13 @@ function runTimeFrameSearchInternal(query,timeFrame){
                                                                                                   var ii = 0, hits_in, hits_out = [];
                                                                                                   hits_in = (result.hits || {}).hits || [];
 
-                                                                                                  deferred.resolve(hits_in);
-                                                                                                  // var result;
-                                                                                                  // for(; ii < hits_in.length; ii++) {
-                                                                                                  //                                       result = JSON.stringify(hits_in[ii]._source.kibanaSavedObjectMeta.searchSourceJSON);
-                                                                                                  //                                   }
+                                                                                                  deferred.resolve(result.hits);
+                                                                                                  var result;
+                                                                                                  for(; ii < hits_in.length; ii++) {
+                                                                                                                                        result = JSON.stringify(hits_in[ii]._source.kibanaSavedObjectMeta.searchSourceJSON);
+                                                                                                                                    }
                                                                                                   logEvent("Search result:" + JSON.stringify(result.hits));
-                                                                                                  return hits_in;
+                                                                                                  return result.hits;
                                                                                                 }, function (error) {
                                                                                                                       traceEvent(error.message);
                                                                                                                       deferred.reject(error.message);
