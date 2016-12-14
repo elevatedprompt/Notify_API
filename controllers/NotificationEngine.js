@@ -160,7 +160,7 @@ function emailResultEvent(alert,result,valuableResults){
 //Internal method.
 function UnregisterEventMonitor(alertInfo){
                                             clearInterval(alertInfo.intervalObject);
-                                            emitter.emit('Unregister',alertInfo);
+                                            emitter.emit('UnRegister',alertInfo);
                                           }
 
 //RegisterNotification
@@ -181,7 +181,7 @@ module.exports.UnregisterNotification = function(notification){
                                                                 {
                                                                   logEvent(alertInfo);
                                                                   if(alertInfo.notificationName == notification.notificationName)
-                                                                      emitter.emit('Unregister',alertInfo);
+                                                                      emitter.emit('UnRegister',alertInfo);
                                                                 }
                                                                 return true;
                                                               }
