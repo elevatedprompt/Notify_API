@@ -206,7 +206,7 @@ function runTimeFrameSearchInternal(query,timeFrame){
                                                                                                   //                                       result = JSON.stringify(hits_in[ii]._source.kibanaSavedObjectMeta.searchSourceJSON);
                                                                                                   //                                   }
                                                                                                   logEvent("Search result:" + JSON.stringify(result.hits));
-                                                                                                  return result;
+                                                                                                  return hits_in;
                                                                                                 }, function (error) {
                                                                                                                       traceEvent(error.message);
                                                                                                                       deferred.reject(error.message);
