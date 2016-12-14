@@ -191,7 +191,7 @@ function runTimeFrameSearchInternal(query,timeFrame){
 
                                                     var x = {
                                                               index:search.index,
-                                                              searchType:"count",
+                                                              //searchType:"count",
                                                               q:'@timestamp:(>now-' + timeFrame + ') AND ' +search.query.query_string.query//,
                                                             };
 
