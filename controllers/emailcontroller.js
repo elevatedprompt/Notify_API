@@ -80,7 +80,8 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                         + alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + timeframe + "\n" +
                                                                         "</td></tr>" +
                                                                         "<tr><td><strong>Result Count:</strong></td><td>"
-                                                                        + result.total +
+                                                                        + result.total + 
+                                                                        JSON.stringify(result) +
                                                                         "</td></tr>" +
                                                                         "<tr><td><strong>Description:</strong></td><td>"
                                                                         + alertInfo.notificationDescription +
