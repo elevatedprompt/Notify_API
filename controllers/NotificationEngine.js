@@ -138,19 +138,13 @@ emitter.on('UnRegister',function(alertInfo){
                                             });
 function removeAlert(alertInfo){
                               logEvent('Pre Delete Registered Alert Count:' + alertInfos.length);
-                              forEach(info in alertInfos)
-                              {
-                                if(alertInfo.notificationName == info.notificationName){
-                                  clearInterval(info.intervalObject);
-                                  logEvent(alertInfos.indexOf(info));
-                                  //delete alertInfos[alertInfos.indexOf(info)-1];
+                                for (var i = 0; i < alertInfos.length; i++) {
+                                  if(alertInfo.notificationName == info.notificationName){
+                                    clearInterval(alertInfos[i].intervalObject);
+                                    delete alertInfos[i];
+                                    continue;
                                   }
-                              }
-
-                            //  logEvent(alertInfos.indexOf(alertInfo));
-
-
-                              delete alertInfos[alertInfos.indexOf(alertInfo)-1];
+                                }
                               logEvent('Post Delete Registered Alert Count:' + alertInfos.length);
                               }
 //Unref
@@ -199,12 +193,11 @@ module.exports.UnregisterNotification = function(notification){
                                                                 if(alertInfos.length==0)
                                                                   return true;
                                                                 logEvent('Loop through infos');
-                                                                forEach(alertInfo in alertInfos)
-                                                                {
-                                                                  logEvent('log alertinfo');
-                                                                  logEvent(JSON.stringify(alertInfo));
-                                                                  if(alertInfo.notificationName == notification.notificationName)
+                                                                for (var i = 0; i < alertInfos.length; i++) {
+                                                                  if(alertInfos[i].notificationName == notification.notificationName){
                                                                       emitter.emit('UnRegister',alertInfo);
+                                                                      return true;
+                                                                    }
                                                                 }
                                                                 return true;
                                                               }
