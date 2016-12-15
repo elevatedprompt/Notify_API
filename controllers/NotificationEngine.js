@@ -134,13 +134,15 @@ emitter.on('Register',function(alertInfo){
 //stop the timer and remove the object from the list
 emitter.on('UnRegister',function(alertInfo){
                                               logEvent("NotificationEngine=>event Listiner Unregistered: " + alertInfo.notificationName);
-                                               clearInterval(alertInfo.intervalObject);
-                                               logEvent(alertInfos.indexOf(alertInfo));
-                                               logEvent('Pre Delete Registered Alert Count:' + alertInfos.length);
-                                               delete alertInfos[alertInfos.indexOf(alertInfo)];
-                                               logEvent('Post Delete Registered Alert Count:' + alertInfos.length);
+                                              removeAlert(alertInfo);
                                             });
-
+function removeAlert(alertInfo){
+                              clearInterval(alertInfo.intervalObject);
+                              logEvent(alertInfos.indexOf(alertInfo));
+                              logEvent('Pre Delete Registered Alert Count:' + alertInfos.length);
+                              delete alertInfos[alertInfos.indexOf(alertInfo)];
+                              logEvent('Post Delete Registered Alert Count:' + alertInfos.length);
+                              }
 //Unref
 emitter.on('ClearInterval',function(alertInfo){
                                                 logEvent("NotificationEngine=>Clear Interval" + alertInfo.notificationName);
@@ -167,8 +169,9 @@ function emailResultEvent(alert,result,valuableResults){
 //UnregisterEventMonitor
 //Internal method.
 function UnregisterEventMonitor(alertInfo){
-                                            clearInterval(alertInfo.intervalObject);
-                                            emitter.emit('UnRegister',alertInfo);
+                                            removeAlert(alertInfo);
+                                            //clearInterval(alertInfo.intervalObject);
+                                            //emitter.emit('UnRegister',alertInfo);
                                           }
 
 //RegisterNotification
