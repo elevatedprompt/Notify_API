@@ -192,8 +192,9 @@ module.exports.UnregisterNotification = function(notification){
                                                                 logEvent('Registered Alert Count:' + alertInfos.length);
                                                                 if(alertInfos.length==0)
                                                                   return true;
-                                                                logEvent('Loop through infos');
+                                                                logEvent(alertInfos[0].notificationName);
                                                                 for (var i = 0; i < alertInfos.length; i++) {
+                                                                  logEvent('Loop through infos');
                                                                   if(alertInfos[i].notificationName == notification.notificationName){
                                                                       emitter.emit('UnRegister',alertInfo);
                                                                       return true;
