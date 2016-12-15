@@ -95,7 +95,7 @@ function logEvent(message){
                             if(global.notificationtracelevel=='debug'){
                                                             fs.appendFile(global.loggingDirectory + '/notificationLog.log', "\r\n" + new Date().toISOString()
                                                                                                               .replace(/T/, ' ')
-                                                                                                              .replace(/\..+/, '') + message, function (err) {
+                                                                                                              .replace(/\..+/, '') +" " + message, function (err) {
                                                               });
                             }
                           }
