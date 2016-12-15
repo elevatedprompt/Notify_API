@@ -139,7 +139,7 @@ emitter.on('UnRegister',function(alertInfo){
 function removeAlert(alertInfo){
                               logEvent('Pre Delete Registered Alert Count:' + alertInfos.length);
                                 for (var i = 0; i < alertInfos.length; i++) {
-                                  if(alertInfo.notificationName == info.notificationName){
+                                  if(alertInfo.notificationName == alertInfos[i].notificationName){
                                     clearInterval(alertInfos[i].intervalObject);
                                     delete alertInfos[i];
                                     continue;
@@ -194,9 +194,7 @@ module.exports.UnregisterNotification = function(notification){
                                                                   return true;
                                                                 logEvent(alertInfos[0].notificationName);
                                                                 for (var i = 0; i < alertInfos.length; i++) {
-                                                                  logEvent('Loop through infos');
                                                                   if(alertInfos[i].notificationName == notification.notificationName){
-                                                                      logEvent('log Unregister emit');
                                                                       emitter.emit('UnRegister',alertInfos[i]);
                                                                       return true;
                                                                     }
