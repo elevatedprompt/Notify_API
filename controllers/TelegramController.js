@@ -55,7 +55,7 @@ function logEvent(message){
                                                               console.log(message);
                                                               }
                             if(global.notificationtracelevel=='debug'){
-                                                            fs.appendFile(global.loggingDirectory + '/notificationLog.log', message, function (err) {
+                                                            fs.appendFile(global.loggingDirectory + '/notificationLog.log', "\r\n" + message, function (err) {
                                                               });
                             }
                           }
