@@ -135,7 +135,9 @@ emitter.on('Register',function(alertInfo){
 emitter.on('UnRegister',function(alertInfo){
                                               logEvent("NotificationEngine=>event Listiner Unregistered: " + alertInfo.notificationName);
                                                clearInterval(alertInfo.intervalObject);
+                                               logEvent('Pre Delete Registered Alert Count:' + alertInfos.length);
                                                delete alertInfos[alertInfos.indexOf(alertInfo)];
+                                               logEvent('Post Delete Registered Alert Count:' + alertInfos.length);
                                             });
 
 //Unref
