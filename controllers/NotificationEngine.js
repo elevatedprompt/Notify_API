@@ -138,9 +138,17 @@ emitter.on('UnRegister',function(alertInfo){
                                             });
 function removeAlert(alertInfo){
                               logEvent('Pre Delete Registered Alert Count:' + alertInfos.length);
-                              clearInterval(alertInfo.intervalObject);
+                              forEach(info in alertInfos)
+                              {
+                                if(alertInfo.notificationName == info.notificationName){
+                                  clearInterval(info.intervalObject);
+                                  logEvent(alertInfos.indexOf(info));
+                                  //delete alertInfos[alertInfos.indexOf(info)-1];
+                                  }
+                              }
+
                             //  logEvent(alertInfos.indexOf(alertInfo));
-                              
+
 
                               delete alertInfos[alertInfos.indexOf(alertInfo)-1];
                               logEvent('Post Delete Registered Alert Count:' + alertInfos.length);
