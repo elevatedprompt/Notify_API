@@ -140,8 +140,14 @@ function removeAlert(alertInfo){
                               clearInterval(alertInfo.intervalObject);
                               logEvent(alertInfos.indexOf(alertInfo));
                               logEvent('Pre Delete Registered Alert Count:' + alertInfos.length);
-                              //delete alertInfos[alertInfos.indexOf(alertInfo)];
-                              alertInfos.splice(alertInfos.indexOf(alertInfo),1);
+
+                              forEach(info in alertInfos)
+                              {
+                                if(info.notificationName== alertInfo.notificationName)
+                                {
+                                  delete alertInfos[alertInfos.indexOf(info)];
+                                }
+                              }
                               logEvent('Post Delete Registered Alert Count:' + alertInfos.length);
                               }
 //Unref
