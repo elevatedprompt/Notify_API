@@ -196,7 +196,7 @@ module.exports.RegisterNotification = function(alertInfo){
 module.exports.UnregisterNotification = function(notification){
                                                                 logEvent('NotificationEngine=>Unregister Notification: ' + notification.notificationName);
                                                                 logEvent('Registered Alert Count:' + alertInfos.length);
-                                                                if(alertInfos.length>=0)
+                                                                if(alertInfos.length==0)
                                                                   return true;
                                                                 forEach(alertInfo in alertInfos)
                                                                 {
