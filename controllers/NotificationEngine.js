@@ -198,8 +198,10 @@ module.exports.UnregisterNotification = function(notification){
                                                                 logEvent('Registered Alert Count:' + alertInfos.length);
                                                                 if(alertInfos.length==0)
                                                                   return true;
+                                                                logEvent('Loop through infos');
                                                                 forEach(alertInfo in alertInfos)
                                                                 {
+                                                                  logEvent('log alertinfo');
                                                                   logEvent(JSON.stringify(alertInfo));
                                                                   if(alertInfo.notificationName == notification.notificationName)
                                                                       emitter.emit('UnRegister',alertInfo);
