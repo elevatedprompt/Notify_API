@@ -44,6 +44,9 @@ global.emailConfiguration = configuration.emailConfiguration;
 global.defaultInterval = configuration.defaultInterval;
 global.telegramChatId = configuration.telegramChatId;
 global.telegramAPIKey = configuration.telegramAPIKey;
+global.emailEnabled = configuration.emailEnabled;
+global.telegramEnabled = configuration.telegramEnabled;
+
 var emailcontroller = require('./controllers/emailcontroller');
 var notificationController = require('./controllers/notificationcontroller');
 var notificationEngine = require('./controllers/NotificationEngine');

@@ -146,8 +146,12 @@ emitter.on('ClearInterval',function(alertInfo){
 //emailEvent
 function emailEvent(alert,result,triggerTime){
                                                 logEvent("NotificationEngine=>emailEvent");
-                                                emailManager.SendEventMail(alert,result,triggerTime);
-                                                telegramManager.SendTelegramEvent(alert,result,triggerTime);
+                                                if(global.emailEnabled == true){
+                                                                          emailManager.SendEventMail(alert,result,triggerTime);
+                                                                          }
+                                                if(global.telegramEnabled == true){
+                                                                          telegramManager.SendTelegramEvent(alert,result,triggerTime);
+                                                                          }
                                               }
 
 function emailResultEvent(alert,result,valuableResults){
