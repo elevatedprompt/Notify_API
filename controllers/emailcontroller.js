@@ -80,7 +80,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                         + alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + timeframe + "\n" +
                                                                         "</td></tr>" +
                                                                         "<tr><td><strong>Result Count:</strong></td><td>"
-                                                                        + result.total + 
+                                                                        + result.total +
                                                                         JSON.stringify(result) +
                                                                         "</td></tr>" +
                                                                         "<tr><td><strong>Description:</strong></td><td>"
@@ -158,7 +158,11 @@ module.exports.SendResultEventMail = function(alertInfo,result,valuableResults){
                                                                               }
 
 function logEvent(message){
-                            if(global.tracelevel == 'debug'){
+                            if(global.tracelevel == 'debug'||global.notificationtracelevel=='debug'){
                               console.log(message);
+                            }
+                            if(global.notificationtracelevel=='debug'){
+                                                            fs.appendFile(global.loggingDirectory + '/notificationLog.log', message, function (err) {
+                                                              });
                             }
                           }

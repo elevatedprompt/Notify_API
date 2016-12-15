@@ -186,7 +186,11 @@ module.exports.UnregisterNotification = function(notification){
                                                                 return true;
                                                               }
 function logEvent(message){
-                            if(global.tracelevel == 'debug'){
+                            if(global.tracelevel == 'debug'||global.notificationtracelevel=='debug'){
                                                             console.log(message);
                                                             }
+                            if(global.notificationtracelevel=='debug'){
+                                                            fs.appendFile(global.loggingDirectory + '/notificationLog.log', message, function (err) {
+                                                              });
+                            }
                           }

@@ -37,7 +37,7 @@ logEvent(configuration);
 global.UbuntuV16 = configuration.UbuntuV16;
 global.tracelevel =   configuration.tracelevel;
 global.loggingDirectory =   configuration.loggingDirectory;
-global.notificationDirectory = configuration.notificationDirectory;
+global.notificationtracelevel = configuration.notificationtracelevel;
 global.elastichost =  configuration.elastichost;
 global.notificationDirectory = configuration.notificationDirectory;
 global.emailConfiguration = configuration.emailConfiguration;
