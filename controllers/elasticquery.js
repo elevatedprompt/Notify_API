@@ -1,6 +1,6 @@
-
 var Q = require ('q');
 var elasticsearch = require('elasticsearch');
+var fs = require('fs')
 // var searchquery =
 // {
 // //  http://192.168.1.104:9200/_search

@@ -2,7 +2,7 @@ var alertInfos = [];
 var emailManager = require('./emailcontroller');
 var telegramManager = require('./TelegramController');
 var es = require('./elasticquery');
-
+var fs = require('fs')
 
 var EP_EventEmitter = function() {
                                     this.events = {};

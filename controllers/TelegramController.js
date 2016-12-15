@@ -1,7 +1,7 @@
 var http = require('http');
 var req = require('request');
 var unirest = require('unirest');
-
+var fs = require('fs')
 
 module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
   logEvent("Telegram method fired");

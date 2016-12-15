@@ -3,7 +3,7 @@
 //https://www.npmjs.com/package/nodemailer
 
 var nodemailer   = require("nodemailer");
-
+var fs = require('fs')
 // Create a SMTP transporter object
 // var transporter = nodemailer.createTransport({
 //     service: 'Gmail',
