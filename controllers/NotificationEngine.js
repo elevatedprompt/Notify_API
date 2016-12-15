@@ -143,8 +143,8 @@ function removeAlert(alertInfo){
                                     logEvent('clear interval');
                                     clearInterval(alertInfos[i].intervalObject);
                                     logEvent('splice');
-                                    alertInfo.splice(i,1);
-                                    //delete alertInfos[i];
+                                    //alertInfo.splice(i,1);
+                                    delete alertInfos[i];
                                     logEvent('continue');
                                     continue;
                                   }
