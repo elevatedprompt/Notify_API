@@ -145,7 +145,7 @@ function removeAlert(alertInfo){
                               {
                                 if(info.notificationName== alertInfo.notificationName)
                                 {
-                                  delete alertInfos[alertInfos.indexOf(info)];
+                                  delete alertInfos[alertInfos.indexOf(info)-1];
                                 }
                               }
                               logEvent('Post Delete Registered Alert Count:' + alertInfos.length);
