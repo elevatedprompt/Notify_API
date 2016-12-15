@@ -37,7 +37,7 @@ var transporter = nodemailer.createTransport({
 //SendEventMail
 //This will send an email to the recipent that a trigegr has happened
 module.exports.SendEventMail = function(alertInfo,result,triggerTime){
-                                                          logEvent('Email Controller:Send Event Email Fired');
+                                                          logEvent('Email Controller=>Send Event Email Fired');
                                                           var timeframe = ""
                                                           switch(alertInfo.timeFrame){
                                                                                       case "m":
@@ -110,7 +110,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
 //SendResultEventMail
 //Will send an email to the recipient that an event has happened with the data attached.
 module.exports.SendResultEventMail = function(alertInfo,result,valuableResults){
-                                                                                logEvent('Email Controller:Send Event Email Fired');
+                                                                                logEvent('Email Controller=>Send Event Email Fired');
                                                                                 var timeframe = ""
                                                                                 switch(alertInfo.timeFrame) {
                                                                                                               case "m":

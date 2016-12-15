@@ -23,7 +23,7 @@ module.exports = function(app, route){
 //LoadNotifications
 //Load All Notifications
 module.exports.LoadNotifications = function(){
-                                            logEvent("NotificationController:Load Notifications");
+                                            logEvent("NotificationController=>Load Notifications");
                                             fs.readdirSync(global.notificationDirectory)
                                               .forEach(function(file) {
                                                                          file = global.notificationDirectory+'/'+file;
@@ -38,7 +38,7 @@ module.exports.LoadNotifications = function(){
 //GetNotifications
 //return the list of notifications
 module.exports.GetNotifications = function(req,res,next){
-                                                          logEvent("NotificationController:GetNotifications");
+                                                          logEvent("NotificationController=>GetNotifications");
 
                                                           fs.readdirSync(global.notificationDirectory)
                                                             .forEach(function(file) {
@@ -57,7 +57,7 @@ module.exports.GetNotifications = function(req,res,next){
 //GetAllNotifications
 //Returns a list of all notifications
 module.exports.GetAllNotifications = function (){
-                                                  logEvent("NotificationController:GeAlltNotifications");
+                                                  logEvent("NotificationController=>GeAlltNotifications");
                                                   var notifications = [];
 
                                                   fs.readdirSync(global.notificationDirectory)
@@ -71,7 +71,7 @@ module.exports.GetAllNotifications = function (){
 
 //RegisterNotification
 module.exports.RegisterNotification= function(req,res,next){
-                                                            logEvent("NotificationController:Register Notification:" + req.body.notificationName);
+                                                            logEvent("NotificationController=>Register Notification:" + req.body.notificationName);
                                                             var alertInfo = req.body;
                                                             notificationEngine.UnregisterNotification(alertInfo);
                                                             notificationEngine.RegisterNotification(alertInfo);
@@ -81,7 +81,7 @@ module.exports.RegisterNotification= function(req,res,next){
 
 //UnregisterNotification
 module.exports.UnregisterNotification= function(req,res,next){
-                                                              logEvent("NotificationController:UnregisterNotification:" + req.body.notificationName);
+                                                              logEvent("NotificationController=>UnregisterNotification:" + req.body.notificationName);
                                                               var alertInfo = req.body;
                                                               notificationEngine.UnregisterNotification(alertInfo);
                                                               res.sendStatus('true');

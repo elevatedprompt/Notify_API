@@ -61,7 +61,7 @@ module.exports.PingClusterInternal = function(){
 //ListSearches
 //Returns a list of defined searches
 module.exports.ListSearches= function(req,res,next){
-                                                  logEvent('ElasticController:ListSearches');
+                                                  logEvent('ElasticController=>ListSearches');
                                                   elasticClient.search({
                                                                           type:'search',
                                                                           name:''
@@ -96,7 +96,7 @@ function getQuery(queryName){
 //queryName - Query name
 //timeFrame - time frame Now till - (24h or 2m)
 module.exports.EvaluateSearchInternal = function(queryName,timeFrame){
-                                                                    logEvent("ElasticController:EvaluateSearchInternal");
+                                                                    logEvent("ElasticController=>EvaluateSearchInternal");
                                                                     var deferred = Q.defer();
 
                                                                     var query = getQueryString(queryName).then(function(result){
@@ -133,7 +133,7 @@ module.exports.EvaluateSearch = function(req,res,next){
 
 //Call search by name
 module.exports.CallQuery= function(req,res,next){
-                                                logEvent("ElasticController:CallQuery");
+                                                logEvent("ElasticController=>CallQuery");
                                                 var queryName = req.body.queryName;
 
                                                 var query = getQueryString(queryName).then(function(result){
@@ -151,7 +151,7 @@ module.exports.CallQuery= function(req,res,next){
 
 function runSearchInternal(query,timeFrame){
                                             var deferred = Q.defer();
-                                            logEvent("ElasticController:runSearchInternal");
+                                            logEvent("ElasticController=>runSearchInternal");
                                             logEvent(query);
                                             var search = JSON.parse(query);
                                             logEvent("post query" + search.query.query_string);
@@ -185,7 +185,7 @@ function runSearchInternal(query,timeFrame){
 
 function runTimeFrameSearchInternal(query,timeFrame){
                                                     var deferred = Q.defer();
-                                                    logEvent("ElasticController:runTimeFrameSearchInternal");
+                                                    logEvent("ElasticController=>runTimeFrameSearchInternal");
                                                     var search = JSON.parse(query);
                                                     logEvent("post query" + JSON.stringify(search.query.query_string));
 
@@ -243,7 +243,7 @@ module.exports.GetSearchResult = function(queryName,timeFrame,numResults){
 //return the results of the query based on timeframe
 function runTimeFrameSearchInternalWResults(query,timeFrame,numResults){
                                                                         var deferred = Q.defer();
-                                                                        logEvent("ElasticController:runTimeFrameSearchInternalwResults");
+                                                                        logEvent("ElasticController=>runTimeFrameSearchInternalwResults");
                                                                         var search = JSON.parse(query);
                                                                         logEvent("post query" + JSON.stringify(search.query.query_string));
 
@@ -277,7 +277,7 @@ function runTimeFrameSearchInternalWResults(query,timeFrame,numResults){
 ///Returns the query based on the query name
 //Params: queryName
 module.exports.getQuery = function (req,res,next){
-                                                    logEvent("ElasticController:getQuery");
+                                                    logEvent("ElasticController=>getQuery");
                                                     logEvent(req.body);
                                                     var queryName= req.body.queryName;
                                                     logEvent(queryName);
@@ -335,7 +335,7 @@ module.exports.runSearch = function (req,res,next){
 
 function getQueryString(queryName, callback){
                                             var deferred = Q.defer();
-                                            logEvent("ElasticController:getQueryString");
+                                            logEvent("ElasticController=>getQueryString");
 
                                             elasticClient.search({
                                                                   type:'search',
