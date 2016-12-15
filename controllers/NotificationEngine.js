@@ -112,6 +112,7 @@ emitter.on('EventTriggered',function(alertInfo){
                                                 logEvent("Event Triggered suspending intervalObject for " + alertInfo.timeValue + " " + alertInfo.timeFrame);
                                                 emitter.emit("UnRegister", alertInfo);
                                                 setTimeout(function(alertInfo){
+                                                    logEvent("Timer ReRegistered: " + alertInfo.notificationName)
                                                     emitter.emit("Register", alertInfo);
                                                 },timeInterval,alertInfo);
                                                 });
@@ -194,7 +195,7 @@ function logEvent(message){
                                                             console.log(message);
                                                             }
                             if(global.notificationtracelevel=='debug'){
-                                                            fs.appendFile(global.loggingDirectory + '/notificationLog.log', "\r\n" + message, function (err) {
+                                                            fs.appendFile(global.loggingDirectory + '/notificationLog.log', "\r\n" + new Date().toString() +  message, function (err) {
                                                               });
                             }
                           }
