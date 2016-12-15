@@ -200,7 +200,7 @@ module.exports.UnregisterNotification = function(notification){
                                                                   return true;
                                                                 forEach(alertInfo in alertInfos)
                                                                 {
-                                                                  logEvent(alertInfo);
+                                                                  logEvent(JSON.stringify(alertInfo));
                                                                   if(alertInfo.notificationName == notification.notificationName)
                                                                       emitter.emit('UnRegister',alertInfo);
                                                                 }
