@@ -42,11 +42,21 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
 
                 logEvent(messagetext);
                   var methodCall ='https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage?chat_id=' +global.telegramChatId + '&text='+ messagetext;
+                  var validateCall = 'https://api.telegram.org/' + global.telegramAPIKey + '/getMe';
+                  if(global.notificationtracelevel=='debug'){
+                  unirest.post(validateCall)
+                  .headers({'Accept': 'application/json','Content-Type': 'application/json'})
+                  .end(function (response) {
+                    logEvent(JSON.stringify(response));
+                    logEvent(methodCall);
+                  });
+                }
 
                   unirest.post(methodCall)
                   .headers({'Accept': 'application/json','Content-Type': 'application/json'})
                   .end(function (response) {
                     logEvent(JSON.stringify(response.statusCode));
+                    logEvent(methodCall);
                   });
 }
 
