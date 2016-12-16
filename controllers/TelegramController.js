@@ -46,7 +46,7 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
                   unirest.post(methodCall)
                   .headers({'Accept': 'application/json','Content-Type': 'application/json'})
                   .end(function (response) {
-                    logEvent(response);
+                    logEvent(JSON.stringify(response));
                   });
 }
 
