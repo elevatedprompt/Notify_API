@@ -156,7 +156,7 @@ emitter.on('ClearInterval',function(alertInfo){
 //emailEvent
 function emailEvent(alert,result,triggerTime){
                                                 logEvent("NotificationEngine=>emailEvent");
-                                                if(global.emailEnabled == true){
+                                                if(global.emailEnabled == true && alert.notifyEmail != ''){
                                                                           emailManager.SendEventMail(alert,result,triggerTime);
                                                                           }
                                                 if(global.telegramEnabled == true && alert.telegramChatId != ''){
