@@ -82,7 +82,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                         "<tr><td><strong>Result Count:</strong></td><td>"
                                                                         + result.total +
                                                                         "</td></tr>" +
-                                                                        "<tr><td>" + htmlData +
+                                                                        "<tr><td>" + htmlData.toString() +
                                                                         "</td></tr>" +
                                                                         "<tr><td><strong>Description:</strong></td><td>"
                                                                         + alertInfo.notificationDescription +
