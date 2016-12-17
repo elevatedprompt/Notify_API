@@ -3,7 +3,7 @@
 //https://www.npmjs.com/package/nodemailer
 
 var nodemailer   = require("nodemailer");
-
+var fs = require('fs')
 // Create a SMTP transporter object
 // var transporter = nodemailer.createTransport({
 //     service: 'Gmail',
@@ -37,7 +37,7 @@ var transporter = nodemailer.createTransport({
 //SendEventMail
 //This will send an email to the recipent that a trigegr has happened
 module.exports.SendEventMail = function(alertInfo,result,triggerTime){
-                                                          logEvent('Email Controller:Send Event Email Fired');
+                                                          logEvent('Email Controller=>Send Event Email Fired');
                                                           var timeframe = ""
                                                           switch(alertInfo.timeFrame){
                                                                                       case "m":
@@ -80,7 +80,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                         + alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + timeframe + "\n" +
                                                                         "</td></tr>" +
                                                                         "<tr><td><strong>Result Count:</strong></td><td>"
-                                                                        + result.total + 
+                                                                        + result.total +
                                                                         JSON.stringify(result) +
                                                                         "</td></tr>" +
                                                                         "<tr><td><strong>Description:</strong></td><td>"
@@ -110,7 +110,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
 //SendResultEventMail
 //Will send an email to the recipient that an event has happened with the data attached.
 module.exports.SendResultEventMail = function(alertInfo,result,valuableResults){
-                                                                                logEvent('Email Controller:Send Event Email Fired');
+                                                                                logEvent('Email Controller=>Send Event Email Fired');
                                                                                 var timeframe = ""
                                                                                 switch(alertInfo.timeFrame) {
                                                                                                               case "m":
@@ -158,7 +158,13 @@ module.exports.SendResultEventMail = function(alertInfo,result,valuableResults){
                                                                               }
 
 function logEvent(message){
-                            if(global.tracelevel == 'debug'){
+                            if(global.tracelevel == 'debug'||global.notificationtracelevel=='debug'){
                               console.log(message);
+                            }
+                            if(global.notificationtracelevel=='debug'){
+                                                            fs.appendFile(global.loggingDirectory + '/notificationLog.log', "\r\n" + new Date().toISOString()
+                                                                                                              .replace(/T/, ' ')
+                                                                                                              .replace(/\..+/, '')+ " EmailCtrl " + message, function (err) {
+                                                              });
                             }
                           }

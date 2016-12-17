@@ -1,11 +1,15 @@
 {
 "UbuntuV16"               : false,
 "tracelevel"              : "error",
+"notificationtracelevel"  : "error",
+"loggingDirectory"        : "/opt/Notify_API/",
 "elastichost"             : "127.0.0.1:9200",
 "notificationDirectory"   : "/opt/API/Notifications/",
 "defaultInterval"         : 5,
+"telegramEnabled"         : false,
 "telegramChatId"          : "@telegramChatId",
 "telegramAPIKey"          : "telegramAPIKey",
+"emailEnabled"            : false,
 "emailConfiguration"      :   {
                                "user":        "user@domain.com",
                                "password":    "PWD",

@@ -1,7 +1,7 @@
 var http = require('http');
 var req = require('request');
 var unirest = require('unirest');
-
+var fs = require('fs')
 
 module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
   logEvent("Telegram method fired");
@@ -46,12 +46,19 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
                   unirest.post(methodCall)
                   .headers({'Accept': 'application/json','Content-Type': 'application/json'})
                   .end(function (response) {
-                    logEvent(response);
+                    logEvent(JSON.stringify(response.statusCode));
+                    logEvent(methodCall);
                   });
 }
 
 function logEvent(message){
-                            if(global.tracelevel == 'debug'){
+                            if(global.tracelevel == 'debug'||global.notificationtracelevel=='debug'){
                                                               console.log(message);
                                                               }
+                            if(global.notificationtracelevel=='debug'){
+                                                            fs.appendFile(global.loggingDirectory + '/notificationLog.log', "\r\n" +new Date().toISOString()
+                                                                                                              .replace(/T/, ' ')
+                                                                                                              .replace(/\..+/, '') +" TelegramCtrl " + message, function (err) {
+                                                              });
+                            }
                           }
