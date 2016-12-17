@@ -95,7 +95,8 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                               logEvent(JSON.stringify(tokens));
                                                               var temp = hit;
                                                               for(token in tokens){
-                                                                temp = hit[token];
+                                                                logEvent("data: " + JSON.stringify(temp));
+                                                                temp = hit[token.toString()];
                                                                 logEvent("Walk out the tokens");
                                                                 logEvent("token: " + JSON.stringify(token));
                                                                 logEvent("value: " + JSON.stringify(temp));
