@@ -114,8 +114,10 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                               var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.');
 
                                               for(var index = 0; index < data.hits.length; index++){
+                                                logEvent("process hit loop");
                                                 var temp = data.hits[index];
                                                 for(var tt = 0; tt < tokens.length; tt++){
+                                                  logEvent("Process token loop");
                                                   temp = temp[tokens[tt]];
                                                 }
                                                 dataString += index.toString() + " " + temp + lineDelimiter;
