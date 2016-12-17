@@ -32,16 +32,16 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
                                   }
   var messagetext =
 
-         alertInfo.notificationName.toString() + " @ " + triggerTime.toISOString()
+         "*" + alertInfo.notificationName.toString() + "*\n @ " + triggerTime.toISOString()
                                                           .replace(/T/, ' ')
                                                           .replace(/\..+/, '') + "\n" +
-           "Search Name: " +alertInfo.selectedSearch + "\n" +
-           "Condition: " + thresholdType + " "+ alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + timeframe + "\n" +
-           "Result Count: " + result.total + "\n" +
-           "Description:\n " + alertInfo.notificationDescription;
-
+           "*Search Name:* %0D%0A" +alertInfo.selectedSearch + "%0D%0A\n" +
+           "*Condition:* %0D%0A" + thresholdType + " "+ alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + timeframe + "%0D%0A\n" +
+           "*Description:* %0D%0A" + alertInfo.notificationDescription + "%0D%0A\n" +
+           "*Result Count:* %0D%0A" + result.total + "%0D%0A\n" +
+           "*Results:* \n\n%60%60%60" + extractDataFromResults(result,alertInfo,"\n") + "%60%60%60";
                 logEvent(messagetext);
-                  var methodCall ='https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage?chat_id=' +global.telegramChatId + '&text='+ messagetext;
+                  var methodCall ='https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage?parse_mode=Markdown&chat_id=' +alertInfo.telegramChatId + '&text='+ messagetext;
 
                   unirest.post(methodCall)
                   .headers({'Accept': 'application/json','Content-Type': 'application/json'})
@@ -50,6 +50,23 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
                     logEvent(methodCall);
                   });
 }
+//Duplicated in emailcontroller
+function extractDataFromResults(data,alertInfo,lineDelimiter){
+                                            logEvent("Extract Data Function called");
+                                            var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.');
+                                            var dataString = "";
+                                            for(var index = 0; index < data.hits.length; index++){
+                                            //  logEvent("process hit loop");
+                                              var temp = data.hits[index];
+                                              for(var tt = 0; tt < tokens.length; tt++){
+                                              //  logEvent("Process token loop");
+                                                temp = temp[tokens[tt]];
+                                              }
+                                              dataString = dataString +  " " + temp + lineDelimiter;
+                                            }
+                                            //logEvent(dataString);
+                                            return dataString;
+                                          }
 
 function logEvent(message){
                             if(global.tracelevel == 'debug'||global.notificationtracelevel=='debug'){

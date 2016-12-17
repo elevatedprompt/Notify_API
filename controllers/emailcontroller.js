@@ -30,13 +30,16 @@ var transporter = nodemailer.createTransport({
                                                 auth: {
                                                     user: global.emailConfiguration.user,
                                                     pass: global.emailConfiguration.password
-                                                }
+                                                },
+                                                debug: (global.tracelevel == 'debug'||global.notificationtracelevel=='debug')
                                             });
 
 
 //SendEventMail
 //This will send an email to the recipent that a trigegr has happened
 module.exports.SendEventMail = function(alertInfo,result,triggerTime){
+
+
                                                           logEvent('Email Controller=>Send Event Email Fired');
                                                           var timeframe = ""
                                                           switch(alertInfo.timeFrame){
@@ -64,7 +67,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                                             break;
                                                                                           }
 
-
+                                                        var htmlData = extractDataFromResults(result,alertInfo,"</td></tr><tr><td>");
                                                         var messagetext =
                                                                         "<table><tr><td colspan='2'><strong>A conditional search trigger has been met.</strong></td></tr><tr><td colspan='2'>&nbsp;</td></tr>"+
                                                                         "<tr><td><strong>Notification Name:</strong></td><td>"
@@ -79,14 +82,14 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                         thresholdType + " "
                                                                         + alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + timeframe + "\n" +
                                                                         "</td></tr>" +
-                                                                        "<tr><td><strong>Result Count:</strong></td><td>"
-                                                                        + result.total +
-                                                                        JSON.stringify(result) +
+                                                                        "<tr><td><strong>Result Count:</strong></td><td>" +
+                                                                        result.total +
                                                                         "</td></tr>" +
-                                                                        "<tr><td><strong>Description:</strong></td><td>"
-                                                                        + alertInfo.notificationDescription +
-                                                                        "</td></tr></table>";
-
+                                                                        "<tr><td><strong>Description:</strong></td><td>" +
+                                                                        alertInfo.notificationDescription +
+                                                                        "</td></tr>" +
+                                                                        "<tr><td>" + htmlData +"</td></tr>" +
+                                                                        "</table>";
 
                                                             var mailOptions = {
                                                               from: global.emailConfiguration.fromSender,
@@ -106,7 +109,33 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                                                                   });
 
                                                         }
+function testEmail(mailOptions){
+  transporter.sendMail(mailOptions, function (error, info) {
+                                                              if (error) {
+                                                                  logEvent('Send Email Error:' + error);
+                                                              } else {
+                                                                  logEvent('Message sent: ' + info.response);
+                                                              }
+                                                          });
+}
 
+//Duplicated in telegramcontroller
+  function extractDataFromResults(data,alertInfo,lineDelimiter){
+                                              logEvent("Extract Data Function called");
+                                              var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.');
+                                              var dataString = "";
+                                              for(var index = 0; index < data.hits.length; index++){
+                                              //  logEvent("process hit loop");
+                                                var temp = data.hits[index];
+                                                for(var tt = 0; tt < tokens.length; tt++){
+                                                //  logEvent("Process token loop");
+                                                  temp = temp[tokens[tt]];
+                                                }
+                                                dataString = dataString +  " " + temp + lineDelimiter;
+                                              }
+                                              //logEvent(dataString);
+                                              return dataString;
+                                            }
 //SendResultEventMail
 //Will send an email to the recipient that an event has happened with the data attached.
 module.exports.SendResultEventMail = function(alertInfo,result,valuableResults){
