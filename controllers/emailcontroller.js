@@ -97,16 +97,16 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                             //logEvent("tokens" + tokens);
                                                             //logEvent("tokens" + JSON.stringify(tokens));
 
-
+                                                            logEvent("pre loop");
                                                             //for(hit in result.hits)
-                                                            for(; ii < result.hits.length; ii++){
+                                                            for(; index < result.hits.length; index++){
                                                               logEvent('Parse results');
                                                               logEvent(JSON.stringify(tokens));
-                                                              var temp = result.hits[ii];
+                                                              var temp = result.hits[index];
                                                               //for(token in tokens){
                                                               for(; tt < tokens.length; tt++){
                                                                 logEvent("data: " + JSON.stringify(temp));
-                                                                logEvent("hit :" + JSON.stringify(result.hits[ii]));
+                                                                logEvent("hit :" + JSON.stringify(result.hits[index]));
                                                                 temp = temp[tokens[tt]];
                                                                 logEvent("Walk out the tokens");
                                                                 logEvent("token: " + JSON.stringify(tokens[tt]));
