@@ -121,6 +121,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                 }
                                                 dataString += index.toString() + " " + temp + lineDelimiter;
                                               }
+                                              logEvent(dataString);
                                               return dataString;
                                             }
 //SendResultEventMail
