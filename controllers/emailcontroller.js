@@ -89,6 +89,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
 
                                                             logEvent('incoming data');
                                                             logEvent(JSON.stringify(result));
+                                                            logEvent(JSON.stringify(result.hits));
                                                             logEvent('Split notifyData');
 
                                                             //logEvent(alertInfo.notifyData.replace('{','').replace('}','').split('.'));
@@ -102,7 +103,6 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                               for(token in tokens){
                                                                 logEvent("data: " + JSON.stringify(temp));
                                                                 logEvent("hit :" + JSON.stringify(hit));
-                                                                logEvent("t :" + JSON.stringify(hit));
                                                                 temp = temp[token.toString()];
                                                                 logEvent("Walk out the tokens");
                                                                 logEvent("token: " + JSON.stringify(token));
