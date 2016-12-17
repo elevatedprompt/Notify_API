@@ -95,6 +95,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                               html: messagetext
                                                           };
                                                           logEvent("Send Email");
+                                                          logEvent(JSON.stringify(mailOptions));
                                                           // send mail with defined transport object
                                                           transporter.sendMail(mailOptions, function (error, info) {
                                                                                                                       if (error) {
