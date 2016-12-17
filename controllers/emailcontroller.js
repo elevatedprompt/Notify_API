@@ -87,10 +87,12 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                         + alertInfo.notificationDescription +
                                                                         "</td></tr></table>";
 
+                                                            var dataString = "";
+
                                                             logEvent('incoming data');
                                                           //  logEvent(JSON.stringify(result));
                                                             logEvent(JSON.stringify(result.hits));
-                                                            logEvent('Split notifyData');
+                                                            //logEvent('Split notifyData');
 
                                                             //logEvent(alertInfo.notifyData.replace('{','').replace('}','').split('.'));
                                                             var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.');
@@ -100,20 +102,24 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                             logEvent("pre loop");
                                                             //for(hit in result.hits)
                                                             for(var index = 0; index < result.hits.length; index++){
-                                                              logEvent('Parse results');
-                                                              logEvent(JSON.stringify(tokens));
+                                                      //        logEvent('Parse results');
+                                                        //      logEvent(JSON.stringify(tokens));
                                                               var temp = result.hits[index];
                                                               //for(token in tokens){
                                                               for(var tt = 0; tt < tokens.length; tt++){
-                                                                logEvent("data: " + JSON.stringify(temp));
-                                                                logEvent("hit :" + JSON.stringify(result.hits[index]));
+                                                        //        logEvent("data: " + JSON.stringify(temp));
+                                                        //        logEvent("hit :" + JSON.stringify(result.hits[index]));
                                                                 temp = temp[tokens[tt]];
-                                                                logEvent("Walk out the tokens");
-                                                                logEvent("token: " + JSON.stringify(tokens[tt]));
-                                                                logEvent("value: " + JSON.stringify(temp));
+                                                      //          logEvent("Walk out the tokens");
+                                                    //            logEvent("token: " + JSON.stringify(tokens[tt]));
+                                                    //            logEvent("value: " + JSON.stringify(temp));
                                                               }
+                                                              dataString +=temp + "\r\n";
                                                               logEvent(JSON.stringify(temp));
+
+
                                                             }
+                                                            logEvent(dataString);
 
                                                             logEvent(alertInfo.notifyData.replace('{','').replace('}').split('.'))
 
