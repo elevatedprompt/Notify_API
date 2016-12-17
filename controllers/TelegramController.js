@@ -40,7 +40,6 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
            "*Description:* %0D%0A" + alertInfo.notificationDescription + "%0D%0A\n" +
            "*Result Count:* %0D%0A" + result.total + "%0D%0A\n" +
            "*Results:* \n\n%60%60%60" + extractDataFromResults(result,alertInfo,"\n") + "%60%60%60";
-//*bold+text*%0D%0A_italic+text_%0D%0A%5Btext%5D%28http%3A%2F%2Fwww.example.com%2F%29%0D%0A%60inline+fixed-width+code%60%0D%0A%60%60%60text%0D%0Apre-formatted+fixed-width+code+block%0D%0A%60%60%60
                 logEvent(messagetext);
                   var methodCall ='https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage?parse_mode=Markdown&chat_id=' +alertInfo.telegramChatId + '&text='+ messagetext;
 
