@@ -87,6 +87,24 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                         + alertInfo.notificationDescription +
                                                                         "</td></tr></table>";
 
+                                                            logEvent('Split notifyData');
+                                                            logEvent(alertInfo.notifyData.replace('{','').replace('}').split('.'));
+                                                            logEvent(alertInfo.notifyData.replace('{','').replace('}').split('.'));
+                                                            var tokens = alertInfo.notifyData.replace('{','').replace('}').split('.');
+                                                            for(hit in result.hits){
+                                                              logEvent('Parse results');
+                                                              logEvent(JSON.stringify(tokens));
+                                                              var temp = hit;
+                                                              for(token in tokens){
+                                                                temp = hit[token];
+                                                                logEvent("Walk out the tokens");
+                                                                logEvent("token: " + JSON.stringify(token));
+                                                                logEvent("value: " + JSON.stringify(temp));
+                                                              }
+                                                              logEvent(JSON.stringify(temp));
+                                                            }
+
+                                                            logEvent(alertInfo.notifyData.replace('{','').replace('}').split('.'))
 
                                                             var mailOptions = {
                                                               from: global.emailConfiguration.fromSender,
