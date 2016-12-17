@@ -31,7 +31,7 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
                                     break;
                                   }
   var messagetext =
-        "## "
+
          alertInfo.notificationName.toString() + "\n @ " + triggerTime.toISOString()
                                                           .replace(/T/, ' ')
                                                           .replace(/\..+/, '') + "\n" +
