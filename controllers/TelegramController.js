@@ -37,8 +37,9 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
                                                           .replace(/\..+/, '') + "\n" +
            "Search Name: " +alertInfo.selectedSearch + "\n" +
            "Condition: " + thresholdType + " "+ alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + timeframe + "\n" +
+           "Description:\n " + alertInfo.notificationDescription + "\n" +
            "Result Count: " + result.total + "\n" +
-           "Description:\n " + alertInfo.notificationDescription;
+           "Results: " + extractDataFromResults(result,alertInfo,"\n");
 
                 logEvent(messagetext);
                   var methodCall ='https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage?chat_id=' +alertInfo.telegramChatId + '&text='+ messagetext;
@@ -50,6 +51,23 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
                     logEvent(methodCall);
                   });
 }
+//Duplicated in emailcontroller
+function extractDataFromResults(data,alertInfo,lineDelimiter){
+                                            logEvent("Extract Data Function called");
+                                            var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.');
+                                            var dataString = "";
+                                            for(var index = 0; index < data.hits.length; index++){
+                                            //  logEvent("process hit loop");
+                                              var temp = data.hits[index];
+                                              for(var tt = 0; tt < tokens.length; tt++){
+                                              //  logEvent("Process token loop");
+                                                temp = temp[tokens[tt]];
+                                              }
+                                              dataString = dataString +  " " + temp + lineDelimiter;
+                                            }
+                                            //logEvent(dataString);
+                                            return dataString;
+                                          }
 
 function logEvent(message){
                             if(global.tracelevel == 'debug'||global.notificationtracelevel=='debug'){

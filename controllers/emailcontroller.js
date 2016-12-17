@@ -38,16 +38,7 @@ var transporter = nodemailer.createTransport({
 //SendEventMail
 //This will send an email to the recipent that a trigegr has happened
 module.exports.SendEventMail = function(alertInfo,result,triggerTime){
-                if(global.tracelevel == 'debug'||global.notificationtracelevel=='debug'){
-                                                        var testMailOptions = {
-                                                          from: global.emailConfiguration.fromSender,
-                                                          to: alertInfo.notifyEmail,
-                                                          subject: "Alert: " + alertInfo.notificationName,
-                                                          text: "Alert: " + alertInfo.notificationName,
-                                                          html: "this is a test"
-                                                      };
-                                                      testEmail(testMailOptions);
-                                                    }
+
 
                                                           logEvent('Email Controller=>Send Event Email Fired');
                                                           var timeframe = ""
@@ -91,14 +82,15 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                         thresholdType + " "
                                                                         + alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + timeframe + "\n" +
                                                                         "</td></tr>" +
-                                                                        "<tr><td><strong>Result Count:</strong></td><td>"
-                                                                        + result.total +
+                                                                        "<tr><td><strong>Result Count:</strong></td><td>" +
+                                                                        result.total +
+                                                                        "</td></tr>" +
+                                                                        "<tr><td><strong>Description:</strong></td><td>" +
+                                                                        alertInfo.notificationDescription +
                                                                         "</td></tr>" +
                                                                         "<tr><td>" + htmlData +"</td></tr>" +
-                                                                        "<tr><td><strong>Description:</strong></td><td>"
-                                                                        + alertInfo.notificationDescription +
-                                                                        "</td></tr></table>";
-                                                          logEvent("Build Email Object");
+                                                                        "</table>";
+
                                                             var mailOptions = {
                                                               from: global.emailConfiguration.fromSender,
                                                               to: alertInfo.notifyEmail,
@@ -106,8 +98,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                               text: "Alert: " + alertInfo.notificationName,
                                                               html: messagetext
                                                           };
-                                                          logEvent("Send Email");
-                                                          logEvent(JSON.stringify(mailOptions));
+
                                                           // send mail with defined transport object
                                                           transporter.sendMail(mailOptions, function (error, info) {
                                                                                                                       if (error) {
@@ -127,6 +118,8 @@ function testEmail(mailOptions){
                                                               }
                                                           });
 }
+
+//Duplicated in telegramcontroller
   function extractDataFromResults(data,alertInfo,lineDelimiter){
                                               logEvent("Extract Data Function called");
                                               var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.');
