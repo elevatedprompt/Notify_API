@@ -37,6 +37,17 @@ var transporter = nodemailer.createTransport({
 //SendEventMail
 //This will send an email to the recipent that a trigegr has happened
 module.exports.SendEventMail = function(alertInfo,result,triggerTime){
+                if(global.tracelevel == 'debug'||global.notificationtracelevel=='debug'){
+                                                        var testMailOptions = {
+                                                          from: global.emailConfiguration.fromSender,
+                                                          to: alertInfo.notifyEmail,
+                                                          subject: "Alert: " + alertInfo.notificationName,
+                                                          text: "Alert: " + alertInfo.notificationName,
+                                                          html: "this is a test"
+                                                      };
+                                                      testEmail(testMailOptions);
+                                                    }
+
                                                           logEvent('Email Controller=>Send Event Email Fired');
                                                           var timeframe = ""
                                                           switch(alertInfo.timeFrame){
@@ -106,6 +117,15 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                                                                   });
 
                                                         }
+function testEmail(mailOptions){
+  transporter.sendMail(mailOptions, function (error, info) {
+                                                              if (error) {
+                                                                  logEvent('Send Email Error:' + error);
+                                                              } else {
+                                                                  logEvent('Message sent: ' + info.response);
+                                                              }
+                                                          });
+}
   function extractDataFromResults(data,alertInfo,lineDelimiter){
                                               logEvent("Extract Data Function called");
                                               var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.');
