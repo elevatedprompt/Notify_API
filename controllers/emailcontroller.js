@@ -87,9 +87,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                         "<tr><td><strong>Description:</strong></td><td>"
                                                                         + alertInfo.notificationDescription +
                                                                         "</td></tr></table>";
-
-                                                            var dataString = "";
-
+                                                          logEvent("Build Email Object");
                                                             var mailOptions = {
                                                               from: global.emailConfiguration.fromSender,
                                                               to: alertInfo.notifyEmail,
@@ -97,7 +95,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                               text: "Alert: " + alertInfo.notificationName,
                                                               html: messagetext
                                                           };
-
+                                                          logEvent("Send Email");
                                                           // send mail with defined transport object
                                                           transporter.sendMail(mailOptions, function (error, info) {
                                                                                                                       if (error) {
@@ -113,15 +111,15 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                               var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.');
                                               var dataString = "";
                                               for(var index = 0; index < data.hits.length; index++){
-                                                logEvent("process hit loop");
+                                              //  logEvent("process hit loop");
                                                 var temp = data.hits[index];
                                                 for(var tt = 0; tt < tokens.length; tt++){
-                                                  logEvent("Process token loop");
+                                                //  logEvent("Process token loop");
                                                   temp = temp[tokens[tt]];
                                                 }
                                                 dataString = dataString +  " " + temp + lineDelimiter;
                                               }
-                                              logEvent(dataString);
+                                              //logEvent(dataString);
                                               return dataString;
                                             }
 //SendResultEventMail
