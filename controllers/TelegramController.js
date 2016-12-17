@@ -30,11 +30,15 @@ module.exports.SendTelegramEvent = function(alertInfo,result,triggerTime){
                                     thresholdType = "Any";
                                     break;
                                   }
+var eventTime = "";
+if(global.tracelevel == 'debug'||global.notificationtracelevel=='debug'){
+                                                eventTime = "@ " + triggerTime.toISOString()
+                                                                                           .replace(/T/, ' ')
+                                                                                           .replace(/\..+/, '');
+                                               }
   var messagetext =
 
-         "*" + alertInfo.notificationName.toString() + "*\n @ " + triggerTime.toISOString()
-                                                          .replace(/T/, ' ')
-                                                          .replace(/\..+/, '') + "\n" +
+         "*" + alertInfo.notificationName.toString() + "*\n " + eventTime + "\n" +
            "*Search Name:* %0D%0A" +alertInfo.selectedSearch + "%0D%0A\n" +
            "*Condition:* %0D%0A" + thresholdType + " "+ alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + timeframe + "%0D%0A\n" +
            "*Description:* %0D%0A" + alertInfo.notificationDescription + "%0D%0A\n" +
