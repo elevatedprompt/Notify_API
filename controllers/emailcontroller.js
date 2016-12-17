@@ -81,47 +81,15 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                         "</td></tr>" +
                                                                         "<tr><td><strong>Result Count:</strong></td><td>"
                                                                         + result.total +
-                                                                        JSON.stringify(result) +
+                                                                        "</td></tr>" +
+                                                                        "<tr><td>" +
+                                                                        extractDataFromResults(result,alertInfo,"</td></tr><tr><td>") +
                                                                         "</td></tr>" +
                                                                         "<tr><td><strong>Description:</strong></td><td>"
                                                                         + alertInfo.notificationDescription +
                                                                         "</td></tr></table>";
 
                                                             var dataString = "";
-
-                                                            logEvent('incoming data');
-                                                          //  logEvent(JSON.stringify(result));
-                                                            logEvent(JSON.stringify(result.hits));
-                                                            //logEvent('Split notifyData');
-
-                                                            //logEvent(alertInfo.notifyData.replace('{','').replace('}','').split('.'));
-                                                            var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.');
-                                                            logEvent("tokens" + tokens);
-                                                            //logEvent("tokens" + JSON.stringify(tokens));
-                                                          //  var hits_in = (result.hits || {}).hits || [];
-                                                            logEvent("pre loop");
-                                                            //for(hit in result.hits)
-                                                            for(var index = 0; index < result.hits.length; index++){
-                                                      //        logEvent('Parse results');
-                                                        //      logEvent(JSON.stringify(tokens));
-                                                              var temp = result.hits[index];
-                                                              //for(token in tokens){
-                                                              for(var tt = 0; tt < tokens.length; tt++){
-                                                        //        logEvent("data: " + JSON.stringify(temp));
-                                                        //        logEvent("hit :" + JSON.stringify(result.hits[index]));
-                                                                temp = temp[tokens[tt]];
-                                                      //          logEvent("Walk out the tokens");
-                                                    //            logEvent("token: " + JSON.stringify(tokens[tt]));
-                                                    //            logEvent("value: " + JSON.stringify(temp));
-                                                              }
-                                                              dataString +=temp + "\r\n";
-                                                              logEvent(JSON.stringify(temp));
-
-
-                                                            }
-                                                            logEvent(dataString);
-
-                                                            logEvent(alertInfo.notifyData.replace('{','').replace('}').split('.'))
 
                                                             var mailOptions = {
                                                               from: global.emailConfiguration.fromSender,
@@ -141,7 +109,18 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                                                                   });
 
                                                         }
+  function extractDataFromResults(data,alertInfo,lineDelimiter){
+                                              var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.');
 
+                                              for(var index = 0; index < data.hits.length; index++){
+                                                var temp = result.hits[index];
+                                                for(var tt = 0; tt < tokens.length; tt++){
+                                                  temp = temp[tokens[tt]];
+                                                }
+                                                dataString += index.toString() + " " + temp + lineDelimiter;
+                                              }
+                                              return dataString;
+                                            }
 //SendResultEventMail
 //Will send an email to the recipient that an event has happened with the data attached.
 module.exports.SendResultEventMail = function(alertInfo,result,valuableResults){
