@@ -110,10 +110,11 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
 
                                                         }
   function extractDataFromResults(data,alertInfo,lineDelimiter){
+                                              logEvent("Extract Data Function called");
                                               var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.');
 
                                               for(var index = 0; index < data.hits.length; index++){
-                                                var temp = result.hits[index];
+                                                var temp = data.hits[index];
                                                 for(var tt = 0; tt < tokens.length; tt++){
                                                   temp = temp[tokens[tt]];
                                                 }
