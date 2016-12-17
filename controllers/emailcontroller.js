@@ -119,7 +119,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                   logEvent("Process token loop");
                                                   temp = temp[tokens[tt]];
                                                 }
-                                                dataString += " " + temp + lineDelimiter;
+                                                dataString =+ " " + temp + lineDelimiter;
                                               }
                                               logEvent(dataString);
                                               return dataString;
