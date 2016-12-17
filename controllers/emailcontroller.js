@@ -88,13 +88,13 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                         "</td></tr></table>";
 
                                                             logEvent('incoming data');
-                                                            logEvent(JSON.stringify(result));
+                                                          //  logEvent(JSON.stringify(result));
                                                             logEvent(JSON.stringify(result.hits));
                                                             logEvent('Split notifyData');
 
                                                             //logEvent(alertInfo.notifyData.replace('{','').replace('}','').split('.'));
                                                             var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.');
-                                                            //logEvent("tokens" + tokens);
+                                                            logEvent("tokens" + tokens);
                                                             //logEvent("tokens" + JSON.stringify(tokens));
 
                                                             logEvent("pre loop");
