@@ -30,7 +30,8 @@ var transporter = nodemailer.createTransport({
                                                 auth: {
                                                     user: global.emailConfiguration.user,
                                                     pass: global.emailConfiguration.password
-                                                }
+                                                },
+                                                debug: (global.tracelevel == 'debug'||global.notificationtracelevel=='debug')
                                             });
 
 
