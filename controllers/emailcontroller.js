@@ -64,7 +64,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                                             break;
                                                                                           }
 
-                                                        var htmlData = extractDataFromResults(result,alertInfo,"</td></tr><tr><td>");
+                                                    //    var htmlData = extractDataFromResults(result,alertInfo,"</td></tr><tr><td>");
                                                         var messagetext =
                                                                         "<table><tr><td colspan='2'><strong>A conditional search trigger has been met.</strong></td></tr><tr><td colspan='2'>&nbsp;</td></tr>"+
                                                                         "<tr><td><strong>Notification Name:</strong></td><td>"
