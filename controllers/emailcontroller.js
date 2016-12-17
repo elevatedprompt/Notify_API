@@ -88,9 +88,8 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                         "</td></tr></table>";
 
                                                             logEvent('Split notifyData');
-                                                            logEvent(alertInfo.notifyData.replace('{','').replace('}').split('.'));
-                                                            logEvent(alertInfo.notifyData.replace('{','').replace('}').split('.'));
-                                                            var tokens = alertInfo.notifyData.replace('{','').replace('}').split('.');
+                                                            logEvent(alertInfo.notifyData.replace('{','').replace('}','').split('.'));
+                                                            var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.');
                                                             for(hit in result.hits){
                                                               logEvent('Parse results');
                                                               logEvent(JSON.stringify(tokens));
