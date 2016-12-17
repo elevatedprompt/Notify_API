@@ -96,16 +96,20 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                             var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.');
                                                             //logEvent("tokens" + tokens);
                                                             //logEvent("tokens" + JSON.stringify(tokens));
-                                                            for(hit in result.hits){
+
+
+                                                            //for(hit in result.hits)
+                                                            for(; ii < result.hits.length; ii++){
                                                               logEvent('Parse results');
                                                               logEvent(JSON.stringify(tokens));
-                                                              var temp = hit;
-                                                              for(token in tokens){
+                                                              var temp = result.hits[ii];
+                                                              //for(token in tokens){
+                                                              for(; tt < tokens.length; tt++){
                                                                 logEvent("data: " + JSON.stringify(temp));
-                                                                logEvent("hit :" + JSON.stringify(hit));
-                                                                temp = temp[token.toString()];
+                                                                logEvent("hit :" + JSON.stringify(result.hits[ii]));
+                                                                temp = temp[tokens[tt]];
                                                                 logEvent("Walk out the tokens");
-                                                                logEvent("token: " + JSON.stringify(token));
+                                                                logEvent("token: " + JSON.stringify(tokens[tt]));
                                                                 logEvent("value: " + JSON.stringify(temp));
                                                               }
                                                               logEvent(JSON.stringify(temp));
