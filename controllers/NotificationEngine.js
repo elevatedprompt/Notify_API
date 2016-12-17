@@ -159,7 +159,7 @@ function emailEvent(alert,result,triggerTime){
                                                 if(global.emailEnabled == true){
                                                                           emailManager.SendEventMail(alert,result,triggerTime);
                                                                           }
-                                                if(global.telegramEnabled == true){
+                                                if(global.telegramEnabled == true && alert.telegramChatId != ''){
                                                                           telegramManager.SendTelegramEvent(alert,result,triggerTime);
                                                                           }
                                               }
