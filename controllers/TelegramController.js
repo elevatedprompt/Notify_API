@@ -43,7 +43,7 @@ if(global.tracelevel == 'debug'||global.notificationtracelevel=='debug'){
            "*Condition:* %0D%0A" + thresholdType + " "+ alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + timeframe + "%0D%0A\n" +
            "*Description:* %0D%0A" + alertInfo.notificationDescription + "%0D%0A\n" +
            "*Result Count:* %0D%0A" + result.total + "%0D%0A\n" +
-           "*Results:* \n\n%60%60%60" + extractDataFromResults(result,alertInfo,"\n") + "%60%60%60";
+           "*Results:* \n\n%60%60%60" + extractDataFromResults(result,alertInfo,"\n\n") + "%60%60%60";
                 logEvent(messagetext);
                   var methodCall ='https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage?parse_mode=Markdown&chat_id=' +alertInfo.telegramChatId + '&text='+ messagetext;
 
