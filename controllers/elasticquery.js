@@ -156,7 +156,8 @@ function runSearchInternal(query,timeFrame){
                                             var search = JSON.parse(query);
                                             logEvent("post query" + search.query.query_string);
                                             logEvent("Internal Search Filter");
-                                            logEvent(search.filter);
+                                            logEvent(JSON.stringify(search));
+                                            logEvent(JSON.stringify(search.filter));
                                             var x = {
                                               index:search.index,
                                               searchType:"count",
@@ -192,7 +193,8 @@ function runTimeFrameSearchInternal(query,timeFrame){
                                                     var search = JSON.parse(query);
                                                     logEvent("post query" + JSON.stringify(search.query.query_string));
                                                     logEvent("Internal Time Search Filter");
-                                                    logEvent(search.filter);
+                                                    logEvent(JSON.stringify(search));
+                                                    logEvent(JSON.stringify(search.filter));
                                                     var x = {
                                                               index:search.index,
                                                               //searchType:"count",
