@@ -1,4 +1,3 @@
-,
 var Q = require ('q');
 var elasticsearch = require('elasticsearch');
 var fs = require('fs')
