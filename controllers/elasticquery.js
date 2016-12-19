@@ -1,3 +1,4 @@
+,
 var Q = require ('q');
 var elasticsearch = require('elasticsearch');
 var fs = require('fs')
@@ -155,11 +156,13 @@ function runSearchInternal(query,timeFrame){
                                             logEvent(query);
                                             var search = JSON.parse(query);
                                             logEvent("post query" + search.query.query_string);
-
+                                            logEvent("Internal Search Filter");
+                                            logEvent(search.filter);
                                             var x = {
                                               index:search.index,
                                               searchType:"count",
-                                              q:'@timestamp:(>now-24h) AND ' +search.query.query_string.query
+                                              q:'@timestamp:(>now-24h) AND ' +search.query.query_string.query,
+                                              filter: search.filter
                                             };
 
                                             elasticClient.search(x).then(function(result){
@@ -170,6 +173,7 @@ function runSearchInternal(query,timeFrame){
                                                                                           var result;
                                                                                           for(; ii < hits_in.length; ii++) {
                                                                                                                                 result = JSON.stringify(hits_in[ii]._source.kibanaSavedObjectMeta.searchSourceJSON);
+                                                                                                                            //    filter = JSON.stringify(hits_in[ii]._source.kibanaSavedObjectMeta.filter);
                                                                                                                             }
                                                                                           logEvent("Search result:" + result.hits);
                                                                                           return result.hits;
@@ -188,11 +192,13 @@ function runTimeFrameSearchInternal(query,timeFrame){
                                                     logEvent("ElasticController=>runTimeFrameSearchInternal");
                                                     var search = JSON.parse(query);
                                                     logEvent("post query" + JSON.stringify(search.query.query_string));
-
+                                                    logEvent("Interna Time Search Filter");
+                                                    logEvent(search.filter);
                                                     var x = {
                                                               index:search.index,
                                                               //searchType:"count",
-                                                              q:'@timestamp:(>now-' + timeFrame + ') AND ' +search.query.query_string.query//,
+                                                              q:'@timestamp:(>now-' + timeFrame + ') AND ' +search.query.query_string.query,
+                                                              filter: search.filter
                                                             };
 
                                                     elasticClient.search(x).then(
