@@ -192,7 +192,7 @@ function runTimeFrameSearchInternal(query,timeFrame){
                                                     logEvent("ElasticController=>runTimeFrameSearchInternal");
                                                     var search = JSON.parse(query);
                                                     logEvent("post query" + JSON.stringify(search.query.query_string));
-                                                    logEvent("Interna Time Search Filter");
+                                                    logEvent("Internal Time Search Filter");
                                                     logEvent(search.filter);
                                                     var x = {
                                                               index:search.index,
