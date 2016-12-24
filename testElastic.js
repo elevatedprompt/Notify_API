@@ -9,6 +9,7 @@ var elasticClient = new elasticsearch.Client({
 
 
  function pingCluster(){
+     console.info('ping');
                                                       elasticClient.ping({
                                                                           requestTimeout: 30000,
                                                                           // undocumented params are appended to the query string
@@ -55,6 +56,7 @@ function testDelete(){
                       console.log('index was deleted or never existed');
                     }, function (error) {
                       // oh no!
+                      console.error(error);
                     });
 }
 
@@ -71,7 +73,7 @@ function createIndex(){
                         published: true,
                       }
                     }, function (error, response) {
-
+console.error(error);
                     });
 
 }
@@ -92,6 +94,7 @@ function createDocument(){
                     }
                   }, function (error, response) {
                     // ...
+                    console.error(error);
                   });
 
 }
