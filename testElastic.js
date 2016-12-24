@@ -131,7 +131,7 @@ function getNodeStats(){
   });
 }
 function clusterStats(){
-  client.cluster.stats({
+  elasticClient.cluster.stats({
     human: true
   },
     function (error, response) {
