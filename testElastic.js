@@ -67,7 +67,7 @@ function createIndex(){
                       index: 'myindex',
                       opType:"create",
                       type: 'mytype',
-                      id: '1',
+                    //  id: '1',
                       consistency : "all",
                       body: {
                         title: 'Test 1',
@@ -78,7 +78,7 @@ function createIndex(){
                       console.info('CreateIndex');
 console.error(error);
                     });
-                    createDocument();
+                  //  createDocument();
 
 
 }
@@ -88,7 +88,7 @@ function createDocument(){
                   elasticClient.create({
                     index: 'myindex',
                     type: 'mytype',
-                    id: '1',
+                  //  id: '1',
                     consistency : "all",
                     body: {
                       title: 'Test 1',
@@ -102,10 +102,11 @@ function createDocument(){
                     console.info('create Document');
                     console.error(error);
                   });
-                    testDelete();
+                //    testDelete();
 
 }
 
 pingCluster();
 listSearches();
 createIndex();
+createDocument();
