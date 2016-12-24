@@ -121,22 +121,24 @@ console.log('UQDN: ' + h);
 
 
 function getNodeStats(){
+  console.info('nodestats');
   elasticClient.nodes.stats({
   human: true
 }, function (error, response) {
     // ...
-    console.info('get stats');
+    console.info('node stats');
     console.error(error);
     console.info(response);
   });
 }
 function clusterStats(){
+  console.info('clusterstats');
   elasticClient.cluster.stats({
     human: true
   },
     function (error, response) {
       // ...
-      console.info('create Document');
+      console.info('clusterstats');
       console.error(error);
       console.info(response);
     });
