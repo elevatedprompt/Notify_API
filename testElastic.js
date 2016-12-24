@@ -44,8 +44,56 @@ function listSearches(){
                                                                });
                }
 
+function testDelete(){
+                      elasticClient.indices.delete({
+                      index: 'myindex',
+                      ignore: [404]
+                    }).then(function (body) {
+                      // since we told the client to ignore 404 errors, the
+                      // promise is resolved even if the index does not exist
+                      console.log('index was deleted or never existed');
+                    }, function (error) {
+                      // oh no!
+                    });
+}
 
+function createIndex(){
+                      elasticClient.index({
+                      index: 'myindex',
+                      type: 'mytype',
+                      id: '1',
+                      consistency : "all"
+                      body: {
+                        title: 'Test 1',
+                        tags: ['y', 'z'],
+                        published: true,
+                      }
+                    }, function (error, response) {
 
+                    });
+
+}
+
+function createDocument(){
+                  elasticClient.create({
+                    index: 'myindex',
+                    type: 'mytype',
+                    id: '1',
+                    body: {
+                      title: 'Test 1',
+                      tags: ['y', 'z'],
+                      published: true,
+                      published_at: '2013-01-01',
+                      counter: 1
+                    }
+                  }, function (error, response) {
+                    // ...
+                  });
+
+}
 
 pingCluster();
 listSearches();
+createIndex();
+testDelete();
+createDocument();
