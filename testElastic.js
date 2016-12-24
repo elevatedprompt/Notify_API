@@ -93,7 +93,7 @@ function createDocument(){
                     id: '4',
               //      consistency : "all",
                     body: {
-                      title: 'Test 1',
+                      title: 'Test 1 updated',
                       tags: ['y', 'z'],
                       published: true,
                       published_at: '2013-01-01',
