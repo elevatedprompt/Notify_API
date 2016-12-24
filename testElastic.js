@@ -45,6 +45,7 @@ function listSearches(){
                }
 
 function testDelete(){
+  console.info('Deleted');
                       elasticClient.indices.delete({
                       index: 'myindex',
                       ignore: [404]
@@ -58,6 +59,7 @@ function testDelete(){
 }
 
 function createIndex(){
+  console.info('CreateIndex');
                       elasticClient.index({
                       index: 'myindex',
                       type: 'mytype',
@@ -75,6 +77,7 @@ function createIndex(){
 }
 
 function createDocument(){
+  console.info('create Document');
                   elasticClient.create({
                     index: 'myindex',
                     type: 'mytype',
@@ -96,5 +99,5 @@ function createDocument(){
 pingCluster();
 listSearches();
 createIndex();
-testDelete();
 createDocument();
+testDelete();
