@@ -172,3 +172,4 @@ createDocument();
 getHostname();
 getNodeStats();
 clusterStats();
+clusterState();
