@@ -19,7 +19,7 @@ var elasticClient = new elasticsearch.Client({
                           //                                                  res.sendStatus(false);
                         //                                                    next();
                                                                           } else {
-                                                                            logEvent('All is well');
+                                                                            console.info('All is well');
                             //                                                res.sendStatus(true);
                       //                                                      next();
                                                                           }
@@ -27,7 +27,7 @@ var elasticClient = new elasticsearch.Client({
                                                     }
 
 function listSearches(){
-                 logEvent('ElasticController=>ListSearches');
+                 console.info('ListSearches');
                  elasticClient.search({
                                          type:'search',
                                          name:''
