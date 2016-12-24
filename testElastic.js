@@ -50,7 +50,7 @@ function listSearches(){
 function testDelete(){
   console.info('Deleted');
                       elasticClient.indices.delete({
-                      index: 'myindex',
+                      index: '.myindex',
                       ignore: [404]
                     }).then(function (body) {
                       // since we told the client to ignore 404 errors, the
@@ -66,7 +66,7 @@ function testDelete(){
 function createIndex(){
   console.info('CreateIndex');
                       elasticClient.index({
-                      index: 'myindex',
+                      index: '.myindex',
                       //consistency:"all",
                       opType:"create",
                       type: 'mytype',
@@ -89,7 +89,7 @@ console.error(error);
 function createDocument(){
   console.info('create Document');
                   elasticClient.create({
-                    index: 'myindex',
+                    index: '.myindex',
                   //  consistency:"all",
                     type: 'mytype',
                     id: '4',
