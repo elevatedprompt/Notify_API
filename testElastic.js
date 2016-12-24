@@ -63,9 +63,9 @@ function testDelete(){
 
 function createIndex(){
   console.info('CreateIndex');
-                      elasticClient.index.create({
+                      elasticClient.index({
                       index: 'myindex',
-                      //opType:"create",
+                      opType:"create",
                       type: 'mytype',
                       id: '1',
                       consistency : "all",
