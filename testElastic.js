@@ -56,6 +56,7 @@ function testDelete(){
                       console.log('index was deleted or never existed');
                     }, function (error) {
                       // oh no!
+                      console.info('Deleted');
                       console.error(error);
                     });
 }
@@ -73,8 +74,11 @@ function createIndex(){
                         published: true,
                       }
                     }, function (error, response) {
+                      console.info('CreateIndex');
 console.error(error);
                     });
+                    createDocument();
+
 
 }
 
@@ -94,13 +98,13 @@ function createDocument(){
                     }
                   }, function (error, response) {
                     // ...
+                    console.info('create Document');
                     console.error(error);
                   });
+                    testDelete();
 
 }
 
 pingCluster();
 listSearches();
 createIndex();
-createDocument();
-testDelete();
