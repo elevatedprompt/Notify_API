@@ -68,7 +68,7 @@ function createIndex(){
                       opType:"create",
                       type: 'mytype',
                       id: '1',
-                      consistency : "all",
+                  //    consistency : "all",
                       body: {
                         title: 'Test 1',
                         tags: ['y', 'z'],
@@ -89,7 +89,7 @@ function createDocument(){
                     index: 'myindex',
                     type: 'mytype',
                     id: '2',
-                    consistency : "all",
+              //      consistency : "all",
                     body: {
                       title: 'Test 1',
                       tags: ['y', 'z'],
