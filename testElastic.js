@@ -1,6 +1,6 @@
 var elasticsearch = require('elasticsearch');
 var os = require('os');
-var dns = require('dns');
+
 
 var elasticClient = new elasticsearch.Client({
                                                 host: '127.0.0.1:9200',
@@ -117,23 +117,35 @@ function getHostname(){
   console.log(load);
   console.log(up);
 console.log('UQDN: ' + h);
-
-dns.lookup(h,4,{ hints: dns.ADDRCONFIG }, function(err, ip,faamily) {
-    console.log('IP: ' + ip);
-    dns.lookupService(ip, 0, function (err, hostname, service) {
-        if (err) {
-            console.log(err);
-            return;
-        }
-        console.log('FQDN: ' + hostname);
-        console.log('Service: ' + service);
-    });
-});
 }
 
+
+function getNodeStats(){
+  elasticClient.nodes.stats({
+  human: true
+}, function (error, response) {
+    // ...
+    console.info('get stats');
+    console.error(error);
+    console.info(response);
+  });
+}
+function clusterStats(){
+  client.cluster.stats({
+    human: true
+  },
+    function (error, response) {
+      // ...
+      console.info('create Document');
+      console.error(error);
+      console.info(response);
+    });
+}
 
 pingCluster();
 listSearches();
 createIndex();
 createDocument();
 getHostname();
+getNodeStats();
+clusterStats();
