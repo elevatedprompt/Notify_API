@@ -65,7 +65,7 @@ function createIndex(){
   console.info('CreateIndex');
                       elasticClient.index({
                       index: 'myindex',
-                      consistency:"all",
+                      //consistency:"all",
                       opType:"create",
                       type: 'mytype',
                       id: '3',
@@ -88,7 +88,7 @@ function createDocument(){
   console.info('create Document');
                   elasticClient.create({
                     index: 'myindex',
-                    consistency:"all",
+                  //  consistency:"all",
                     type: 'mytype',
                     id: '4',
               //      consistency : "all",
