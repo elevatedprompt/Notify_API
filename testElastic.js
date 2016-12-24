@@ -67,7 +67,7 @@ function createIndex(){
                       index: 'myindex',
                       opType:"create",
                       type: 'mytype',
-                    //  id: '1',
+                      id: '1',
                       consistency : "all",
                       body: {
                         title: 'Test 1',
@@ -88,7 +88,7 @@ function createDocument(){
                   elasticClient.create({
                     index: 'myindex',
                     type: 'mytype',
-                  //  id: '1',
+                    id: '2',
                     consistency : "all",
                     body: {
                       title: 'Test 1',
