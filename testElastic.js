@@ -143,7 +143,28 @@ function clusterStats(){
       console.info(response);
     });
 }
-
+function clusterState(){
+  console.info('clusterstate');
+  elasticClient.cluster.state({
+    local: true
+  },
+    function (error, response) {
+      // ...
+      console.info('state local');
+      console.error(error);
+      console.info(response);
+    });
+    console.info('clusterstate master');
+    elasticClient.cluster.state({
+      local: true
+    },
+      function (error, response) {
+        // ...
+        console.info('state master');
+        console.error(error);
+        console.info(response);
+      });
+}
 pingCluster();
 listSearches();
 createIndex();
