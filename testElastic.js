@@ -118,7 +118,7 @@ function getHostname(){
   console.log(up);
 console.log('UQDN: ' + h);
 
-dns.lookup(h,4, { hints: dns.ADDRCONFIG }, function(err, ip) {
+dns.lookup(h,{ hints: dns.ADDRCONFIG },4, function(err, ip) {
     console.log('IP: ' + ip);
     dns.lookupService(ip, 0, function (err, hostname, service) {
         if (err) {
