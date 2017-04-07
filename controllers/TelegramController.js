@@ -57,7 +57,7 @@ if(global.tracelevel == 'debug'||global.notificationtracelevel=='debug'){
 //Duplicated in emailcontroller
 function extractDataFromResults(data,alertInfo,lineDelimiter){
                                             logEvent("Extract Data Function called");
-                                            var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.');
+                                            var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.').replace("_","\_");
                                             var dataString = "";
                                             for(var index = 0; index < data.hits.length; index++){
                                             //  logEvent("process hit loop");
