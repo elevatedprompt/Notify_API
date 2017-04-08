@@ -45,7 +45,7 @@ if(global.tracelevel == 'debug'||global.notificationtracelevel=='debug'){
            "*Result Count:* %0D%0A" + result.total + "%0D%0A\n" +
            "*Results:* \n%60%60%60" + extractDataFromResults(result,alertInfo,"\n\n") + "%60%60%60";
                 logEvent(messagetext);
-                  var methodCall ='https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage?parse_mode=Markdown&chat_id=' +alertInfo.telegramChatId + '&text='+ messagetext;
+                  var methodCall ='https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage?parse_mode=Markdown&chat_id=' +alertInfo.telegramChatId + '&text='+ messagetext.replace("_","\_");
 
                   unirest.post(methodCall)
                   .headers({'Accept': 'application/json','Content-Type': 'application/json'})
@@ -57,7 +57,7 @@ if(global.tracelevel == 'debug'||global.notificationtracelevel=='debug'){
 //Duplicated in emailcontroller
 function extractDataFromResults(data,alertInfo,lineDelimiter){
                                             logEvent("Extract Data Function called");
-                                            var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.').replace("_","\_");
+                                            var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.');
                                             var dataString = "";
                                             for(var index = 0; index < data.hits.length; index++){
                                             //  logEvent("process hit loop");
