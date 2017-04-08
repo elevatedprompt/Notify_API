@@ -38,14 +38,14 @@ if(global.tracelevel == 'debug'||global.notificationtracelevel=='debug'){
                                                }
   var messagetext =
 
-         "*" + alertInfo.notificationName.toString() + "*\n " + eventTime + "\n" +
+         "*" + alertInfo.notificationName.toString() + "*\n " +
            "*Search Name:* %0D%0A" +alertInfo.selectedSearch + "%0D%0A\n" +
            "*Condition:* %0D%0A" + thresholdType + " "+ alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + timeframe + "%0D%0A\n" +
            "*Description:* %0D%0A" + alertInfo.notificationDescription + "%0D%0A\n" +
            "*Result Count:* %0D%0A" + result.total + "%0D%0A\n" +
            "*Results:* \n%60%60%60" + extractDataFromResults(result,alertInfo,"\n\n") + "%60%60%60";
-                logEvent(messagetext);
-                  var methodCall ='https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage?parse_mode=Markdown&chat_id=' +alertInfo.telegramChatId + '&text='+ messagetext;
+                logEvent(messagetext.replace("_","\\_"));
+                  var methodCall ='https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage?parse_mode=Markdown&chat_id=' +alertInfo.telegramChatId + '&text='+ messagetext.replace("_","\\_");
 
                   unirest.post(methodCall)
                   .headers({'Accept': 'application/json','Content-Type': 'application/json'})
