@@ -71,9 +71,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                         var messagetext =
                                                                         "<table><tr><td colspan='2'><strong>A conditional search trigger has been met.</strong></td></tr><tr><td colspan='2'>&nbsp;</td></tr>"+
                                                                         "<tr><td><strong>Notification Name:</strong></td><td>"
-                                                                        + alertInfo.notificationName + " @ " + triggerTime.toISOString()
-                                                                                                                          .replace(/T/, ' ')
-                                                                                                                          .replace(/\..+/, '') +
+                                                                        + alertInfo.notificationName +
                                                                         "</td></tr>" +
                                                                         "<tr><td><strong>Search Name:</strong></td><td>"
                                                                         + alertInfo.selectedSearch +
