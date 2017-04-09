@@ -205,8 +205,8 @@ function logEvent(message){
                             if(global.tracelevel == 'debug'||global.notificationtracelevel=='debug'){
                                                             console.log(message);
                                                             }
-                            if(global.notificationtracelevel=='debug'){
-                                                            fs.appendFile(global.loggingDirectory + '/notificationLog.log', "\r\n" + new Date().toISOString()
+                            if(global.notificationEngineTrace=='debug'){
+                                                            fs.appendFile(global.loggingDirectory + '/notificationEngineLog.log', "\r\n" + new Date().toISOString()
                                                                                                               .replace(/T/, ' ')
                                                                                                               .replace(/\..+/, '') + " NotifyEngine " + message, function (err) {
                                                               });
