@@ -86,7 +86,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                         "<tr><td><strong>Description:</strong></td><td>" +
                                                                         alertInfo.notificationDescription +
                                                                         "</td></tr>" +
-                                                                        "<tr><td>" + htmlData +"</td></tr>" +
+                                                                        "<tr><td colspan='2'>" + htmlData +"</td></tr>" +
                                                                         "</table>";
 
                                                             var mailOptions = {
@@ -121,7 +121,7 @@ function testEmail(mailOptions){
   function extractDataFromResults(data,alertInfo,lineDelimiter){
                                               logEvent("Extract Data Function called");
                                             var fields = alertInfo.notifyData.split(',');
-                                            var dataString = "";
+                                            var dataString = "<table><tr><td>";
                                             for(var index = 0; index < data.hits.length; index++){
                                              for(var ndex = 0; ndex < fields.length;ndex++){
                                                 var tokens = fields[ndex].replace('{','').replace('}','').split('.');
@@ -134,17 +134,17 @@ function testEmail(mailOptions){
                                                     finalTokenName = tokens[tt];
                                                   }
                                                   console.log(typeof temp);
-                                                  dataString = dataString + " <strong>" + finalTokenName + "</strong></br>";
+                                                  dataString = dataString + " <strong>" + finalTokenName + ":</strong>";
                                                   if((typeof temp) =='object')
                                                   {
-                                                    dataString = dataString +  " " + JSON.stringify(temp) + lineDelimiter;
+                                                    dataString = dataString +  " " + JSON.stringify(temp) + " <br />"  + lineDelimiter;
                                                   }
                                                   else
-                                                    dataString = dataString +  " " + temp + lineDelimiter;
+                                                    dataString = dataString +  " " + temp + " <br />" + lineDelimiter;
                                                 }
                                                }
                                                 logEvent(dataString);
-                                                return dataString;
+                                                return dataString + "</td></tr></table>";
                                               }
 
 //SendResultEventMail

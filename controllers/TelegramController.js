@@ -72,7 +72,7 @@ function extractDataFromResults(data,alertInfo,lineDelimiter){
                                                 finalTokenName = tokens[tt];
                                               }
                                               console.log(typeof temp);
-                                              dataString = dataString + " %60%60%60*" + finalTokenName + "*%60%60%60\n";
+                                              dataString = dataString + " %60%60%60*" + finalTokenName + ":*%60%60%60\n";
                                               if((typeof temp) =='object')
                                               {
                                                 dataString = dataString +  " " + JSON.stringify(temp) + lineDelimiter;
