@@ -7,7 +7,7 @@
  * @description
  */
 var alertInfos = [];
-var offlineAlertInfos = [];
+var suspendedAlertInfos = [];
 var emailManager = require('./emailcontroller');
 var telegramManager = require('./TelegramController');
 var es = require('./elasticquery');
@@ -120,14 +120,20 @@ emitter.on('EventTriggered',function(alertInfo){
                                                   }
                                                 logEvent("Event Triggered suspending intervalObject for " + alertInfo.timeValue + " " + alertInfo.timeFrame);
                                                 emitter.emit("UnRegister", alertInfo);
+                                                //add event to list of suspended events
+                                                suspendedAlertInfos.push(alertInfo);
+
                                                 setTimeout(function(alertInfo){
-                                                  logEvent("Check for zombie alert");
-                                                  if(IsRunableAlert(alertInfo))
-                                                  {
-                                                  //confirm the alert is in the list of registered alerts before resurecing
-                                                    logEvent("Timer ReRegistered: " + alertInfo.notificationName)
-                                                    emitter.emit("Register", alertInfo);
+                                                  //check to see if the alert is in the suspended list.
+                                                  if(IsSuspended(alertInfo)){
+                                                    if(IsRunableAlert(alertInfo)){
+                                                      var alertInfo = ReInstate(alertInfo);
+                                                    //confirm the alert is in the list of registered alerts before resurecing
+                                                      logEvent("Timer ReRegistered: " + alertInfo.notificationName)
+                                                      emitter.emit("Register", alertInfo);
+                                                    }
                                                   }
+
                                                 },timeInterval,alertInfo);
                                                 });
 //Register
@@ -135,23 +141,16 @@ emitter.on('EventTriggered',function(alertInfo){
 emitter.on('Register',function(alertInfo){
                                           logEvent("NotificationEngine=>event Listiner Registered: " + alertInfo.notificationName);
 
-                                          for (var i = 0; i < offlineAlertInfos.length; i++) {
-                                            if(offlineAlertInfos[i].notificationName == alertInfo.notificationName){
-
-                                                if(offlineAlertInfos[i].timeStamp != alertInfo.timeStamp)
-                                                  offlineAlertInfos.splice(i,1);
-                                                continue;
-                                              }
-                                          }
-
-                                          emitter.emit(alertInfo.thresholdType,alertInfo);//run the check immediately
-                                          var intervalObject = setInterval(function(alertInfo){
-                                                                                                //Emit the threshold type to be evaluated
-                                                                                                logEvent("NotificationEngine=>Interval Hit:" + alertInfo.notificationName);
-                                                                                                emitter.emit(alertInfo.thresholdType,alertInfo);
-                                                                                              },alertInfo.checkFreq*60000||300000,alertInfo);
-                                          alertInfo.intervalObject = intervalObject;
-                                          alertInfos.push(alertInfo);
+                                          if(!IsSuspended(alertInfo)){
+                                                                    emitter.emit(alertInfo.thresholdType,alertInfo);//run the check immediately
+                                                                    var intervalObject = setInterval(function(alertInfo){
+                                                                                                                          //Emit the threshold type to be evaluated
+                                                                                                                          logEvent("NotificationEngine=>Interval Hit:" + alertInfo.notificationName);
+                                                                                                                          emitter.emit(alertInfo.thresholdType,alertInfo);
+                                                                                                                        },alertInfo.checkFreq*60000||300000,alertInfo);
+                                                                    alertInfo.intervalObject = intervalObject;
+                                                                    alertInfos.push(alertInfo);
+                                                                  }
                                         });
 
 //Unregister
@@ -165,7 +164,6 @@ function removeAlert(alertInfo){
                                 for (var i = 0; i < alertInfos.length; i++) {
                                   if(alertInfo.notificationName == alertInfos[i].notificationName){
                                     clearInterval(alertInfos[i].intervalObject);
-                                    offlineAlertInfos.push(alertInfos[i]);
                                     alertInfos.splice(i,1);
                                     continue;
                                   }
@@ -202,6 +200,38 @@ function UnregisterEventMonitor(alertInfo){
                                             //clearInterval(alertInfo.intervalObject);
                                             //emitter.emit('UnRegister',alertInfo);
                                           }
+function IsSuspended(alertInfo){
+                              for (var i = 0; i < suspendedAlertInfos.length; i++) {
+                                if(suspendedAlertInfos[i].notificationName == alertInfo.notificationName){
+                                  return true;
+                                  }
+                              }
+                              return false;
+                            }
+function ReInstate(alertInfo){
+                              for (var i = 0; i < suspendedAlertInfos.length; i++) {
+                                if(suspendedAlertInfos[i].notificationName == alertInfo.notificationName){
+                                  if(suspendedAlertInfos[i].timeStamp != alertInfo.timeStamp){
+                                      var returnInfo = suspendedAlertInfos[i];
+                                      suspendedAlertInfos.splice(i,1);
+                                      return returnInfo;
+                                    }
+                                    suspendedAlertInfos.splice(i,1);
+                                    break;
+                                  }
+                              }
+                              return alertInfo;
+                            }
+function RegisterSuspended(alertInfo){
+                                      for (var i = 0; i < suspendedAlertInfos.length; i++) {
+                                        if(suspendedAlertInfos[i].notificationName == alertInfo.notificationName){
+                                          if(suspendedAlertInfos[i].timeStamp != alertInfo.timeStamp){
+                                            suspendedAlertInfos[i] = alertInfo;
+                                            break;
+                                            }
+                                          }
+                                      }
+                                    }
 function IsRunableAlert(alertInfo){
                                 logEvent("NotificationEngine=>Check Runable Notification");
                                 fs.readdirSync(global.notificationDirectory)
@@ -229,14 +259,21 @@ function IsRunableAlert(alertInfo){
 //emit's an event to register the alertInfo
 module.exports.RegisterNotification = function(alertInfo){
                                                           logEvent('NotificationEngine=>Register Notification');
-                                                          emitter.emit('Register',alertInfo);
-                                                        }
+                                                          //check to see if the alert is suspended.
+                                                          if(!IsSuspended(alertInfo)){
+                                                                                    emitter.emit('Register',alertInfo);
+                                                                                    }
+                                                                                    else{
+                                                                                      RegisterSuspended(alertInfo);
+                                                                                    }
+                                                          }
 
 //UnregisterNotification
 //Unregiser the event.
 module.exports.UnregisterNotification = function(notification){
                                                                 logEvent('NotificationEngine=>Unregister Notification: ' + notification.notificationName);
                                                                 logEvent('Registered Alert Count:' + alertInfos.length);
+                                                                logEvent('suspended Alert Count:' + suspendedAlertInfos.length);
                                                                 if(alertInfos.length==0)
                                                                   return true;
 
