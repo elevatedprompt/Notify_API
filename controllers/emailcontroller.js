@@ -120,20 +120,33 @@ function testEmail(mailOptions){
 //Duplicated in telegramcontroller
   function extractDataFromResults(data,alertInfo,lineDelimiter){
                                               logEvent("Extract Data Function called");
-                                              var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.');
-                                              var dataString = "";
-                                              for(var index = 0; index < data.hits.length; index++){
-                                              //  logEvent("process hit loop");
+                                            var fields = alertInfo.notifyData.split(',');
+                                            var dataString = "";
+                                            for(var index = 0; index < data.hits.length; index++){
+                                             for(var ndex = 0; ndex < fields.length;ndex++){
+                                                var tokens = fields[ndex].replace('{','').replace('}','').split('.');
+                                              var finalTokenName = '';
                                                 var temp = data.hits[index];
-                                                for(var tt = 0; tt < tokens.length; tt++){
-                                                //  logEvent("Process token loop");
-                                                  temp = temp[tokens[tt]];
+                                                  for(var tt = 0; tt < tokens.length; tt++){
+                                                    logEvent("Process token loop");
+
+                                                    temp = temp[tokens[tt]];
+                                                    finalTokenName = tokens[tt];
+                                                  }
+                                                  console.log(typeof temp);
+                                                  dataString = dataString + " <strong>" + finalTokenName + "</strong></br>";
+                                                  if((typeof temp) =='object')
+                                                  {
+                                                    dataString = dataString +  " " + JSON.stringify(temp) + lineDelimiter;
+                                                  }
+                                                  else
+                                                    dataString = dataString +  " " + temp + lineDelimiter;
                                                 }
-                                                dataString = dataString +  " " + temp + lineDelimiter;
+                                               }
+                                                logEvent(dataString);
+                                                return dataString;
                                               }
-                                              //logEvent(dataString);
-                                              return dataString;
-                                            }
+
 //SendResultEventMail
 //Will send an email to the recipient that an event has happened with the data attached.
 module.exports.SendResultEventMail = function(alertInfo,result,valuableResults){

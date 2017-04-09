@@ -57,18 +57,31 @@ if(global.tracelevel == 'debug'||global.notificationtracelevel=='debug'){
 //Duplicated in emailcontroller
 function extractDataFromResults(data,alertInfo,lineDelimiter){
                                             logEvent("Extract Data Function called");
-                                            var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.');
-                                            var dataString = "";
-                                            for(var index = 0; index < data.hits.length; index++){
-                                            //  logEvent("process hit loop");
-                                              var temp = data.hits[index];
+
+                                        var fields = alertInfo.notifyData.split(',');
+                                        var dataString = "";
+                                        for(var index = 0; index < data.hits.length; index++){
+                                         for(var ndex = 0; ndex < fields.length;ndex++){
+                                            var tokens = fields[ndex].replace('{','').replace('}','').split('.');
+                                          var finalTokenName = '';
+                                            var temp = data.hits[index];
                                               for(var tt = 0; tt < tokens.length; tt++){
-                                              //  logEvent("Process token loop");
+                                                logEvent("Process token loop");
+
                                                 temp = temp[tokens[tt]];
+                                                finalTokenName = tokens[tt];
                                               }
-                                              dataString = dataString +  " " + temp + lineDelimiter;
+                                              console.log(typeof temp);
+                                              dataString = dataString + " %60%60%60*" + finalTokenName + "*%60%60%60\n";
+                                              if((typeof temp) =='object')
+                                              {
+                                                dataString = dataString +  " " + JSON.stringify(temp) + lineDelimiter;
+                                              }
+                                              else
+                                                dataString = dataString +  " " + temp + lineDelimiter;
                                             }
-                                            //logEvent(dataString);
+                                           }
+                                            logEvent(dataString);
                                             return dataString;
                                           }
 
