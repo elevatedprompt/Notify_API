@@ -235,6 +235,7 @@ function RegisterSuspended(alertInfo){
                                     }
 function IsRunableAlert(alertInfo){
                                 logEvent("NotificationEngine=>Check Runable Notification");
+                                var returnVal = false;
                                 fs.readdirSync(global.notificationDirectory)
                                   .forEach(function(file) {
 
@@ -244,14 +245,17 @@ function IsRunableAlert(alertInfo){
                                                              if(alertInfo.notificationName == alertInfoFile.notificationName)
                                                              if(alertInfo.enabled == 'true'){
                                                                logEvent('Notification is enabled.');
-                                                               return true;
+                                                               returnVal = true;
+                                                               return returnVal;
                                                              }
                                                              else {
                                                                 logEvent('Notification is disabled.');
-                                                               return false;
+                                                                returnVal = false;
+                                                               return returnVal;
                                                              }
                                                          });
-                                  return false;
+                                  logEvent(returnVal);
+                                  return returnVal;
                                 }
 //RegisterNotification
 //emit's an event to register the alertInfo
