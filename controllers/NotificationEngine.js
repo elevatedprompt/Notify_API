@@ -209,6 +209,7 @@ function IsSuspended(alertInfo){
                               return false;
                             }
 function ReInstate(alertInfo){
+                              logEvent('Notification request for Reinstatment: ' + alertInfo.notificationName);
                               for (var i = 0; i < suspendedAlertInfos.length; i++) {
                                 if(suspendedAlertInfos[i].notificationName == alertInfo.notificationName){
                                   if(suspendedAlertInfos[i].timeStamp != alertInfo.timeStamp){
@@ -240,12 +241,9 @@ function IsRunableAlert(alertInfo){
                                                              file = global.notificationDirectory+'/'+file;
                                                              var data = fs.readFileSync(file,'utf8');
                                                              var alertInfoFile = JSON.parse(data);
-                                                             logEvent('checkTimestamp');
-                                                             logEvent('memory timestamp ' + alertInfo.timeStamp);
-                                                             logEvent('file timestamp ' + alertInfoFile.timeStamp)
-                                                             if(alertInfo.notificationName == alertInfoFile.notificationName &&
-                                                             alertInfo.timestamp==alertInfoFile.timeStamp)
+                                                             if(alertInfo.notificationName == alertInfoFile.notificationName)
                                                              if(alertInfo.enabled == 'true'){
+                                                               logEvent('Notification is enabled.');
                                                                return true;
                                                              }
                                                              else {
@@ -258,12 +256,14 @@ function IsRunableAlert(alertInfo){
 //RegisterNotification
 //emit's an event to register the alertInfo
 module.exports.RegisterNotification = function(alertInfo){
-                                                          logEvent('NotificationEngine=>Register Notification');
+
                                                           //check to see if the alert is suspended.
                                                           if(!IsSuspended(alertInfo)){
+                                                                                    logEvent('NotificationEngine=>Register Notification');
                                                                                     emitter.emit('Register',alertInfo);
                                                                                     }
                                                                                     else{
+                                                                                      logEvent('NotificationEngine=>Register Suspended');
                                                                                       RegisterSuspended(alertInfo);
                                                                                     }
                                                           }
