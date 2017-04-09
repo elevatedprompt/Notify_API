@@ -112,8 +112,13 @@ emitter.on('EventTriggered',function(alertInfo){
                                                 logEvent("Event Triggered suspending intervalObject for " + alertInfo.timeValue + " " + alertInfo.timeFrame);
                                                 emitter.emit("UnRegister", alertInfo);
                                                 setTimeout(function(alertInfo){
+                                                  logEvent("Check for zombie alert");
+                                                  if(IsRunableAlert(alertInfo))
+                                                  {
+                                                  //confirm the alert is in the list of registered alerts before resurecing
                                                     logEvent("Timer ReRegistered: " + alertInfo.notificationName)
                                                     emitter.emit("Register", alertInfo);
+                                                  }
                                                 },timeInterval,alertInfo);
                                                 });
 //Register
@@ -177,7 +182,23 @@ function UnregisterEventMonitor(alertInfo){
                                             //clearInterval(alertInfo.intervalObject);
                                             //emitter.emit('UnRegister',alertInfo);
                                           }
-
+function IsRunableAlert(alertInfo){
+                                logEvent("NotificationEngine=>Check Runable Notification");
+                                fs.readdirSync(global.notificationDirectory)
+                                  .forEach(function(file) {
+                                                             file = global.notificationDirectory+'/'+file;
+                                                             var data = fs.readFileSync(file,'utf8');
+                                                             var alertInfoFile = JSON.parse(data);
+                                                             if(alertInfo.notificationName == alertInfoFile.notificationName)
+                                                             if(alertInfo.enabled == 'true'){
+                                                               return true;
+                                                             }
+                                                             else {
+                                                               return false;
+                                                             }
+                                                         });
+                                  return false;
+                                }
 //RegisterNotification
 //emit's an event to register the alertInfo
 module.exports.RegisterNotification = function(alertInfo){
