@@ -1,3 +1,11 @@
+/*!
+* Copyright(c) 2016 elevatedprompt
+*
+* Author: Colin Goss
+ * @ngdoc function
+ * @name EPStack API
+ * @description
+ */
 var http = require('http');
 var req = require('request');
 var unirest = require('unirest');

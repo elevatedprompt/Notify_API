@@ -1,4 +1,13 @@
+/*!
+* Copyright(c) 2016 elevatedprompt
+*
+* Author: Colin Goss
+ * @ngdoc function
+ * @name EPStack API
+ * @description
+ */
 var alertInfos = [];
+var offlineAlertInfos = [];
 var emailManager = require('./emailcontroller');
 var telegramManager = require('./TelegramController');
 var es = require('./elasticquery');
@@ -125,6 +134,16 @@ emitter.on('EventTriggered',function(alertInfo){
 //Register and setup interval for monitor
 emitter.on('Register',function(alertInfo){
                                           logEvent("NotificationEngine=>event Listiner Registered: " + alertInfo.notificationName);
+
+                                          for (var i = 0; i < offlineAlertInfos.length; i++) {
+                                            if(offlineAlertInfos[i].notificationName == alertInfo.notificationName){
+
+                                                if(offlineAlertInfos[i].timeStamp != alertInfo.timeStamp)
+                                                  offlineAlertInfos.splice(i,1);
+                                                continue;
+                                              }
+                                          }
+
                                           emitter.emit(alertInfo.thresholdType,alertInfo);//run the check immediately
                                           var intervalObject = setInterval(function(alertInfo){
                                                                                                 //Emit the threshold type to be evaluated
@@ -146,6 +165,7 @@ function removeAlert(alertInfo){
                                 for (var i = 0; i < alertInfos.length; i++) {
                                   if(alertInfo.notificationName == alertInfos[i].notificationName){
                                     clearInterval(alertInfos[i].intervalObject);
+                                    offlineAlertInfos.push(alertInfos[i]);
                                     alertInfos.splice(i,1);
                                     continue;
                                   }
@@ -186,14 +206,20 @@ function IsRunableAlert(alertInfo){
                                 logEvent("NotificationEngine=>Check Runable Notification");
                                 fs.readdirSync(global.notificationDirectory)
                                   .forEach(function(file) {
+
                                                              file = global.notificationDirectory+'/'+file;
                                                              var data = fs.readFileSync(file,'utf8');
                                                              var alertInfoFile = JSON.parse(data);
-                                                             if(alertInfo.notificationName == alertInfoFile.notificationName)
+                                                             logEvent('checkTimestamp');
+                                                             logEvent('memory timestamp ' + alertInfo.timeStamp);
+                                                             logEvent('file timestamp ' + alertInfoFile.timeStamp)
+                                                             if(alertInfo.notificationName == alertInfoFile.notificationName &&
+                                                             alertInfo.timestamp==alertInfoFile.timeStamp)
                                                              if(alertInfo.enabled == 'true'){
                                                                return true;
                                                              }
                                                              else {
+                                                                logEvent('Notification is disabled.');
                                                                return false;
                                                              }
                                                          });
