@@ -37,6 +37,7 @@ if(global.tracelevel == 'debug'||global.notificationtracelevel=='debug'){
                                                                                            .replace(/\..+/, '');
                                                }
   var messagetext =
+
          "*" + alertInfo.notificationName.toString() + "*\n " +
            "*Search Name:* %0D%0A" +alertInfo.selectedSearch + "%0D%0A\n" +
            "*Condition:* %0D%0A" + thresholdType + " "+ alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + timeframe + "%0D%0A\n" +
