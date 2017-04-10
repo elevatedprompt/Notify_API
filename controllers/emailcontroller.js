@@ -71,9 +71,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                         var messagetext =
                                                                         "<table><tr><td colspan='2'><strong>A conditional search trigger has been met.</strong></td></tr><tr><td colspan='2'>&nbsp;</td></tr>"+
                                                                         "<tr><td><strong>Notification Name:</strong></td><td>"
-                                                                        + alertInfo.notificationName + " @ " + triggerTime.toISOString()
-                                                                                                                          .replace(/T/, ' ')
-                                                                                                                          .replace(/\..+/, '') +
+                                                                        + alertInfo.notificationName +
                                                                         "</td></tr>" +
                                                                         "<tr><td><strong>Search Name:</strong></td><td>"
                                                                         + alertInfo.selectedSearch +
@@ -88,7 +86,7 @@ module.exports.SendEventMail = function(alertInfo,result,triggerTime){
                                                                         "<tr><td><strong>Description:</strong></td><td>" +
                                                                         alertInfo.notificationDescription +
                                                                         "</td></tr>" +
-                                                                        "<tr><td>" + htmlData +"</td></tr>" +
+                                                                        "<tr><td colspan='2'>" + htmlData +"</td></tr>" +
                                                                         "</table>";
 
                                                             var mailOptions = {
@@ -122,20 +120,33 @@ function testEmail(mailOptions){
 //Duplicated in telegramcontroller
   function extractDataFromResults(data,alertInfo,lineDelimiter){
                                               logEvent("Extract Data Function called");
-                                              var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.');
-                                              var dataString = "";
-                                              for(var index = 0; index < data.hits.length; index++){
-                                              //  logEvent("process hit loop");
+                                            var fields = alertInfo.notifyData.split(',');
+                                            var dataString = "<table><tr><td>";
+                                            for(var index = 0; index < data.hits.length; index++){
+                                             for(var ndex = 0; ndex < fields.length;ndex++){
+                                                var tokens = fields[ndex].replace('{','').replace('}','').split('.');
+                                              var finalTokenName = '';
                                                 var temp = data.hits[index];
-                                                for(var tt = 0; tt < tokens.length; tt++){
-                                                //  logEvent("Process token loop");
-                                                  temp = temp[tokens[tt]];
+                                                  for(var tt = 0; tt < tokens.length; tt++){
+                                                    logEvent("Process token loop");
+
+                                                    temp = temp[tokens[tt]];
+                                                    finalTokenName = tokens[tt];
+                                                  }
+                                                  console.log(typeof temp);
+                                                  dataString = dataString + " <strong>" + finalTokenName + ":</strong>";
+                                                  if((typeof temp) =='object')
+                                                  {
+                                                    dataString = dataString +  " " + JSON.stringify(temp) + " <br />"  + lineDelimiter;
+                                                  }
+                                                  else
+                                                    dataString = dataString +  " " + temp + " <br />" + lineDelimiter;
                                                 }
-                                                dataString = dataString +  " " + temp + lineDelimiter;
+                                               }
+                                                logEvent(dataString);
+                                                return dataString + "</td></tr></table>";
                                               }
-                                              //logEvent(dataString);
-                                              return dataString;
-                                            }
+
 //SendResultEventMail
 //Will send an email to the recipient that an event has happened with the data attached.
 module.exports.SendResultEventMail = function(alertInfo,result,valuableResults){

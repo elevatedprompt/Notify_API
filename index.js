@@ -38,6 +38,7 @@ global.UbuntuV16 = configuration.UbuntuV16;
 global.tracelevel =   configuration.tracelevel;
 global.loggingDirectory =   configuration.loggingDirectory;
 global.notificationtracelevel = configuration.notificationtracelevel;
+global.notificationEngineTrace = configuration.notificationEngineTrace;
 global.elastichost =  configuration.elastichost;
 global.notificationDirectory = configuration.notificationDirectory;
 global.emailConfiguration = configuration.emailConfiguration;

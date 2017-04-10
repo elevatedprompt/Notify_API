@@ -2,6 +2,7 @@
 "UbuntuV16"               : false,
 "tracelevel"              : "error",
 "notificationtracelevel"  : "error",
+"notificationEngineTrace" : "error",
 "loggingDirectory"        : "/opt/Notify_API/",
 "elastichost"             : "127.0.0.1:9200",
 "notificationDirectory"   : "/opt/API/Notifications/",
