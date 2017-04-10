@@ -1,4 +1,12 @@
-/*
+/*!
+* Copyright(c) 2016 elevatedprompt
+*
+* Author: Colin Goss
+ * @ngdoc function
+ * @name EPStack API
+ * @description
+ */
+ /*
 EPNotificationController controller
 
 Methods
