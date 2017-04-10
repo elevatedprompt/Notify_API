@@ -1,4 +1,13 @@
+/*!
+* Copyright(c) 2016 elevatedprompt
+*
+* Author: Colin Goss
+ * @ngdoc function
+ * @name EPStack API
+ * @description
+ */
 var alertInfos = [];
+var suspendedAlertInfos = [];
 var emailManager = require('./emailcontroller');
 var telegramManager = require('./TelegramController');
 var es = require('./elasticquery');
@@ -111,28 +120,37 @@ emitter.on('EventTriggered',function(alertInfo){
                                                   }
                                                 logEvent("Event Triggered suspending intervalObject for " + alertInfo.timeValue + " " + alertInfo.timeFrame);
                                                 emitter.emit("UnRegister", alertInfo);
+                                                //add event to list of suspended events
+                                                suspendedAlertInfos.push(alertInfo);
+
                                                 setTimeout(function(alertInfo){
-                                                  logEvent("Check for zombie alert");
-                                                  if(IsRunableAlert(alertInfo))
-                                                  {
-                                                  //confirm the alert is in the list of registered alerts before resurecing
-                                                    logEvent("Timer ReRegistered: " + alertInfo.notificationName)
-                                                    emitter.emit("Register", alertInfo);
+                                                  //check to see if the alert is in the suspended list.
+                                                  if(IsSuspended(alertInfo)){
+                                                    if(IsRunableAlert(alertInfo)){
+                                                      var alertInfo = ReInstate(alertInfo);
+                                                    //confirm the alert is in the list of registered alerts before resurecing
+                                                      logEvent("Timer ReRegistered: " + alertInfo.notificationName)
+                                                      emitter.emit("Register", alertInfo);
+                                                    }
                                                   }
+
                                                 },timeInterval,alertInfo);
                                                 });
 //Register
 //Register and setup interval for monitor
 emitter.on('Register',function(alertInfo){
                                           logEvent("NotificationEngine=>event Listiner Registered: " + alertInfo.notificationName);
-                                          emitter.emit(alertInfo.thresholdType,alertInfo);//run the check immediately
-                                          var intervalObject = setInterval(function(alertInfo){
-                                                                                                //Emit the threshold type to be evaluated
-                                                                                                logEvent("NotificationEngine=>Interval Hit:" + alertInfo.notificationName);
-                                                                                                emitter.emit(alertInfo.thresholdType,alertInfo);
-                                                                                              },alertInfo.checkFreq*60000||300000,alertInfo);
-                                          alertInfo.intervalObject = intervalObject;
-                                          alertInfos.push(alertInfo);
+
+                                          if(!IsSuspended(alertInfo)){
+                                                                    emitter.emit(alertInfo.thresholdType,alertInfo);//run the check immediately
+                                                                    var intervalObject = setInterval(function(alertInfo){
+                                                                                                                          //Emit the threshold type to be evaluated
+                                                                                                                          logEvent("NotificationEngine=>Interval Hit:" + alertInfo.notificationName);
+                                                                                                                          emitter.emit(alertInfo.thresholdType,alertInfo);
+                                                                                                                        },alertInfo.checkFreq*60000||300000,alertInfo);
+                                                                    alertInfo.intervalObject = intervalObject;
+                                                                    alertInfos.push(alertInfo);
+                                                                  }
                                         });
 
 //Unregister
@@ -182,35 +200,84 @@ function UnregisterEventMonitor(alertInfo){
                                             //clearInterval(alertInfo.intervalObject);
                                             //emitter.emit('UnRegister',alertInfo);
                                           }
+function IsSuspended(alertInfo){
+                              for (var i = 0; i < suspendedAlertInfos.length; i++) {
+                                if(suspendedAlertInfos[i].notificationName == alertInfo.notificationName){
+                                  return true;
+                                  }
+                              }
+                              return false;
+                            }
+function ReInstate(alertInfo){
+                              logEvent('Notification request for Reinstatment: ' + alertInfo.notificationName);
+                              for (var i = 0; i < suspendedAlertInfos.length; i++) {
+                                if(suspendedAlertInfos[i].notificationName == alertInfo.notificationName){
+                                  if(suspendedAlertInfos[i].timeStamp != alertInfo.timeStamp){
+                                      var returnInfo = suspendedAlertInfos[i];
+                                      suspendedAlertInfos.splice(i,1);
+                                      return returnInfo;
+                                    }
+                                    suspendedAlertInfos.splice(i,1);
+                                    break;
+                                  }
+                              }
+                              return alertInfo;
+                            }
+function RegisterSuspended(alertInfo){
+                                      for (var i = 0; i < suspendedAlertInfos.length; i++) {
+                                        if(suspendedAlertInfos[i].notificationName == alertInfo.notificationName){
+                                          if(suspendedAlertInfos[i].timeStamp != alertInfo.timeStamp){
+                                            suspendedAlertInfos[i] = alertInfo;
+                                            break;
+                                            }
+                                          }
+                                      }
+                                    }
 function IsRunableAlert(alertInfo){
                                 logEvent("NotificationEngine=>Check Runable Notification");
+                                var returnVal = false;
                                 fs.readdirSync(global.notificationDirectory)
                                   .forEach(function(file) {
+
                                                              file = global.notificationDirectory+'/'+file;
                                                              var data = fs.readFileSync(file,'utf8');
                                                              var alertInfoFile = JSON.parse(data);
                                                              if(alertInfo.notificationName == alertInfoFile.notificationName)
                                                              if(alertInfo.enabled == 'true'){
-                                                               return true;
+                                                               logEvent('Notification is enabled.');
+                                                               returnVal = true;
+                                                               return returnVal;
                                                              }
                                                              else {
-                                                               return false;
+                                                                logEvent('Notification is disabled.');
+                                                                returnVal = false;
+                                                               return returnVal;
                                                              }
                                                          });
-                                  return false;
+                                  logEvent(returnVal);
+                                  return returnVal;
                                 }
 //RegisterNotification
 //emit's an event to register the alertInfo
 module.exports.RegisterNotification = function(alertInfo){
-                                                          logEvent('NotificationEngine=>Register Notification');
-                                                          emitter.emit('Register',alertInfo);
-                                                        }
+
+                                                          //check to see if the alert is suspended.
+                                                          if(!IsSuspended(alertInfo)){
+                                                                                    logEvent('NotificationEngine=>Register Notification');
+                                                                                    emitter.emit('Register',alertInfo);
+                                                                                    }
+                                                                                    else{
+                                                                                      logEvent('NotificationEngine=>Register Suspended');
+                                                                                      RegisterSuspended(alertInfo);
+                                                                                    }
+                                                          }
 
 //UnregisterNotification
 //Unregiser the event.
 module.exports.UnregisterNotification = function(notification){
                                                                 logEvent('NotificationEngine=>Unregister Notification: ' + notification.notificationName);
                                                                 logEvent('Registered Alert Count:' + alertInfos.length);
+                                                                logEvent('suspended Alert Count:' + suspendedAlertInfos.length);
                                                                 if(alertInfos.length==0)
                                                                   return true;
 
