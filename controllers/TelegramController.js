@@ -1,3 +1,11 @@
+/*!
+* Copyright(c) 2016 elevatedprompt
+*
+* Author: Colin Goss
+ * @ngdoc function
+ * @name EPStack API
+ * @description
+ */
 var http = require('http');
 var req = require('request');
 var unirest = require('unirest');
@@ -38,14 +46,14 @@ if(global.tracelevel == 'debug'||global.notificationtracelevel=='debug'){
                                                }
   var messagetext =
 
-         "*" + alertInfo.notificationName.toString() + "*\n " + eventTime + "\n" +
+         "*" + alertInfo.notificationName.toString() + "*\n " +
            "*Search Name:* %0D%0A" +alertInfo.selectedSearch + "%0D%0A\n" +
            "*Condition:* %0D%0A" + thresholdType + " "+ alertInfo.thresholdCount + " in " + alertInfo.timeValue + " " + timeframe + "%0D%0A\n" +
            "*Description:* %0D%0A" + alertInfo.notificationDescription + "%0D%0A\n" +
            "*Result Count:* %0D%0A" + result.total + "%0D%0A\n" +
            "*Results:* \n%60%60%60" + extractDataFromResults(result,alertInfo,"\n\n") + "%60%60%60";
-                logEvent(messagetext);
-                  var methodCall ='https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage?parse_mode=Markdown&chat_id=' +alertInfo.telegramChatId + '&text='+ messagetext;
+                logEvent(messagetext.replace("_","\\_"));
+                  var methodCall ='https://api.telegram.org/'+global.telegramAPIKey +'/sendMessage?parse_mode=Markdown&chat_id=' +alertInfo.telegramChatId + '&text='+ messagetext.replace("_","\\_");
 
                   unirest.post(methodCall)
                   .headers({'Accept': 'application/json','Content-Type': 'application/json'})
@@ -57,18 +65,31 @@ if(global.tracelevel == 'debug'||global.notificationtracelevel=='debug'){
 //Duplicated in emailcontroller
 function extractDataFromResults(data,alertInfo,lineDelimiter){
                                             logEvent("Extract Data Function called");
-                                            var tokens = alertInfo.notifyData.replace('{','').replace('}','').split('.');
-                                            var dataString = "";
-                                            for(var index = 0; index < data.hits.length; index++){
-                                            //  logEvent("process hit loop");
-                                              var temp = data.hits[index];
+
+                                        var fields = alertInfo.notifyData.split(',');
+                                        var dataString = "";
+                                        for(var index = 0; index < data.hits.length; index++){
+                                         for(var ndex = 0; ndex < fields.length;ndex++){
+                                            var tokens = fields[ndex].replace('{','').replace('}','').split('.');
+                                          var finalTokenName = '';
+                                            var temp = data.hits[index];
                                               for(var tt = 0; tt < tokens.length; tt++){
-                                              //  logEvent("Process token loop");
+                                                logEvent("Process token loop");
+
                                                 temp = temp[tokens[tt]];
+                                                finalTokenName = tokens[tt];
                                               }
-                                              dataString = dataString +  " " + temp + lineDelimiter;
+                                              console.log(typeof temp);
+                                              dataString = dataString + " %60%60%60*" + finalTokenName + ":*%60%60%60\n";
+                                              if((typeof temp) =='object')
+                                              {
+                                                dataString = dataString +  " " + JSON.stringify(temp) + lineDelimiter;
+                                              }
+                                              else
+                                                dataString = dataString +  " " + temp + lineDelimiter;
                                             }
-                                            //logEvent(dataString);
+                                           }
+                                            logEvent(dataString);
                                             return dataString;
                                           }
 
